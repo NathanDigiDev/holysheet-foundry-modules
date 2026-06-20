@@ -65,7 +65,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
   /** @inheritDoc */
   static DEFAULT_OPTIONS = {
     id: "skyrim-lockpicking-app",
-    classes: ["skyrim-lockpicking-window"],
+    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window"],
     position: { width: 460, height: "auto" },
     window: {
       title: "SKYRIM_LP.Title",

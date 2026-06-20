@@ -269,6 +269,7 @@ export class MinigamesPanel {
 
     let chosen = null;
     await DialogV2.wait({
+      classes: ["holysheet", "hs-theme-lueur"],
       window: { title: game.i18n.format("SKYRIM_LP.MG.SubmitTitle", { name: record.name }), icon: "fa-solid fa-paper-plane" },
       content: `<div class="mg-submit">
                   <p class="mg-submit__hint">${game.i18n.localize("SKYRIM_LP.MG.SubmitHint")}</p>
@@ -299,6 +300,7 @@ export class MinigamesPanel {
     // l'identifiant du bouton et donc créer un dossier nommé « cancel »).
     let result = null;
     await DialogV2.wait({
+      classes: ["holysheet", "hs-theme-lueur"],
       window: { title, icon: "fa-solid fa-folder" },
       content: `<input type="text" name="v" value="${esc(value)}" style="width:100%" autofocus />`,
       rejectClose: false,
@@ -316,6 +318,7 @@ export class MinigamesPanel {
   async _confirm(message) {
     const { DialogV2 } = foundry.applications.api;
     return DialogV2.confirm({
+      classes: ["holysheet", "hs-theme-lueur"],
       window: { title: game.i18n.localize("SKYRIM_LP.MG.ConfirmTitle") },
       content: `<p>${esc(message)}</p>`
     }).catch(() => false);

@@ -1,4 +1,4 @@
-/* Skyrim Lockpicking — Onglet / répertoire « Mini-Jeux ». */
+/* Skyrim Lockpicking — Onglet / répertoire « Mini-Jeux », habillage HolySheet. */
 
 .mg {
   display: flex;
@@ -6,8 +6,8 @@
   gap: 8px;
   padding: 8px;
   height: 100%;
-  color: #e9e1cf;
-  font-family: "Signika", sans-serif;
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
 }
 
 /* Barre d'outils */
@@ -19,37 +19,43 @@
   justify-content: center;
   gap: 6px;
   padding: 6px 8px;
-  font-size: 13px;
-  color: #1a1712;
-  background: linear-gradient(180deg, #d9c98f, #b89a4f);
-  border: 1px solid #8a6f2f;
-  border-radius: 7px;
+  font-family: var(--hs-title);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+  color: var(--hs-bg-0);
+  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent));
+  border: 1px solid var(--hs-accent-deep);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
+  transition: filter 0.12s, box-shadow 0.12s;
 }
-.mg__btn:hover { filter: brightness(1.08); }
+.mg__btn:hover { filter: brightness(1.08); box-shadow: 0 0 14px var(--hs-accent-glow); }
 .mg__btn--ghost {
-  color: #cdbf9a;
-  background: #2a2620;
-  border: 1px solid #5c5343;
+  color: var(--hs-ink);
+  background: var(--hs-glass);
+  border: 1px solid var(--hs-glass-line);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
-.mg__btn--ghost:hover { background: #36302a; color: #e9e1cf; }
+.mg__btn--ghost:hover { background: var(--hs-glass-2); color: var(--hs-ink-strong); border-color: var(--hs-accent-line); box-shadow: none; filter: none; }
 
 /* Arborescence */
 .mg__tree, .mg__children { list-style: none; margin: 0; padding: 0; }
-.mg__tree { flex: 1; min-height: 80px; border-radius: 6px; }
-.mg__children { padding-left: 16px; border-left: 1px solid #3a352d; margin-left: 8px; }
+.mg__tree { flex: 1; min-height: 80px; border-radius: var(--hs-r-sm); }
+.mg__children { padding-left: 16px; border-left: 1px solid var(--hs-glass-line); margin-left: 8px; }
 
 /* Glisser-déposer */
 .mg__row[draggable="true"] { cursor: grab; }
 .mg__row[draggable="true"]:active { cursor: grabbing; }
 .mg__folder.mg__dropover > .mg__folder-row {
-  outline: 2px dashed #c9a227;
+  outline: 2px dashed var(--hs-accent-line);
   outline-offset: -2px;
-  background: rgba(201, 162, 39, 0.18);
-  border-radius: 6px;
+  background: var(--hs-accent-soft);
+  border-radius: var(--hs-r-sm);
 }
 .mg__tree.mg__dropover-root {
-  outline: 2px dashed #5c5343;
+  outline: 2px dashed var(--hs-glass-line);
   outline-offset: -2px;
 }
 
@@ -58,36 +64,37 @@
   align-items: center;
   gap: 6px;
   padding: 4px 6px;
-  border-radius: 6px;
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
+  transition: background 0.1s;
 }
-.mg__row:hover { background: rgba(201, 162, 39, 0.12); }
+.mg__row:hover { background: var(--hs-accent-soft); }
 
-.mg__caret { width: 12px; font-size: 11px; color: #8c8470; }
-.mg__icon { width: 16px; text-align: center; color: #cdbf9a; }
-.mg__game .mg__icon { color: #b89a4f; }
+.mg__caret { width: 12px; font-size: 11px; color: var(--hs-muted); }
+.mg__icon { width: 16px; text-align: center; color: var(--hs-brass); }
+.mg__game .mg__icon { color: var(--hs-brass-bright); }
 
 .mg__name { flex: 1; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.mg__game .mg__name:hover { color: #f0d98a; text-decoration: underline; }
+.mg__game .mg__name:hover { color: var(--hs-accent-bright); text-decoration: underline; }
 
 .mg__actions { display: none; gap: 8px; }
 .mg__row:hover .mg__actions { display: inline-flex; }
-.mg__actions a { color: #8c8470; cursor: pointer; }
-.mg__actions a:hover { color: #f0d98a; }
+.mg__actions a { color: var(--hs-muted); cursor: pointer; transition: color 0.1s; }
+.mg__actions a:hover { color: var(--hs-accent-bright); }
 
 .mg__empty {
   padding: 18px 8px;
   text-align: center;
   font-style: italic;
-  color: #8c8470;
+  color: var(--hs-muted);
 }
 
-/* Fenêtre de secours */
-.skyrim-minigames-window .window-content { padding: 0; background: #14120f; }
+/* Fenêtre de secours (le fond/cadre vient du chrome partagé .skyrim-lockpicking-window) */
+.skyrim-minigames-window .window-content { padding: 0; }
 .mg-host { height: 100%; }
 
 /* Dialogue de soumission aux joueurs */
 .mg-submit { display: flex; flex-direction: column; gap: 6px; }
-.mg-submit__hint { margin: 0 0 4px; font-size: 12px; color: #8c8470; font-style: italic; }
-.mg-submit__row { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.mg-submit__hint { margin: 0 0 4px; font-size: 12px; color: var(--hs-muted); font-style: italic; }
+.mg-submit__row { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; color: var(--hs-ink); }
 .mg-submit__dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }

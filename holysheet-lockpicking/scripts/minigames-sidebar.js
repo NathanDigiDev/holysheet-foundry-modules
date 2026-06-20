@@ -80,7 +80,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 class MinigamesWindow extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "skyrim-minigames-window",
-    classes: ["skyrim-lockpicking-window", "skyrim-minigames-window"],
+    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-minigames-window"],
     position: { width: 380, height: 580 },
     window: { title: "SKYRIM_LP.MG.Tab", icon: "fa-solid fa-gamepad", resizable: true }
   };

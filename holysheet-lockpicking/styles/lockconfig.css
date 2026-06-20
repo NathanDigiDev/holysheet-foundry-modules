@@ -1,38 +1,40 @@
-/* Skyrim Lockpicking — Fenêtre de configuration du verrou (MJ). */
+/* Skyrim Lockpicking — Fenêtre de configuration du verrou (MJ), habillage HolySheet. */
 
-.skyrim-lock-config-window .window-content {
-  padding: 0;
-  background: #14120f;
-}
+.skyrim-lock-config-window .window-content { padding: 0; }
 
 .lock-config {
   display: flex;
   flex-direction: column;
   gap: 14px;
   padding: 16px 18px;
-  color: #e9e1cf;
-  font-family: "Signika", "Palatino Linotype", serif;
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
 }
 
 .lock-config__field { display: flex; flex-direction: column; gap: 6px; }
 .lock-config__field--row { flex-direction: row; align-items: center; }
 
 .lock-config__label {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  color: #cdbf9a;
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--hs-brass-bright);
   text-transform: uppercase;
 }
-.lock-config__hint { margin: 0; font-size: 12px; color: #8c8470; font-style: italic; }
+.lock-config__hint { margin: 0; font-size: 12px; color: var(--hs-muted); font-style: italic; }
 
+/* Champs : verre dépoli (cohérent avec le socle .holysheet input/select). */
 .lock-config select,
-.lock-config input[type="number"] {
-  background: #221f1a;
-  color: #e9e1cf;
-  border: 1px solid #5c5343;
-  border-radius: 6px;
+.lock-config input[type="number"],
+.lock-config input[type="text"] {
+  background: var(--hs-glass);
+  color: var(--hs-ink-strong);
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
   padding: 5px 8px;
+  -webkit-backdrop-filter: blur(7px) saturate(1.1);
+  backdrop-filter: blur(7px) saturate(1.1);
 }
 
 /* --- Choix du type -------------------------------------------------------- */
@@ -44,35 +46,45 @@
   align-items: center;
   gap: 6px;
   padding: 12px;
-  font-family: inherit;
+  font-family: var(--hs-body);
   font-size: 13px;
-  color: #d8cdb2;
-  background: linear-gradient(160deg, #322d25, #211e19);
-  border: 1px solid #5c5343;
-  border-radius: 10px;
+  color: var(--hs-ink);
+  background: var(--hs-glass);
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
-  transition: border-color 0.12s, transform 0.06s, background 0.12s;
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  transition: border-color 0.12s, transform 0.06s, background 0.12s, box-shadow 0.12s;
 }
-.lock-config__type i { font-size: 22px; }
-.lock-config__type:hover { background: #3a342a; }
+.lock-config__type i { font-size: 22px; color: var(--hs-brass); }
+.lock-config__type:hover { background: var(--hs-glass-2); border-color: var(--hs-accent-line); }
 .lock-config__type.is-active {
-  border-color: #c9a227;
-  background: linear-gradient(160deg, #4a4031, #2c2720);
-  box-shadow: 0 0 0 1px #c9a227 inset;
+  border-color: var(--hs-accent-line);
+  background: var(--hs-glass-2);
+  box-shadow: 0 0 0 1px var(--hs-accent-line) inset, 0 0 14px var(--hs-accent-soft);
 }
+.lock-config__type.is-active i { color: var(--hs-accent-bright); }
 
-/* --- Stepper anneaux ------------------------------------------------------ */
+/* --- Stepper anneaux (boutons mécaniques laiton) -------------------------- */
 .lock-config__stepper { display: flex; align-items: center; gap: 12px; }
 .lock-config__stepper button {
   width: 32px; height: 32px;
-  color: #1a1712;
-  background: linear-gradient(180deg, #d9c98f, #b89a4f);
-  border: 1px solid #8a6f2f;
-  border-radius: 6px;
+  color: var(--hs-bg-0);
+  background: linear-gradient(180deg, var(--hs-brass-bright), var(--hs-brass));
+  border: 1px solid var(--hs-brass);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
+  transition: filter 0.12s, transform 0.06s;
 }
+.lock-config__stepper button:hover { filter: brightness(1.08); }
 .lock-config__stepper button:active { transform: translateY(1px); }
-.lock-config__stepper span { font-size: 20px; font-weight: 700; min-width: 1.4em; text-align: center; }
+.lock-config__stepper span {
+  font-family: var(--hs-title);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px; font-weight: 700; min-width: 1.4em; text-align: center;
+  color: var(--hs-ink-strong);
+}
 
 /* --- Palette de logos ----------------------------------------------------- */
 .lock-config__palette {
@@ -86,18 +98,18 @@
   justify-content: center;
   aspect-ratio: 1;
   font-size: 18px;
-  color: #8c8470;
-  background: #1d1a15;
-  border: 1px solid #3a352d;
-  border-radius: 8px;
+  color: var(--hs-muted);
+  background: var(--hs-glass);
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
   transition: all 0.1s;
 }
-.lock-config__chip:hover { color: #e9e1cf; border-color: #5c5343; }
+.lock-config__chip:hover { color: var(--hs-ink-strong); border-color: var(--hs-accent-line); }
 .lock-config__chip.is-on {
-  color: #1a1712;
-  background: linear-gradient(180deg, #d9c98f, #b89a4f);
-  border-color: #8a6f2f;
+  color: var(--hs-bg-0);
+  background: linear-gradient(180deg, var(--hs-brass-bright), var(--hs-brass));
+  border-color: var(--hs-brass);
 }
 .lock-config__chip img,
 .lock-config__dial img { max-width: 70%; max-height: 70%; object-fit: contain; }
@@ -111,27 +123,25 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  font-family: inherit;
+  font-family: var(--hs-body);
   font-size: 13px;
-  color: #cdbf9a;
-  background: #2a2620;
-  border: 1px dashed #5c5343;
-  border-radius: 7px;
+  color: var(--hs-muted);
+  background: var(--hs-glass);
+  border: 1px dashed var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-.lock-config__add:hover { background: #36302a; color: #e9e1cf; border-color: #c9a227; }
+.lock-config__add:hover { background: var(--hs-glass-2); color: var(--hs-ink-strong); border-color: var(--hs-accent-line); }
 
 /* Dialogue d'ajout de logo perso */
 .lock-config__custom { display: flex; flex-direction: column; gap: 8px; }
-.lock-config__custom input[type="text"] {
-  background: #221f1a; color: #e9e1cf; border: 1px solid #5c5343; border-radius: 6px; padding: 6px 8px;
-}
 .lock-config__custom-img { display: flex; gap: 6px; }
 .lock-config__custom-img input { flex: 1; }
 .lock-config__custom-img button {
-  width: 38px; color: #1a1712;
-  background: linear-gradient(180deg, #d9c98f, #b89a4f);
-  border: 1px solid #8a6f2f; border-radius: 6px; cursor: pointer;
+  width: 38px; color: var(--hs-bg-0);
+  background: linear-gradient(180deg, var(--hs-brass-bright), var(--hs-brass));
+  border: 1px solid var(--hs-brass); border-radius: var(--hs-r-sm); cursor: pointer;
 }
 
 /* --- Combinaison (anneaux cliquables) ------------------------------------- */
@@ -143,26 +153,25 @@
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  color: #1a1712;
-  background:
-    repeating-linear-gradient(180deg, #cdbf9a 0px, #b7a982 5px, #cdbf9a 10px);
-  border: 2px solid #5c5343;
-  border-radius: 10px;
+  color: var(--hs-bg-0);
+  background: repeating-linear-gradient(180deg, var(--hs-brass) 0px, var(--hs-brass-bright) 5px, var(--hs-brass) 10px);
+  border: 2px solid var(--hs-brass-soft);
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
-  transition: transform 0.06s, border-color 0.12s;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.06s, border-color 0.12s, box-shadow 0.12s;
 }
-.lock-config__dial:hover { border-color: #c9a227; }
+.lock-config__dial:hover { border-color: var(--hs-accent-line); box-shadow: 0 0 12px var(--hs-accent-soft), inset 0 0 8px rgba(0, 0, 0, 0.5); }
 .lock-config__dial:active { transform: scale(0.96); }
 .lock-config__dial-no {
   position: absolute;
   top: 2px; right: 5px;
   font-size: 10px;
   font-weight: 700;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
 }
 
-.lock-config__check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #d8cdb2; cursor: pointer; }
+.lock-config__check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--hs-ink); cursor: pointer; }
 
 /* --- Footer --------------------------------------------------------------- */
 .lock-config__footer {
@@ -170,29 +179,33 @@
   justify-content: flex-end;
   gap: 10px;
   padding-top: 6px;
-  border-top: 1px solid #3a352d;
+  border-top: 1px solid var(--hs-glass-line);
 }
 .lock-config__btn {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 8px 16px;
-  font-family: inherit;
-  font-size: 14px;
-  border-radius: 8px;
+  font-family: var(--hs-title);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 13px;
+  border-radius: var(--hs-r-sm);
   cursor: pointer;
-  transition: filter 0.12s, transform 0.06s;
+  transition: filter 0.12s, box-shadow 0.12s, border-color 0.12s, transform 0.06s;
 }
 .lock-config__btn:active { transform: translateY(1px); }
 .lock-config__btn--ghost {
-  color: #cdbf9a;
-  background: #2a2620;
-  border: 1px solid #5c5343;
+  color: var(--hs-ink);
+  background: var(--hs-glass);
+  border: 1px solid var(--hs-glass-line);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
-.lock-config__btn--ghost:hover { background: #36302708; filter: brightness(1.2); }
+.lock-config__btn--ghost:hover { border-color: var(--hs-accent-line); color: var(--hs-ink-strong); box-shadow: 0 0 12px var(--hs-accent-soft); }
 .lock-config__btn--primary {
-  color: #1a1712;
-  background: linear-gradient(180deg, #d9c98f, #b89a4f);
-  border: 1px solid #8a6f2f;
+  color: var(--hs-bg-0);
+  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent));
+  border: 1px solid var(--hs-accent-deep);
 }
-.lock-config__btn--primary:hover { filter: brightness(1.08); }
+.lock-config__btn--primary:hover { filter: brightness(1.08); box-shadow: 0 0 16px var(--hs-accent-glow); }

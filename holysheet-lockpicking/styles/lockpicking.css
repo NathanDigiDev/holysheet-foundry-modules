@@ -1,19 +1,45 @@
-/* Skyrim Lockpicking — habillage sombre minimaliste façon Skyrim.
-   On cible la fenêtre via la classe ajoutée dans DEFAULT_OPTIONS.classes. */
+/* Skyrim Lockpicking — habillage HolySheet (crochetage façon Skyrim).
+   Med-fan sombre : verre dépoli, laiton pour la mécanique, émeraude = action.
+   Jetons définis dans holysheet.css (chargé avant). Zéro hex en dur. */
 
+/* =========================================================================
+   CHROME PARTAGÉ — les 4 fenêtres portent la classe .skyrim-lockpicking-window
+   On stylise ici une seule fois : cadre, en-tête cuir, fond verre/cuir.
+   ========================================================================= */
+.skyrim-lockpicking-window {
+  border: 1px solid var(--hs-glass-line);
+  border-radius: 16px;
+  box-shadow: var(--hs-shadow);
+}
+.skyrim-lockpicking-window .window-header {
+  background: linear-gradient(115deg, #160f08, #2a1c0d, #3a2a12);
+  border-bottom: 1px solid var(--hs-brass-soft);
+}
+.skyrim-lockpicking-window .window-header .window-title {
+  font-family: var(--hs-title);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--hs-brass-bright);
+}
 .skyrim-lockpicking-window .window-content {
   padding: 0;
-  background: #14120f;
+  background:
+    radial-gradient(900px 440px at 12% -6%, rgba(201, 162, 78, 0.12), transparent 60%),
+    radial-gradient(800px 400px at 92% 6%, rgba(59, 191, 134, 0.08), transparent 58%),
+    linear-gradient(160deg, #221a10, #14100a 62%);
 }
 
+/* =========================================================================
+   CROCHETAGE
+   ========================================================================= */
 .skyrim-lp {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   padding: 12px;
-  color: #e9e1cf;
-  font-family: "Signika", "Palatino Linotype", serif;
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
   user-select: none;
 }
 
@@ -21,10 +47,12 @@
 .skyrim-lp__canvas {
   display: block;
   background: radial-gradient(circle at 50% 38%, #2a261f 0%, #0e0d0b 75%);
-  border: 2px solid #3a352d;
-  border-radius: 8px;
+  border: 2px solid var(--hs-brass-soft);
+  border-radius: var(--hs-r-sm);
   cursor: none;
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px var(--hs-glass-line-soft);
 }
 
 /* HUD : crochets restants + statut */
@@ -41,26 +69,30 @@
   align-items: center;
   gap: 6px;
   font-size: 16px;
-  color: #cdbf9a;
+  color: var(--hs-muted);
 }
+.skyrim-lp__picks i { color: var(--hs-brass); }
 
 .skyrim-lp__pick-count {
+  font-family: var(--hs-title);
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
   min-width: 1.4em;
   text-align: center;
+  color: var(--hs-brass-bright);
 }
 
 .skyrim-lp__status {
   font-style: italic;
   font-size: 14px;
   letter-spacing: 0.3px;
-  color: #b7ad95;
+  color: var(--hs-muted);
 }
 
 .skyrim-lp__help {
   margin: 0;
   font-size: 12px;
   text-align: center;
-  color: #8c8470;
-  opacity: 0.9;
+  color: var(--hs-muted);
+  opacity: 0.85;
 }

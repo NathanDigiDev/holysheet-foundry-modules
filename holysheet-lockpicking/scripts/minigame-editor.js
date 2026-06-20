@@ -83,7 +83,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
 
   static DEFAULT_OPTIONS = {
     id: "skyrim-minigame-editor",
-    classes: ["skyrim-lockpicking-window", "skyrim-lock-config-window"],
+    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-lock-config-window"],
     position: { width: 480, height: "auto" },
     window: { title: "SKYRIM_LP.Config.Title", icon: "fa-solid fa-gear", resizable: false }
   };
@@ -216,6 +216,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
 
     let result = null;
     await DialogV2.wait({
+      classes: ["holysheet", "hs-theme-lueur"],
       window: { title: game.i18n.localize("SKYRIM_LP.Config.AddCustom"), icon: "fa-solid fa-plus" },
       content,
       rejectClose: false,

@@ -124,7 +124,7 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
   /** @inheritDoc */
   static DEFAULT_OPTIONS = {
     id: "skyrim-combo-lock-app",
-    classes: ["skyrim-lockpicking-window", "skyrim-combo-lock-window"],
+    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-combo-lock-window"],
     position: { width: "auto", height: "auto" },
     window: {
       title: "SKYRIM_LP.Combo.Title",

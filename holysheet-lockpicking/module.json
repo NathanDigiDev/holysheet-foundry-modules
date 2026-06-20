@@ -21,7 +21,7 @@
   "//esmodules": "Un seul point d'entrée ES Module ; main.js importe lui-même lockpicking-app.js. C'est la norme moderne (pas de 'scripts' classiques).",
   "esmodules": ["scripts/main.js"],
 
-  "styles": ["styles/lockpicking.css", "styles/combolock.css", "styles/lockconfig.css", "styles/minigames.css"],
+  "styles": ["styles/holysheet.css", "styles/lockpicking.css", "styles/combolock.css", "styles/lockconfig.css", "styles/minigames.css"],
 
   "//socket": "OBLIGATOIRE pour recevoir les messages du canal 'module.holysheet-lockpicking' : un joueur n'a pas le droit de modifier un mur, c'est le MJ qui déverrouille la porte via socket quand le joueur réussit.",
   "socket": true,
