@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Artefacts de build / archives
+*.zip
+
+# Dossiers locaux d'outils
+nimbalyst-local/
+
+# Dépendances éventuelles
+node_modules/
+
+# Logs / temp
+*.log

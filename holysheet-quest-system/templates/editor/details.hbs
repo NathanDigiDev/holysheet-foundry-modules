@@ -1,0 +1,61 @@
+{{!-- Details tab: name, image, description, participants --}}
+<section class="qs-editor__panel {{#if tab.active}}active{{/if}}" data-tab="details" data-group="primary">
+
+  <div class="qs-field qs-field--row">
+    <div class="qs-img-picker">
+      <img src="{{quest.img}}" alt="" class="qs-img-picker__preview" data-action="pickImage"/>
+      <button type="button" class="qs-btn small" data-action="pickImage">
+        <i class="fa-solid fa-image"></i> {{localize "QUESTSYSTEM.Field.ChangeImage"}}
+      </button>
+      <input type="hidden" name="img" value="{{quest.img}}"/>
+    </div>
+    <div class="qs-field grow">
+      <label>{{localize "QUESTSYSTEM.Field.Name"}}</label>
+      <input type="text" name="name" value="{{quest.name}}"/>
+      <span class="qs-status-line">
+        <i class="{{statusMeta.icon}}"></i> {{localize statusMeta.label}}
+      </span>
+    </div>
+  </div>
+
+  <div class="qs-field">
+    <label>{{localize "QUESTSYSTEM.Field.Description"}}</label>
+    <textarea name="description" rows="5">{{quest.description}}</textarea>
+  </div>
+
+  <fieldset class="qs-fieldset">
+    <legend><i class="fa-solid fa-users"></i> {{localize "QUESTSYSTEM.Field.Participants"}}</legend>
+
+    <div class="qs-participants">
+      <div class="qs-participants__col">
+        <h4>{{localize "QUESTSYSTEM.Field.Players"}}</h4>
+        <ul class="qs-check-grid">
+          {{#each userChoices as |u|}}
+          <li>
+            <label>
+              <input type="checkbox" data-group="participant-user" value="{{u.id}}" {{#if u.selected}}checked{{/if}}/>
+              <span class="qs-user-dot" style="--c: {{u.color}}"></span> {{u.name}}
+            </label>
+          </li>
+          {{else}}
+          <li class="qs-empty">{{localize "QUESTSYSTEM.NoPlayers"}}</li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="qs-participants__col">
+        <h4>{{localize "QUESTSYSTEM.Field.Actors"}}</h4>
+        <ul class="qs-check-grid scroll">
+          {{#each actorChoices as |a|}}
+          <li>
+            <label>
+              <input type="checkbox" data-group="participant-actor" value="{{a.id}}" {{#if a.selected}}checked{{/if}}/>
+              <img src="{{a.img}}" alt="" class="qs-mini-img"/> {{a.name}}
+            </label>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </fieldset>
+</section>

@@ -1,0 +1,201 @@
+/* Skyrim Lockpicking — Cadenas à code (anneaux à logos).
+   Habillage « laiton sombre » cohérent avec le crochetage. */
+
+.skyrim-combo-lock-window .window-content {
+  padding: 0;
+  background: #14120f;
+}
+
+.combo-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 22px 16px;
+  color: #e9e1cf;
+  font-family: "Signika", "Palatino Linotype", serif;
+  user-select: none;
+}
+
+/* --- Anse du cadenas ------------------------------------------------------ */
+.combo-lock__shackle {
+  position: relative;
+  width: 120px;
+  height: 46px;
+  margin-bottom: -10px;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.combo-lock__shackle-arc {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 86px;
+  height: 78px;
+  transform: translateX(-50%);
+  border: 12px solid #b9b0a0;
+  border-bottom: none;
+  border-radius: 50px 50px 0 0;
+  background: transparent;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.25), 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+/* À l'ouverture : l'anse se lève et pivote légèrement. */
+.combo-lock--open .combo-lock__shackle {
+  transform: translateY(-26px) rotate(12deg);
+}
+
+/* --- Corps du cadenas ----------------------------------------------------- */
+.combo-lock__body {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #4a4336 0%, #2a2620 60%, #1d1a15 100%);
+  border: 2px solid #5c5343;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.65), 0 6px 14px rgba(0, 0, 0, 0.5);
+}
+
+.combo-lock__rings {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- Un anneau ------------------------------------------------------------ */
+.combo-lock__ring {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.combo-lock__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 24px;
+  padding: 0;
+  color: #d8cdb2;
+  background: #322d25;
+  border: 1px solid #5c5343;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, transform 0.06s;
+}
+.combo-lock__arrow:hover { background: #463f33; color: #fff4d8; }
+.combo-lock__arrow:active { transform: translateY(1px); }
+
+/* Fenêtre montrant 3 symboles (le central est le « sélectionné »). */
+.combo-lock__window {
+  position: relative;
+  width: 56px;
+  height: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 30%,
+                            rgba(0,0,0,0) 70%, rgba(0,0,0,0.75) 100%),
+    repeating-linear-gradient(180deg, #cdbf9a 0px, #b7a982 6px, #cdbf9a 12px);
+  border: 1px solid #2a2620;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+}
+/* Repère central (la « fenêtre » du cadenas). */
+.combo-lock__window::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+  border-top: 1px solid rgba(0, 0, 0, 0.45);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+  box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}
+
+.combo-lock__slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  font-size: 24px;
+  color: #2a2620;
+}
+.combo-lock__slot img { max-width: 30px; max-height: 30px; object-fit: contain; }
+.combo-lock__slot--neighbor { opacity: 0.35; font-size: 18px; }
+.combo-lock__slot--current {
+  font-size: 30px;
+  color: #1a1712;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  z-index: 1;
+}
+.combo-lock__slot--current img { max-width: 36px; max-height: 36px; }
+.combo-lock__glyph { font-weight: 700; }
+
+/* Anneau actif (sélection clavier) : liseré doré. */
+.combo-lock__ring--active .combo-lock__window {
+  outline: 2px solid #c9a227;
+  outline-offset: 1px;
+}
+
+/* Petit « cran » au tournage. */
+@keyframes comboTick { 0% { transform: translateY(-2px); } 100% { transform: translateY(0); } }
+.combo-lock__ring--tick .combo-lock__window { animation: comboTick 0.12s ease-out; }
+
+/* --- HUD ------------------------------------------------------------------ */
+.combo-lock__hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+.combo-lock__status {
+  flex: 1;
+  font-style: italic;
+  font-size: 14px;
+  color: #b7ad95;
+}
+.combo-lock__attempts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: #cdbf9a;
+}
+
+/* --- Bouton d'ouverture --------------------------------------------------- */
+.combo-lock__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f 0%, #b89a4f 100%);
+  border: 1px solid #8a6f2f;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.12s, transform 0.06s;
+}
+.combo-lock__open:hover { filter: brightness(1.08); }
+.combo-lock__open:active { transform: translateY(1px); }
+
+.combo-lock__help {
+  margin: 0;
+  font-size: 12px;
+  text-align: center;
+  color: #8c8470;
+  opacity: 0.9;
+}
+
+/* --- Secousse en cas d'échec --------------------------------------------- */
+@keyframes comboShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+.combo-lock--shake { animation: comboShake 0.4s ease; }

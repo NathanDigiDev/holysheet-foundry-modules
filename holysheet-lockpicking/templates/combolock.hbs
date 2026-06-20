@@ -1,0 +1,58 @@
+{{!--
+  Cadenas à code — structure statique.
+  Les anneaux sont générés par la boucle ci-dessous ; le CONTENU de chaque
+  anneau (symbole courant + voisins) est peint en JS (_renderRing) car il
+  change à chaque rotation. Les clics passent par le système d'actions de
+  l'ApplicationV2 (data-action / data-ring / data-dir).
+--}}
+<div class="combo-lock">
+
+  {{!-- Anse du cadenas (se soulève à l'ouverture via la classe --open) --}}
+  <div class="combo-lock__shackle">
+    <span class="combo-lock__shackle-arc"></span>
+  </div>
+
+  {{!-- Corps du cadenas : la rangée d'anneaux --}}
+  <div class="combo-lock__body">
+    <div class="combo-lock__rings">
+      {{#each ringList}}
+      <div class="combo-lock__ring" data-ring="{{this.index}}">
+        <button type="button" class="combo-lock__arrow combo-lock__arrow--up"
+                data-action="rotate" data-ring="{{this.index}}" data-dir="-1"
+                aria-label="{{localize 'SKYRIM_LP.Combo.Up'}}">
+          <i class="fa-solid fa-chevron-up"></i>
+        </button>
+
+        <div class="combo-lock__window">
+          <div class="combo-lock__slot combo-lock__slot--neighbor" data-slot="prev"></div>
+          <div class="combo-lock__slot combo-lock__slot--current" data-slot="cur"></div>
+          <div class="combo-lock__slot combo-lock__slot--neighbor" data-slot="next"></div>
+        </div>
+
+        <button type="button" class="combo-lock__arrow combo-lock__arrow--down"
+                data-action="rotate" data-ring="{{this.index}}" data-dir="1"
+                aria-label="{{localize 'SKYRIM_LP.Combo.Down'}}">
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{!-- HUD : statut + essais restants --}}
+  <div class="combo-lock__hud">
+    <div class="combo-lock__status" data-status>{{statusText}}</div>
+    <div class="combo-lock__attempts" title="{{localize 'SKYRIM_LP.Combo.Attempts'}}">
+      <i class="fa-solid fa-rotate-right"></i>
+      <span data-attempts>{{attemptsLabel}}</span>
+    </div>
+  </div>
+
+  {{!-- Bouton d'ouverture --}}
+  <button type="button" class="combo-lock__open" data-action="attempt">
+    <i class="fa-solid fa-unlock-keyhole"></i>
+    {{localize "SKYRIM_LP.Combo.Open"}}
+  </button>
+
+  <p class="combo-lock__help">{{localize "SKYRIM_LP.Combo.Help"}}</p>
+</div>

@@ -1,0 +1,102 @@
+/* =========================================================================
+   HolySheet Custom Calendar — intégration FoundryVTT
+   Ne contient QUE ce qui relie le langage visuel HolySheet au châssis Foundry :
+   positionnement fixe du widget, bouton de restauration, dimensionnement des
+   ApplicationV2, bouton de la barre latérale.
+   L'habillage des composants .hcc-* vit dans holysheet.css + calendar-holysheet.css.
+   ========================================================================= */
+
+/* ---- Widget flottant : coque fixe (l'intérieur .hcc-widget est habillé par
+   calendar-holysheet.css). La racine porte .holysheet hs-theme-cuir, on neutralise
+   donc son fond opaque pour ne garder que la carte interne. -------------------- */
+#holysheet-calendar-widget {
+  position: fixed;
+  z-index: 80;
+  width: min(460px, calc(100vw - 32px));
+  background: transparent;
+  cursor: grab;
+}
+
+#holysheet-calendar-widget.locked {
+  cursor: default;
+}
+
+#holysheet-calendar-widget button,
+#holysheet-calendar-widget input {
+  cursor: pointer;
+}
+
+/* La jauge de temps GM est désactivée côté joueur : on garde sa lisibilité. */
+#holysheet-calendar-widget .hcc-gauge:disabled {
+  opacity: 0.85;
+}
+
+/* ---- Bouton de restauration (widget masqué) ----------------------------- */
+#holysheet-calendar-widget-restore {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  z-index: 80;
+  width: 36px;
+  height: 36px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(201, 162, 78, 0.5);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.92), rgba(18, 15, 10, 0.95));
+  color: #f7e6b6;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+#holysheet-calendar-widget-restore:hover,
+#holysheet-calendar-widget-restore:focus {
+  border-color: #eccd80;
+  box-shadow: 0 0 14px rgba(201, 162, 78, 0.4);
+}
+
+/* ---- Fenêtres ApplicationV2 --------------------------------------------- */
+.holysheet-calendar-app,
+.holysheet-calendar-config {
+  max-height: calc(100vh - 96px);
+}
+
+/* La carte .hcc-app peint son propre fond jusqu'aux bords : on retire le
+   padding par défaut du contenu de fenêtre et on laisse le défilement interne. */
+.holysheet-calendar-app .window-content,
+.holysheet-calendar-config .window-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+  padding: 0;
+  background: transparent;
+}
+
+/* ---- Bouton de la barre latérale ---------------------------------------- */
+.hcc-sidebar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-dark, #333);
+  border-radius: 5px;
+  background: var(--color-bg-option, rgba(0, 0, 0, 0.45));
+  color: var(--color-text-light-highlight, #f0f0e0);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.hcc-sidebar-button:hover,
+.hcc-sidebar-button:focus {
+  border-color: var(--color-border-highlight, #f0b060);
+  box-shadow: 0 0 6px rgba(240, 176, 96, 0.45);
+}
+
+/* ---- JSON import/export (zone monospace) -------------------------------- */
+.holysheet .hcc-json textarea {
+  width: 100%;
+  font-family: var(--font-monospace, monospace);
+}

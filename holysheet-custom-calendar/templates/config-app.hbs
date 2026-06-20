@@ -1,0 +1,215 @@
+<div class="hcc-app hcc-config">
+  {{#unless isGM}}
+    <p>{{localize "HCC.ConfigureHint"}}</p>
+  {{else}}
+    <header class="hcc-header">
+      <div>
+        <h2>Modifier un calendrier</h2>
+        <p>{{calendar.name}}</p>
+      </div>
+      <div class="hcc-header-actions">
+        <button type="button" class="hcc-danger-button" data-action="delete-calendar"><i class="fa-solid fa-trash"></i> Supprimer ce calendrier</button>
+      </div>
+    </header>
+
+    <div class="hcc-toolbar">
+      <label>
+        Calendrier édité
+        <select name="activeCalendarId">
+          {{#each calendars}}
+            <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}{{#if active}} - actif{{/if}}</option>
+          {{/each}}
+        </select>
+      </label>
+    </div>
+
+    <nav class="hcc-config-tabs">
+      <button type="button" class="{{#if isGeneralTab}}active{{/if}}" data-action="set-config-tab" data-value="general">Général</button>
+      <button type="button" class="{{#if isMonthsTab}}active{{/if}}" data-action="set-config-tab" data-value="months">Mois</button>
+      <button type="button" class="{{#if isWeeksTab}}active{{/if}}" data-action="set-config-tab" data-value="weeks">Semaines</button>
+      <button type="button" class="{{#if isEventsTab}}active{{/if}}" data-action="set-config-tab" data-value="events">Événements</button>
+      <button type="button" class="{{#if isZonesTab}}active{{/if}}" data-action="set-config-tab" data-value="zones">Zones</button>
+    </nav>
+
+    <form data-config-form>
+      {{#if isGeneralTab}}
+        <section class="hcc-section">
+          <h3>Paramètres généraux</h3>
+          <div class="hcc-form-grid">
+            <label>
+              Nom
+              <input type="text" name="calendarName" value="{{calendar.name}}">
+            </label>
+            <label>
+              Année courante
+              <input type="number" name="year" value="{{calendar.currentDate.year}}">
+            </label>
+            <label>
+              Mois courant
+              <input type="number" name="month" min="1" max="{{calendar.months.length}}" value="{{calendar.currentDate.month}}">
+            </label>
+            <label>
+              Jour courant
+              <input type="number" name="day" min="1" value="{{calendar.currentDate.day}}">
+            </label>
+            <label class="hcc-full">
+              Description
+              <textarea name="calendarDescription" rows="3">{{calendar.description}}</textarea>
+            </label>
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if isMonthsTab}}
+        <section class="hcc-section">
+          <div class="hcc-section-title">
+            <h3>Gestion des mois</h3>
+            <div>
+              <button type="button" data-action="add-month">Ajouter</button>
+              <button type="button" data-action="remove-month">Retirer le dernier</button>
+            </div>
+          </div>
+
+          <label class="hcc-inline-field">
+            Début des mois
+            <select name="weekdayMode">
+              <option value="continuous" {{#if isContinuousWeekdays}}selected{{/if}}>Les jours se suivent entre les mois</option>
+              <option value="manual" {{#if isManualWeekdays}}selected{{/if}}>Choisir le jour de départ de chaque mois</option>
+            </select>
+          </label>
+
+          <div class="hcc-month-editor">
+            {{#each months}}
+              <div class="hcc-month-row">
+                <strong>{{number}}</strong>
+                <input type="text" name="month-{{@index}}-name" value="{{name}}">
+                <label>
+                  Jours
+                  <input type="number" name="month-{{@index}}-days" min="1" value="{{days}}">
+                </label>
+                <label>
+                  Débute sur
+                  <select name="month-{{@index}}-starts">
+                    {{#each startsOptions}}
+                      <option value="{{index}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+                    {{/each}}
+                  </select>
+                </label>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if isWeeksTab}}
+        <section class="hcc-section">
+          <h3>Gestion des semaines</h3>
+          <label class="hcc-full">
+            Jours de la semaine, un par ligne
+            <textarea name="weekdays" rows="9">{{weekdaysText}}</textarea>
+          </label>
+        </section>
+      {{/if}}
+
+      {{#if isEventsTab}}
+        <section class="hcc-section">
+          <div class="hcc-section-title">
+            <h3>Événements fixes</h3>
+            <div>
+              <button type="button" data-action="add-event">Ajouter</button>
+              <button type="button" data-action="remove-event">Retirer le dernier</button>
+            </div>
+          </div>
+          <div class="hcc-event-editor">
+            {{#each events}}
+              <div class="hcc-event-row">
+                <strong>{{number}}</strong>
+                <input type="text" name="event-{{@index}}-name" value="{{name}}">
+                <label>
+                  Mois
+                  <input type="number" name="event-{{@index}}-month" min="1" value="{{month}}">
+                </label>
+                <label>
+                  Jour
+                  <input type="number" name="event-{{@index}}-day" min="1" value="{{day}}">
+                </label>
+                <input type="text" name="event-{{@index}}-description" value="{{description}}" placeholder="Description">
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if isZonesTab}}
+        <section class="hcc-section">
+          <div class="hcc-section-title">
+            <h3>Zones et jauge jour/nuit</h3>
+            <button type="button" data-action="add-zone">Ajouter une zone</button>
+          </div>
+
+          <div class="hcc-toolbar">
+            <label>
+              Zone éditée
+              <select name="activeZoneId">
+                {{#each zones}}
+                  <option value="{{id}}" {{#if active}}selected{{/if}}>{{name}}</option>
+                {{/each}}
+              </select>
+            </label>
+          </div>
+
+          <div class="hcc-form-grid">
+            <label>
+              Nom de zone
+              <input type="text" name="zoneName" value="{{zone.name}}">
+            </label>
+            <label>
+              Pourcentage de jour
+              <input type="number" name="dayPercentage" min="1" max="99" value="{{zone.dayPercentage}}">
+            </label>
+          </div>
+        </section>
+
+        <section class="hcc-section">
+          <div class="hcc-section-title">
+            <h3>Saisons informatives</h3>
+            <div>
+              <button type="button" data-action="add-season">Ajouter</button>
+              <button type="button" data-action="remove-season">Retirer la dernière</button>
+            </div>
+          </div>
+          <div class="hcc-season-editor">
+            {{#each seasons}}
+              <div class="hcc-season-row">
+                <strong>{{number}}</strong>
+                <input type="text" name="season-{{@index}}-name" value="{{name}}">
+                <label>
+                  Début mois
+                  <input type="number" name="season-{{@index}}-from-month" min="1" value="{{from.month}}">
+                </label>
+                <label>
+                  Début jour
+                  <input type="number" name="season-{{@index}}-from-day" min="1" value="{{from.day}}">
+                </label>
+                <label>
+                  Fin mois
+                  <input type="number" name="season-{{@index}}-to-month" min="1" value="{{to.month}}">
+                </label>
+                <label>
+                  Fin jour
+                  <input type="number" name="season-{{@index}}-to-day" min="1" value="{{to.day}}">
+                </label>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      <footer class="hcc-footer">
+        <button type="submit">{{localize "HCC.Save"}}</button>
+        <button type="button" data-action="export">{{localize "HCC.Export"}}</button>
+        <button type="button" data-action="import">{{localize "HCC.Import"}}</button>
+      </footer>
+    </form>
+  {{/unless}}
+</div>

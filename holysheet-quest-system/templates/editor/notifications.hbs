@@ -1,0 +1,45 @@
+{{!-- Notifications tab: messages, theme preset, banner overrides, preview --}}
+<section class="qs-editor__panel {{#if tab.active}}active{{/if}}" data-tab="notifications" data-group="primary">
+
+  <fieldset class="qs-fieldset">
+    <legend><i class="fa-solid fa-comment-dots"></i> {{localize "QUESTSYSTEM.Field.Messages"}}</legend>
+
+    <div class="qs-field">
+      <label>{{localize "QUESTSYSTEM.Field.OpeningMessage"}}</label>
+      <textarea name="messages.opening" rows="2">{{quest.messages.opening}}</textarea>
+    </div>
+    <div class="qs-field">
+      <label>{{localize "QUESTSYSTEM.Field.CompletionMessage"}}</label>
+      <textarea name="messages.completion" rows="2">{{quest.messages.completion}}</textarea>
+    </div>
+    <div class="qs-field">
+      <label>{{localize "QUESTSYSTEM.Field.WarningMessage"}}</label>
+      <textarea name="messages.warning" rows="2">{{quest.messages.warning}}</textarea>
+    </div>
+  </fieldset>
+
+  <fieldset class="qs-fieldset">
+    <legend><i class="fa-solid fa-image"></i> {{localize "QUESTSYSTEM.Field.Banner"}}</legend>
+
+    <div class="qs-field">
+      <label>{{localize "QUESTSYSTEM.Field.BannerBackground"}}</label>
+      <input type="text" name="banner.background" value="{{quest.banner.background}}"
+             placeholder="{{localize 'QUESTSYSTEM.Field.BannerBackgroundHint'}}"/>
+    </div>
+
+    <div class="qs-field">
+      <label>{{localize "QUESTSYSTEM.Field.BannerDuration"}}</label>
+      <input type="number" min="0" step="500" name="banner.duration" value="{{quest.banner.duration}}"
+             placeholder="6000"/>
+    </div>
+
+    <div class="qs-add-bar">
+      <button type="button" class="qs-btn small" data-action="previewBanner" data-event="start">
+        <i class="fa-solid fa-play"></i> {{localize "QUESTSYSTEM.Action.PreviewStart"}}
+      </button>
+      <button type="button" class="qs-btn small" data-action="previewBanner" data-event="complete">
+        <i class="fa-solid fa-trophy"></i> {{localize "QUESTSYSTEM.Action.PreviewComplete"}}
+      </button>
+    </div>
+  </fieldset>
+</section>

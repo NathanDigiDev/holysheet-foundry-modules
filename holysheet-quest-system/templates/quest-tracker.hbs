@@ -1,0 +1,34 @@
+{{!-- Quest Tracker: frameless, semi-transparent on-screen overlay of pinned quests --}}
+<div class="qs-tracker {{#if collapsed}}is-collapsed{{/if}}">
+  <header class="qs-tracker__header">
+    <span class="qs-tracker__title"><i class="fa-solid fa-thumbtack"></i> {{localize "QUESTSYSTEM.TrackerTitle"}}</span>
+    <button type="button" class="qs-tracker__collapse" data-action="toggleCollapse"
+            data-tooltip="{{localize 'QUESTSYSTEM.Action.Collapse'}}">
+      <i class="fa-solid {{#if collapsed}}fa-chevron-down{{else}}fa-chevron-up{{/if}}"></i>
+    </button>
+  </header>
+
+  {{#unless collapsed}}
+  <ol class="qs-tracker__list">
+    {{#each quests as |q|}}
+    <li class="qs-tracker__quest">
+      <button type="button" class="qs-tracker__quest-name" data-action="openQuest" data-quest-id="{{q.id}}"
+              data-tooltip="{{localize 'QUESTSYSTEM.Action.Open'}}">
+        <span class="qs-tracker__quest-label">{{q.name}}</span>
+        <span class="qs-tracker__count">{{q.progress.done}}/{{q.progress.total}}</span>
+      </button>
+      <ul class="qs-tracker__objectives">
+        {{#each q.objectives as |o|}}
+        <li class="qs-tracker__objective type-{{o.type}} {{#if o.completed}}is-done{{/if}} {{#if o.expired}}is-expired{{/if}}">
+          <i class="fa-solid {{#if o.completed}}fa-circle-check{{else}}fa-circle{{/if}}"></i>
+          <span class="qs-tracker__objective-text">{{o.text}}</span>
+          {{#if (questEq o.type "kill")}}<span class="qs-tracker__objective-extra">{{o.countLabel}}</span>{{/if}}
+          {{#if (questEq o.type "timed")}}<span class="qs-tracker__objective-extra" data-deadline="{{o.deadline}}"></span>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </li>
+    {{/each}}
+  </ol>
+  {{/unless}}
+</div>

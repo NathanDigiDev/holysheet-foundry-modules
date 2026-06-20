@@ -1,0 +1,9 @@
+{{!-- Editor tab navigation --}}
+<nav class="qs-editor__tabs tabs" data-group="primary">
+  {{#each tabs as |tab|}}
+  <button type="button" class="qs-editor__tab {{tab.cssClass}}"
+          data-action="changeTab" data-tab-target="{{tab.id}}">
+    <i class="{{tab.icon}}"></i> <span>{{localize tab.label}}</span>
+  </button>
+  {{/each}}
+</nav>

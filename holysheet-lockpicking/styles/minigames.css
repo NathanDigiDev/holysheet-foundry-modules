@@ -1,0 +1,93 @@
+/* Skyrim Lockpicking — Onglet / répertoire « Mini-Jeux ». */
+
+.mg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  height: 100%;
+  color: #e9e1cf;
+  font-family: "Signika", sans-serif;
+}
+
+/* Barre d'outils */
+.mg__toolbar { display: flex; gap: 6px; }
+.mg__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f, #b89a4f);
+  border: 1px solid #8a6f2f;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.mg__btn:hover { filter: brightness(1.08); }
+.mg__btn--ghost {
+  color: #cdbf9a;
+  background: #2a2620;
+  border: 1px solid #5c5343;
+}
+.mg__btn--ghost:hover { background: #36302a; color: #e9e1cf; }
+
+/* Arborescence */
+.mg__tree, .mg__children { list-style: none; margin: 0; padding: 0; }
+.mg__tree { flex: 1; min-height: 80px; border-radius: 6px; }
+.mg__children { padding-left: 16px; border-left: 1px solid #3a352d; margin-left: 8px; }
+
+/* Glisser-déposer */
+.mg__row[draggable="true"] { cursor: grab; }
+.mg__row[draggable="true"]:active { cursor: grabbing; }
+.mg__folder.mg__dropover > .mg__folder-row {
+  outline: 2px dashed #c9a227;
+  outline-offset: -2px;
+  background: rgba(201, 162, 39, 0.18);
+  border-radius: 6px;
+}
+.mg__tree.mg__dropover-root {
+  outline: 2px dashed #5c5343;
+  outline-offset: -2px;
+}
+
+.mg__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.mg__row:hover { background: rgba(201, 162, 39, 0.12); }
+
+.mg__caret { width: 12px; font-size: 11px; color: #8c8470; }
+.mg__icon { width: 16px; text-align: center; color: #cdbf9a; }
+.mg__game .mg__icon { color: #b89a4f; }
+
+.mg__name { flex: 1; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mg__game .mg__name:hover { color: #f0d98a; text-decoration: underline; }
+
+.mg__actions { display: none; gap: 8px; }
+.mg__row:hover .mg__actions { display: inline-flex; }
+.mg__actions a { color: #8c8470; cursor: pointer; }
+.mg__actions a:hover { color: #f0d98a; }
+
+.mg__empty {
+  padding: 18px 8px;
+  text-align: center;
+  font-style: italic;
+  color: #8c8470;
+}
+
+/* Fenêtre de secours */
+.skyrim-minigames-window .window-content { padding: 0; background: #14120f; }
+.mg-host { height: 100%; }
+
+/* Dialogue de soumission aux joueurs */
+.mg-submit { display: flex; flex-direction: column; gap: 6px; }
+.mg-submit__hint { margin: 0 0 4px; font-size: 12px; color: #8c8470; font-style: italic; }
+.mg-submit__row { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.mg-submit__dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }

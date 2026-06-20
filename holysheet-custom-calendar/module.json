@@ -1,0 +1,41 @@
+{
+  "id": "holysheet-custom-calendar",
+  "title": "Holysheet Custom Calendar",
+  "description": "A lightweight, system-agnostic custom calendar module with an always-visible day/night widget.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "HalTorns",
+      "flags": {}
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/holysheet.css",
+    "styles/calendar-holysheet.css",
+    "styles/holysheet-custom-calendar.css"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "socket": false,
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "MIT",
+  "readme": "README.md",
+  "flags": {
+    "holysheet-custom-calendar": {}
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "holysheet-lockpicking",
+  "title": "Holysheet Lockpicking",
+  "description": "Mini-jeux de verrouillage (crochetage façon Skyrim + cadenas à code à logos) gérés depuis un onglet « Mini-Jeux » dans la sidebar, avec dossiers, puis soumis aux joueurs connectés de votre choix.",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Holysheet Lockpicking",
+      "discord": "",
+      "url": ""
+    }
+  ],
+
+  "//": "En v14, le manifeste utilise OBLIGATOIREMENT 'id' (et non l'ancien 'name'). 'compatibility' remplace les anciens champs minimumCoreVersion/compatibleCoreVersion.",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+
+  "//esmodules": "Un seul point d'entrée ES Module ; main.js importe lui-même lockpicking-app.js. C'est la norme moderne (pas de 'scripts' classiques).",
+  "esmodules": ["scripts/main.js"],
+
+  "styles": ["styles/lockpicking.css", "styles/combolock.css", "styles/lockconfig.css", "styles/minigames.css"],
+
+  "//socket": "OBLIGATOIRE pour recevoir les messages du canal 'module.holysheet-lockpicking' : un joueur n'a pas le droit de modifier un mur, c'est le MJ qui déverrouille la porte via socket quand le joueur réussit.",
+  "socket": true,
+
+  "languages": [
+    { "lang": "fr", "name": "Français", "path": "lang/fr.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
+
+  "//flags": "Réserve l'espace de noms de flags du module (= l'ID du module).",
+  "flags": {
+    "holysheet-lockpicking": {}
+  },
+
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "MIT"
+}

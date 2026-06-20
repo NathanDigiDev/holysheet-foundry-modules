@@ -1,0 +1,22 @@
+{{!--
+  Gabarit unique de la PART "main" de l'ApplicationV2.
+  Le rendu du verrou lui-même est fait en Canvas 2D (élément <canvas>),
+  le reste (HUD) est du HTML statique alimenté par _prepareContext().
+--}}
+<div class="skyrim-lp">
+
+  {{!-- Surface de jeu : tout le dessin (barillet, crochet, clé de tension) y est peint en JS --}}
+  <canvas class="skyrim-lp__canvas" width="420" height="420"></canvas>
+
+  {{!-- Tête haute : crochets restants + statut courant --}}
+  <div class="skyrim-lp__hud">
+    <div class="skyrim-lp__picks" title="{{localize 'SKYRIM_LP.Picks'}}">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <span class="skyrim-lp__pick-count" data-pick-count>{{picks}}</span>
+    </div>
+    <div class="skyrim-lp__status" data-status>{{statusText}}</div>
+  </div>
+
+  {{!-- Aide contextuelle --}}
+  <p class="skyrim-lp__help">{{localize "SKYRIM_LP.Help"}}</p>
+</div>

@@ -1,0 +1,920 @@
+/* =========================================================================
+   HolySheet — Custom Calendar (refonte med-fan)
+   Rhabille tous les composants .hcc-* du module FoundryVTT avec le langage
+   visuel HolySheet : verre dépoli, cadres laiton, accent émeraude, titres
+   Cinzel, jauges lumineuses. À charger APRÈS holysheet.css.
+
+   Tout est scopé sous .holysheet pour hériter des tokens (--hs-*).
+   ========================================================================= */
+
+/* ---- Coque de l'app calendrier ------------------------------------------ */
+.holysheet .hcc-app {
+  display: grid;
+  gap: 18px;
+  padding: 20px 22px 24px;
+  color: var(--hs-ink);
+  background:
+    radial-gradient(820px 420px at 12% -8%, rgba(201, 162, 78, 0.12), transparent 60%),
+    radial-gradient(720px 360px at 94% 4%, rgba(59, 191, 134, 0.07), transparent 58%),
+    linear-gradient(160deg, var(--hs-bg-1), var(--hs-bg-0) 64%);
+  font-family: var(--hs-body);
+}
+
+/* grain cuir discret partagé avec les fiches */
+.holysheet .hcc-app {
+  position: relative;
+}
+.holysheet .hcc-app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  background:
+    repeating-linear-gradient(122deg, rgba(255, 255, 255, 0.013) 0 1px, transparent 1px 7px);
+  mix-blend-mode: screen;
+}
+.holysheet .hcc-app > * { position: relative; z-index: 1; }
+
+/* ---- En-tête ------------------------------------------------------------- */
+.holysheet .hcc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hs-glass-line-soft);
+}
+.holysheet .hcc-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--hs-brass) 0%, transparent 55%);
+  box-shadow: 0 0 12px var(--hs-brass-soft);
+  pointer-events: none;
+}
+.holysheet .hcc-header { position: relative; }
+.holysheet .hcc-header h2 {
+  margin: 0;
+  font-family: var(--hs-title);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--hs-ink-strong);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+.holysheet .hcc-header p {
+  margin: 4px 0 0;
+  color: var(--hs-muted);
+  font-size: 14px;
+  font-style: italic;
+}
+.holysheet .hcc-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.holysheet .hcc-header-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 13px;
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+.holysheet .hcc-header-actions button i { font-size: 13px; }
+
+/* ---- Boutons d'accent (laiton plein) ------------------------------------ */
+.holysheet .hcc-app button[type="submit"],
+.holysheet .hcc-advance button[type="submit"],
+.holysheet .hcc-note-form button[type="submit"],
+.holysheet .hcc-footer button[type="submit"],
+.holysheet .hcc-app [data-action="advance-day"],
+.holysheet .hcc-app [data-action="advance-time"] {
+  border-color: transparent;
+  background: linear-gradient(180deg, #eccd80, var(--hs-brass));
+  color: #2a1c0d;
+  font-family: var(--hs-title);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.holysheet .hcc-app button[type="submit"]:hover,
+.holysheet .hcc-footer button[type="submit"]:hover,
+.holysheet .hcc-app [data-action="advance-day"]:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 8px 22px rgba(201, 162, 78, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.holysheet .hcc-danger-button {
+  border-color: rgba(180, 70, 58, 0.6);
+  color: #e7a195;
+  background: rgba(160, 56, 46, 0.14);
+}
+.holysheet .hcc-danger-button:hover {
+  border-color: #c54b3f;
+  color: #ffd9d0;
+  background: rgba(160, 56, 46, 0.24);
+  box-shadow: 0 0 14px rgba(197, 75, 63, 0.3);
+}
+
+/* =========================================================================
+   LISTE DES CALENDRIERS
+   ========================================================================= */
+.holysheet .hcc-calendar-list {
+  display: grid;
+  gap: 10px;
+}
+.holysheet .hcc-calendar-card {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
+  box-shadow: var(--hs-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+.holysheet .hcc-calendar-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--hs-accent-line);
+}
+.holysheet .hcc-calendar-card.active {
+  border-color: var(--hs-brass);
+  box-shadow: var(--hs-shadow-sm), inset 4px 0 0 var(--hs-brass), 0 0 22px rgba(201, 162, 78, 0.16);
+}
+.holysheet .hcc-active-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  color: var(--hs-muted);
+  font-family: var(--hs-title);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-active-choice input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--hs-brass);
+}
+.holysheet .hcc-calendar-card.active .hcc-active-choice { color: var(--hs-brass); }
+.holysheet .hcc-calendar-card-main {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  text-align: left;
+  cursor: pointer;
+}
+.holysheet .hcc-calendar-card-main:hover { box-shadow: none; }
+.holysheet .hcc-calendar-card-main strong {
+  font-family: var(--hs-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hs-ink-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.holysheet .hcc-calendar-card-main span {
+  color: var(--hs-ink);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.holysheet .hcc-calendar-card-main small {
+  color: var(--hs-muted);
+  font-size: 11px;
+  font-style: italic;
+}
+.holysheet .hcc-calendar-card-actions {
+  display: flex;
+  gap: 6px;
+}
+.holysheet .hcc-calendar-card-actions button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+/* =========================================================================
+   RÉSUMÉ
+   ========================================================================= */
+.holysheet .hcc-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.holysheet .hcc-summary-grid article {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--hs-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+.holysheet .hcc-summary-grid h3 {
+  margin: 0 0 2px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--hs-brass);
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-summary-grid h3::before {
+  content: "";
+  width: 4px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #eccd80, var(--hs-brass));
+}
+.holysheet .hcc-summary-grid strong {
+  font-family: var(--hs-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hs-ink-strong);
+  line-height: 1.18;
+  text-wrap: balance;
+}
+.holysheet .hcc-summary-grid span {
+  color: var(--hs-ink);
+  font-size: 13px;
+}
+
+/* Sections génériques (panneaux verre dépoli) */
+.holysheet .hcc-section,
+.holysheet .hcc-day-panel,
+.holysheet .hcc-advance,
+.holysheet .hcc-toolbar {
+  padding: 16px 18px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
+  box-shadow: var(--hs-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+.holysheet .hcc-section > h3,
+.holysheet .hcc-day-panel > h3 {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--hs-glass-line-soft);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-section > h3::before,
+.holysheet .hcc-day-panel > h3::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #eccd80, var(--hs-brass));
+  box-shadow: 0 0 12px var(--hs-brass-soft);
+}
+
+/* Événements fixes (résumé) */
+.holysheet .hcc-summary-events {
+  display: grid;
+  gap: 8px;
+}
+.holysheet .hcc-summary-events > div {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+}
+.holysheet .hcc-summary-events i { color: var(--hs-brass); }
+.holysheet .hcc-summary-events strong {
+  font-family: var(--hs-title);
+  font-weight: 600;
+  color: var(--hs-ink-strong);
+}
+.holysheet .hcc-summary-events span {
+  color: var(--hs-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   FORMULAIRE AVANCE DU TEMPS
+   ========================================================================= */
+.holysheet .hcc-advance {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.holysheet .hcc-advance label,
+.holysheet .hcc-toolbar label,
+.holysheet .hcc-note-form label,
+.holysheet .hcc-form-grid label,
+.holysheet .hcc-inline-field {
+  display: grid;
+  gap: 6px;
+  color: var(--hs-muted);
+  font-family: var(--hs-title);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-advance input,
+.holysheet .hcc-advance select { min-width: 120px; height: 34px; }
+.holysheet .hcc-advance input[type="number"] { width: 90px; max-width: 90px; }
+
+/* =========================================================================
+   NAVIGATION MOIS
+   ========================================================================= */
+.holysheet .hcc-month-nav {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.holysheet .hcc-month-nav button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 15px;
+}
+.holysheet .hcc-month-nav button:hover {
+  border-color: var(--hs-brass);
+  color: var(--hs-brass);
+}
+.holysheet .hcc-month-nav h3 {
+  margin: 0;
+  font-family: var(--hs-title);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--hs-ink-strong);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================================================================
+   GRILLE DU MOIS
+   ========================================================================= */
+.holysheet .hcc-month-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--hcc-weekdays), minmax(0, 1fr));
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(28, 24, 18, 0.5), rgba(18, 15, 10, 0.55));
+  box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+.holysheet .hcc-weekday {
+  padding: 4px 6px 10px;
+  text-align: center;
+  font-family: var(--hs-title);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hs-brass);
+}
+.holysheet .hcc-day {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 1px;
+  min-height: 70px;
+  padding: 8px 9px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+  color: var(--hs-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 130ms ease, background 130ms ease, transform 130ms ease, box-shadow 130ms ease;
+}
+.holysheet .hcc-day:hover {
+  border-color: var(--hs-accent-line);
+  background: var(--hs-glass-2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+.holysheet .hcc-day span {
+  font-family: var(--hs-title);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--hs-ink-strong);
+  font-variant-numeric: tabular-nums;
+}
+.holysheet .hcc-day small {
+  color: var(--hs-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-day.empty {
+  border-color: transparent;
+  background: transparent;
+  cursor: default;
+}
+.holysheet .hcc-day.empty:hover { transform: none; box-shadow: none; }
+
+/* Jour courant — anneau laiton lumineux */
+.holysheet .hcc-day.today {
+  border-color: var(--hs-brass);
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(201, 162, 78, 0.22), transparent 70%),
+    var(--hs-glass-2);
+  box-shadow: inset 0 0 0 1px var(--hs-brass), 0 0 22px rgba(201, 162, 78, 0.22);
+}
+.holysheet .hcc-day.today span { color: #f7e6b6; }
+
+/* Jour sélectionné — accent émeraude */
+.holysheet .hcc-day.selected {
+  border-color: var(--hs-accent-bright);
+  box-shadow: inset 0 0 0 1px var(--hs-accent-bright), 0 0 20px var(--hs-accent-glow);
+}
+
+/* Marqueur d'événement = étoile laiton */
+.holysheet .hcc-event-marker {
+  position: absolute;
+  right: 7px;
+  top: 8px;
+  color: var(--hs-brass);
+  font-size: 11px;
+  filter: drop-shadow(0 0 6px var(--hs-brass-soft));
+}
+/* Pastille de note */
+.holysheet .hcc-day .hcc-note-dot {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--hs-accent-bright);
+  box-shadow: 0 0 8px var(--hs-accent-glow);
+}
+
+/* =========================================================================
+   PANNEAU DU JOUR + NOTES
+   ========================================================================= */
+.holysheet .hcc-notes {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.holysheet .hcc-notes button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border-radius: var(--hs-r-sm);
+  text-align: left;
+  font-family: var(--hs-body);
+  font-size: 14px;
+}
+.holysheet .hcc-notes button i { color: var(--hs-accent-bright); }
+.holysheet .hcc-notes button:hover { border-color: var(--hs-accent-line); }
+.holysheet .hcc-notes p,
+.holysheet .hcc-summary-events p {
+  margin: 0;
+  padding: 12px;
+  color: var(--hs-muted);
+  font-style: italic;
+  font-size: 13px;
+  text-align: center;
+}
+
+.holysheet .hcc-note-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hs-glass-line-soft);
+}
+.holysheet .hcc-note-form h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--hs-brass);
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-note-form input,
+.holysheet .hcc-note-form select,
+.holysheet .hcc-form-grid input,
+.holysheet .hcc-form-grid select { height: 34px; width: 100%; }
+.holysheet .hcc-note-form input[type="text"] { max-width: 100%; }
+.holysheet .hcc-full { grid-column: 1 / -1; }
+.holysheet .hcc-note-form textarea { min-height: 70px; }
+.holysheet .hcc-note-form button[type="submit"] {
+  grid-column: 1 / -1;
+  justify-self: start;
+  min-height: 36px;
+  padding: 0 20px;
+}
+
+/* =========================================================================
+   CONFIGURATION GM — onglets + éditeurs
+   ========================================================================= */
+.holysheet .hcc-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.holysheet .hcc-toolbar select { min-width: 220px; height: 34px; }
+
+.holysheet .hcc-config-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--hs-glass-line);
+}
+.holysheet .hcc-config-tabs button {
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--hs-r-sm) var(--hs-r-sm) 0 0;
+  padding: 9px 16px;
+  background: transparent;
+  color: var(--hs-muted);
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+.holysheet .hcc-config-tabs button:hover {
+  color: var(--hs-ink-strong);
+  box-shadow: none;
+}
+.holysheet .hcc-config-tabs button.active {
+  border-color: var(--hs-glass-line);
+  border-bottom-color: transparent;
+  background: linear-gradient(180deg, rgba(201, 162, 78, 0.14), transparent);
+  color: var(--hs-brass);
+  margin-bottom: -1px;
+}
+
+.holysheet .hcc-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.holysheet .hcc-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.holysheet .hcc-section-title h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.holysheet .hcc-section-title h3::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #eccd80, var(--hs-brass));
+  box-shadow: 0 0 12px var(--hs-brass-soft);
+}
+.holysheet .hcc-section-title > div { display: flex; gap: 8px; }
+.holysheet .hcc-section-title button,
+.holysheet .hcc-config-tabs ~ * button[data-action^="add"],
+.holysheet .hcc-config-tabs ~ * button[data-action^="remove"] {
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-family: var(--hs-title);
+  letter-spacing: 0.04em;
+}
+
+.holysheet .hcc-month-editor,
+.holysheet .hcc-season-editor,
+.holysheet .hcc-event-editor {
+  display: grid;
+  gap: 8px;
+}
+.holysheet .hcc-month-row,
+.holysheet .hcc-season-row,
+.holysheet .hcc-event-row {
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+}
+.holysheet .hcc-month-row { grid-template-columns: 32px minmax(150px, 1fr) 130px 160px; }
+.holysheet .hcc-season-row { grid-template-columns: 32px minmax(130px, 1fr) repeat(4, 96px); }
+.holysheet .hcc-event-row { grid-template-columns: 32px minmax(150px, 1fr) 96px 96px minmax(150px, 1fr); }
+.holysheet .hcc-month-row > strong,
+.holysheet .hcc-season-row > strong,
+.holysheet .hcc-event-row > strong {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--hs-accent-soft);
+  color: var(--hs-brass);
+  font-family: var(--hs-title);
+  font-weight: 700;
+  font-size: 13px;
+}
+.holysheet .hcc-month-row label,
+.holysheet .hcc-season-row label,
+.holysheet .hcc-event-row label { gap: 4px; }
+.holysheet .hcc-inline-field { max-width: 420px; margin-bottom: 14px; }
+
+.holysheet .hcc-footer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  margin-top: 4px;
+  border-top: 1px solid var(--hs-glass-line-soft);
+}
+.holysheet .hcc-footer button { min-height: 38px; padding: 0 18px; }
+
+/* =========================================================================
+   WIDGET FLOTTANT — ciel conservé, chrome rhabillé HolySheet
+   ========================================================================= */
+.holysheet .hcc-widget {
+  width: 100%;
+  padding: 9px 12px 12px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.82), rgba(18, 15, 10, 0.9));
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  backdrop-filter: blur(12px) saturate(1.1);
+  color: var(--hs-ink-strong);
+  box-shadow: var(--hs-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+.holysheet .hcc-widget::after {
+  content: "";
+  display: block;
+  height: 2px;
+  margin: 10px 2px 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent 4%, var(--hs-brass) 26%, #eccd80 50%, var(--hs-brass) 74%, transparent 96%);
+  box-shadow: 0 0 12px var(--hs-brass-soft);
+}
+.holysheet .hcc-widget-topline {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 8px 4px;
+}
+.holysheet .hcc-widget.gm .hcc-widget-topline { padding-right: 84px; }
+.holysheet .hcc-widget-date {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+.holysheet .hcc-widget-date:hover { color: var(--hs-brass); box-shadow: none; }
+.holysheet .hcc-widget-tools {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  display: flex;
+  gap: 5px;
+}
+.holysheet .hcc-widget-tools button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+/* Le ciel — on garde la physique, on réchauffe les teintes vers le med-fan */
+.holysheet .hcc-time-visual {
+  position: relative;
+  height: 72px;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: linear-gradient(180deg, #14193a 0%, #3a3a5e 56%, #5a4326 100%);
+}
+.holysheet .hcc-time-visual.day {
+  background: linear-gradient(180deg, #6fa3cf 0%, #e7cf8e 66%, #7d8a5a 100%);
+}
+.holysheet .hcc-time-visual.dawn {
+  background: linear-gradient(180deg, #2c2f57 0%, #c9824f 56%, #5a5840 100%);
+}
+.holysheet .hcc-time-visual.dusk {
+  background: linear-gradient(180deg, #2c244e 0%, #b85d4e 56%, #3c3330 100%);
+}
+.holysheet .hcc-time-visual.night {
+  background: linear-gradient(180deg, #0a0d1f 0%, #181f3a 62%, #241f2e 100%);
+}
+.holysheet .hcc-sky-stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 14% 24%, rgba(255, 255, 255, 0.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 36% 18%, rgba(255, 246, 223, 0.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 28%, rgba(255, 255, 255, 0.8) 0 1px, transparent 2px),
+    radial-gradient(circle at 86% 16%, rgba(255, 246, 223, 0.6) 0 1px, transparent 2px),
+    radial-gradient(circle at 56% 38%, rgba(255, 255, 255, 0.5) 0 1px, transparent 2px);
+  transition: opacity 240ms ease;
+}
+.holysheet .hcc-time-visual.night .hcc-sky-stars,
+.holysheet .hcc-time-visual.dawn .hcc-sky-stars,
+.holysheet .hcc-time-visual.dusk .hcc-sky-stars { opacity: 1; }
+.holysheet .hcc-astro {
+  position: absolute;
+  left: var(--hcc-astro-x);
+  top: var(--hcc-astro-y);
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  font-size: 23px;
+  transition: left 300ms ease, top 300ms ease;
+}
+.holysheet .hcc-astro.sun {
+  color: #ffe7a0;
+  filter: drop-shadow(0 0 12px rgba(255, 210, 110, 0.9));
+}
+.holysheet .hcc-astro.moon {
+  color: #eef0ff;
+  filter: drop-shadow(0 0 9px rgba(200, 212, 255, 0.7));
+}
+.holysheet .hcc-horizon {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -24px;
+  height: 46px;
+  border-radius: 50% 50% 0 0;
+  background: linear-gradient(180deg, rgba(36, 26, 14, 0.6), rgba(18, 14, 9, 0.85));
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.3);
+}
+.holysheet .hcc-time-label {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 162, 78, 0.4);
+  background: rgba(20, 16, 10, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #f7e6b6;
+  font-family: var(--hs-title);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* La jauge de temps GM — barre fine lumineuse façon "états" des fiches */
+.holysheet .hcc-gauge {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 9px;
+  margin-top: 10px;
+  padding: 0;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg,
+      #0c0a07 0%,
+      #1a140c calc((100% - var(--hcc-day-size, 50%)) / 2),
+      #b8843f calc((100% - var(--hcc-day-size, 50%)) / 2 + 6%),
+      #f3d06a 50%,
+      #b8843f calc((100% + var(--hcc-day-size, 50%)) / 2 - 6%),
+      #1a140c calc((100% + var(--hcc-day-size, 50%)) / 2),
+      #0c0a07 100%);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+.holysheet .hcc-gauge::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(7, 12, 9, 0.85);
+  border-radius: 50%;
+  background: #fff6e6;
+  box-shadow: 0 0 10px rgba(243, 208, 106, 0.8);
+  cursor: pointer;
+}
+.holysheet .hcc-gauge::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(7, 12, 9, 0.85);
+  border-radius: 50%;
+  background: #fff6e6;
+  box-shadow: 0 0 10px rgba(243, 208, 106, 0.8);
+  cursor: pointer;
+}
+
+/* =========================================================================
+   DENSITÉ (pilotée par Tweaks)
+   ========================================================================= */
+.holysheet.dens-compact .hcc-app { gap: 12px; padding: 14px 16px 16px; }
+.holysheet.dens-compact .hcc-day { min-height: 56px; padding: 6px 7px; }
+.holysheet.dens-compact .hcc-section,
+.holysheet.dens-compact .hcc-day-panel { padding: 12px 14px; }
+
+.holysheet.dens-aere .hcc-app { gap: 24px; padding: 26px 28px 30px; }
+.holysheet.dens-aere .hcc-day { min-height: 86px; }
+
+/* halo coupé */
+.holysheet.no-glow .hcc-day.today,
+.holysheet.no-glow .hcc-day.selected,
+.holysheet.no-glow .hcc-time-label,
+.holysheet.no-glow .hcc-event-marker,
+.holysheet.no-glow .hcc-astro.sun,
+.holysheet.no-glow .hcc-astro.moon { filter: none; box-shadow: inset 0 0 0 1px var(--hs-brass); }
+.holysheet.no-glow .hcc-header::after,
+.holysheet.no-glow .hcc-widget::after { box-shadow: none; }
+
+@media (max-width: 760px) {
+  .holysheet .hcc-summary-grid,
+  .holysheet .hcc-note-form,
+  .holysheet .hcc-form-grid,
+  .holysheet .hcc-month-row,
+  .holysheet .hcc-season-row,
+  .holysheet .hcc-event-row,
+  .holysheet .hcc-calendar-card { grid-template-columns: 1fr; }
+}

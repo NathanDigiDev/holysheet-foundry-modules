@@ -1,0 +1,57 @@
+{{!-- Objectives tab: add manual / kill / timed objectives --}}
+<section class="qs-editor__panel {{#if tab.active}}active{{/if}}" data-tab="objectives" data-group="primary">
+
+  <div class="qs-add-bar">
+    {{#each objectiveTypes as |t|}}
+    <button type="button" class="qs-btn small" data-action="addObjective" data-type="{{t.key}}">
+      <i class="{{t.icon}}"></i> {{localize t.label}}
+    </button>
+    {{/each}}
+  </div>
+
+  <ul class="qs-editor-list">
+    {{#each objectives as |o|}}
+    <li class="qs-editor-row type-{{o.type}}" data-objective-id="{{o.id}}">
+      <span class="qs-editor-row__icon" data-tooltip="{{localize o.typeMeta.label}}"><i class="{{o.typeMeta.icon}}"></i></span>
+
+      <div class="qs-editor-row__body">
+        <input type="text" name="objective.{{o.id}}.text" value="{{o.text}}"
+               placeholder="{{localize 'QUESTSYSTEM.Field.ObjectiveText'}}"/>
+
+        <div class="qs-editor-row__sub">
+          {{#if o.isKill}}
+          <label class="qs-inline">{{localize "QUESTSYSTEM.Field.Target"}}
+            <input type="text" name="objective.{{o.id}}.target" value="{{o.target}}"
+                   placeholder="{{localize 'QUESTSYSTEM.Field.TargetHint'}}"/>
+          </label>
+          <label class="qs-inline narrow">{{localize "QUESTSYSTEM.Field.Required"}}
+            <input type="number" min="1" name="objective.{{o.id}}.required" value="{{o.required}}"/>
+          </label>
+          {{/if}}
+
+          {{#if o.isTimed}}
+          <label class="qs-inline narrow">{{localize "QUESTSYSTEM.Field.DurationSec"}}
+            <input type="number" min="0" name="objective.{{o.id}}.duration" value="{{o.duration}}"/>
+          </label>
+          {{/if}}
+
+          <label class="qs-inline checkbox" data-tooltip="{{localize 'QUESTSYSTEM.Field.HiddenHint'}}">
+            <input type="checkbox" name="objective.{{o.id}}.hidden" {{#if o.hidden}}checked{{/if}}/>
+            <i class="fa-solid fa-eye-slash"></i> {{localize "QUESTSYSTEM.Field.Hidden"}}
+          </label>
+
+          <label class="qs-inline checkbox">
+            <input type="checkbox" name="objective.{{o.id}}.completed" {{#if o.completed}}checked{{/if}}/>
+            <i class="fa-solid fa-check"></i> {{localize "QUESTSYSTEM.Field.Completed"}}
+          </label>
+        </div>
+      </div>
+
+      <button type="button" class="qs-icon-btn danger" data-action="removeObjective" data-objective-id="{{o.id}}"
+              data-tooltip="{{localize 'QUESTSYSTEM.Action.Remove'}}"><i class="fa-solid fa-trash"></i></button>
+    </li>
+    {{else}}
+    <li class="qs-empty">{{localize "QUESTSYSTEM.NoObjectivesYet"}}</li>
+    {{/each}}
+  </ul>
+</section>

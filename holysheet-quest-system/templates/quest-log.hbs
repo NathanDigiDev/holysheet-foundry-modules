@@ -1,0 +1,161 @@
+{{!-- Quest Log: two-pane layout (quest list + selected quest detail) --}}
+<div class="qs-log">
+
+  {{!-- ───────────────────────── Left pane: quest list ───────────────────────── --}}
+  <aside class="qs-log__list">
+    <header class="qs-log__list-header">
+      <h2><i class="fa-solid fa-scroll"></i> {{localize "QUESTSYSTEM.SidebarTitle"}}</h2>
+      {{#if isGM}}
+      <button type="button" class="qs-icon-btn" data-action="createQuest"
+              data-tooltip="{{localize 'QUESTSYSTEM.Action.NewQuest'}}">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      {{/if}}
+    </header>
+
+    <ol class="qs-quest-list">
+      {{#each quests as |q|}}
+      <li class="qs-quest-list__item {{#if q.selected}}is-selected{{/if}} status-{{q.statusMeta.css}}"
+          data-action="selectQuest" data-quest-id="{{q.id}}">
+        <img src="{{q.img}}" alt="" class="qs-quest-list__img"/>
+        <div class="qs-quest-list__meta">
+          <span class="qs-quest-list__name">{{q.name}}</span>
+          <span class="qs-quest-list__status">
+            <i class="{{q.statusMeta.icon}}"></i> {{localize q.statusMeta.label}}
+          </span>
+          <div class="qs-progress" data-tooltip="{{q.progress.done}}/{{q.progress.total}}">
+            <div class="qs-progress__bar" style="width: {{questPct q.progress.pct}}"></div>
+          </div>
+        </div>
+        <button type="button" class="qs-track-btn {{#if q.tracked}}is-tracked{{/if}}"
+                data-action="toggleTrack" data-quest-id="{{q.id}}"
+                data-tooltip="{{#if q.tracked}}{{localize 'QUESTSYSTEM.Action.Untrack'}}{{else}}{{localize 'QUESTSYSTEM.Action.Track'}}{{/if}}">
+          <i class="{{#if q.tracked}}fa-solid{{else}}fa-regular{{/if}} fa-thumbtack"></i>
+        </button>
+      </li>
+      {{else}}
+      <li class="qs-quest-list__empty">{{localize "QUESTSYSTEM.NoQuests"}}</li>
+      {{/each}}
+    </ol>
+  </aside>
+
+  {{!-- ───────────────────────── Right pane: quest detail ───────────────────────── --}}
+  <section class="qs-log__detail">
+    {{#if selected}}
+    <article class="qs-quest" data-quest-id="{{selected.id}}">
+
+      <header class="qs-quest__header status-{{selected.statusMeta.css}}">
+        <img src="{{selected.img}}" alt="" class="qs-quest__img"/>
+        <div class="qs-quest__title">
+          <h1>{{selected.name}}</h1>
+          <span class="qs-badge status-{{selected.statusMeta.css}}">
+            <i class="{{selected.statusMeta.icon}}"></i> {{localize selected.statusMeta.label}}
+          </span>
+        </div>
+        {{#if selected.canEdit}}
+        <div class="qs-quest__tools">
+          <button type="button" class="qs-icon-btn" data-action="editQuest" data-quest-id="{{selected.id}}"
+                  data-tooltip="{{localize 'QUESTSYSTEM.Action.Edit'}}"><i class="fa-solid fa-pen"></i></button>
+          <button type="button" class="qs-icon-btn" data-action="duplicateQuest" data-quest-id="{{selected.id}}"
+                  data-tooltip="{{localize 'QUESTSYSTEM.Action.Duplicate'}}"><i class="fa-solid fa-copy"></i></button>
+          <button type="button" class="qs-icon-btn danger" data-action="deleteQuest" data-quest-id="{{selected.id}}"
+                  data-tooltip="{{localize 'QUESTSYSTEM.Action.Delete'}}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        {{/if}}
+      </header>
+
+      {{#if statusOptions.length}}
+      <div class="qs-quest__controls">
+        {{#each statusOptions as |opt|}}
+        <button type="button" class="qs-btn" data-action="setStatus" data-status-action="{{opt.action}}">
+          <i class="{{opt.icon}}"></i> {{localize opt.label}}
+        </button>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if selected.description}}
+      <div class="qs-quest__description">{{{selected.description}}}</div>
+      {{/if}}
+
+      {{!-- Objectives --}}
+      <section class="qs-section">
+        <h3 class="qs-section__title"><i class="fa-solid fa-list-check"></i> {{localize "QUESTSYSTEM.Objectives"}}
+          <span class="qs-section__count">{{selected.progress.done}}/{{selected.progress.total}}</span>
+        </h3>
+        {{#if selected.hasObjectives}}
+        <ul class="qs-objectives">
+          {{#each selected.objectives as |o|}}
+          <li class="qs-objective type-{{o.type}} {{#if o.completed}}is-done{{/if}} {{#if o.hidden}}is-hidden{{/if}} {{#if o.expired}}is-expired{{/if}}">
+            <span class="qs-objective__icon"><i class="{{o.icon}}"></i></span>
+
+            {{#if o.checkable}}
+            <label class="qs-objective__check">
+              <input type="checkbox" data-action="toggleObjective" data-quest-id="{{../selected.id}}"
+                     data-objective-id="{{o.id}}" {{#if o.completed}}checked{{/if}}
+                     {{#unless ../selected.canCheckObjectives}}disabled{{/unless}}/>
+              <span>{{o.text}}</span>
+            </label>
+            {{else}}
+            <span class="qs-objective__text">{{o.text}}</span>
+            {{/if}}
+
+            {{#if (questEq o.type "kill")}}
+            <span class="qs-objective__count">{{o.countLabel}}</span>
+            {{/if}}
+            {{#if (questEq o.type "timed")}}
+            <span class="qs-objective__timer" data-deadline="{{o.deadline}}"></span>
+            {{/if}}
+            {{#if o.hidden}}<i class="qs-objective__secret fa-solid fa-eye-slash" data-tooltip="{{localize 'QUESTSYSTEM.HiddenGMOnly'}}"></i>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p class="qs-empty">{{localize "QUESTSYSTEM.NoObjectives"}}</p>
+        {{/if}}
+      </section>
+
+      {{!-- Rewards --}}
+      <section class="qs-section">
+        <h3 class="qs-section__title"><i class="fa-solid fa-gem"></i> {{localize "QUESTSYSTEM.Rewards"}}</h3>
+        {{#if selected.hasRewards}}
+        <ul class="qs-rewards">
+          {{#each selected.rewards as |r|}}
+          <li class="qs-reward type-{{r.type}} {{#if r.hidden}}is-hidden{{/if}} {{#if r.granted}}is-granted{{/if}}">
+            <span class="qs-reward__icon"><i class="{{r.icon}}"></i></span>
+            {{#if (questEq r.type "item")}}
+            <img class="qs-reward__img" src="{{r.itemImg}}" alt=""/>
+            <span class="qs-reward__name">{{r.itemName}}{{#if (questOr (questEq r.quantity 0) (questEq r.quantity 1))}}{{else}} ×{{r.quantity}}{{/if}}</span>
+            {{else}}
+            <span class="qs-reward__name">{{{r.text}}}</span>
+            {{/if}}
+            {{#if r.granted}}<i class="qs-reward__granted fa-solid fa-check" data-tooltip="{{localize 'QUESTSYSTEM.Granted'}}"></i>{{/if}}
+            {{#if r.hidden}}<i class="qs-reward__secret fa-solid fa-eye-slash" data-tooltip="{{localize 'QUESTSYSTEM.HiddenGMOnly'}}"></i>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{else}}
+        <p class="qs-empty">{{localize "QUESTSYSTEM.NoRewards"}}</p>
+        {{/if}}
+      </section>
+
+      {{!-- Shared notes (visible & editable by every participant) --}}
+      {{#if selected.canViewNotes}}
+      <section class="qs-section qs-notes">
+        <h3 class="qs-section__title"><i class="fa-solid fa-pen-to-square"></i> {{localize "QUESTSYSTEM.SharedNotes"}}</h3>
+        <textarea class="qs-notes__input" rows="4" data-notes-input data-quest-id="{{selected.id}}"
+                  placeholder="{{localize 'QUESTSYSTEM.SharedNotesHint'}}"
+                  {{#unless selected.canEditNotes}}readonly{{/unless}}>{{selected.notes}}</textarea>
+      </section>
+      {{/if}}
+
+    </article>
+    {{else}}
+    <div class="qs-log__placeholder">
+      <i class="fa-solid fa-scroll"></i>
+      <p>{{localize "QUESTSYSTEM.SelectAQuest"}}</p>
+    </div>
+    {{/if}}
+  </section>
+
+</div>

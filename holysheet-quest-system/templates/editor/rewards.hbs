@@ -1,0 +1,53 @@
+{{!-- Rewards tab: text & item rewards (item rewards accept a dropped Item) --}}
+<section class="qs-editor__panel {{#if tab.active}}active{{/if}}" data-tab="rewards" data-group="primary">
+
+  <div class="qs-add-bar">
+    {{#each rewardTypes as |t|}}
+    <button type="button" class="qs-btn small" data-action="addReward" data-type="{{t.key}}">
+      <i class="{{t.icon}}"></i> {{localize t.label}}
+    </button>
+    {{/each}}
+  </div>
+
+  <ul class="qs-editor-list">
+    {{#each rewards as |r|}}
+    <li class="qs-editor-row type-{{r.type}}" data-reward-id="{{r.id}}">
+      <span class="qs-editor-row__icon" data-tooltip="{{localize r.typeMeta.label}}"><i class="{{r.typeMeta.icon}}"></i></span>
+
+      <div class="qs-editor-row__body">
+        {{#if r.isText}}
+        <textarea name="reward.{{r.id}}.text" rows="2"
+                  placeholder="{{localize 'QUESTSYSTEM.Field.RewardText'}}">{{r.text}}</textarea>
+        {{/if}}
+
+        {{#if r.isItem}}
+        <div class="qs-item-drop" data-reward-drop="1" data-reward-id="{{r.id}}">
+          {{#if r.itemUuid}}
+          <img src="{{r.itemImg}}" alt="" class="qs-mini-img"/>
+          <span class="qs-item-drop__name">{{r.itemName}}</span>
+          {{else}}
+          <span class="qs-item-drop__hint"><i class="fa-solid fa-hand-pointer"></i> {{localize "QUESTSYSTEM.Field.DropItemHint"}}</span>
+          {{/if}}
+          <label class="qs-inline narrow">×
+            <input type="number" min="1" name="reward.{{r.id}}.quantity" value="{{r.quantity}}"/>
+          </label>
+        </div>
+        {{/if}}
+
+        <div class="qs-editor-row__sub">
+          <label class="qs-inline checkbox" data-tooltip="{{localize 'QUESTSYSTEM.Field.HiddenRewardHint'}}">
+            <input type="checkbox" name="reward.{{r.id}}.hidden" {{#if r.hidden}}checked{{/if}}/>
+            <i class="fa-solid fa-eye-slash"></i> {{localize "QUESTSYSTEM.Field.Hidden"}}
+          </label>
+          {{#if r.granted}}<span class="qs-tag granted"><i class="fa-solid fa-check"></i> {{localize "QUESTSYSTEM.Granted"}}</span>{{/if}}
+        </div>
+      </div>
+
+      <button type="button" class="qs-icon-btn danger" data-action="removeReward" data-reward-id="{{r.id}}"
+              data-tooltip="{{localize 'QUESTSYSTEM.Action.Remove'}}"><i class="fa-solid fa-trash"></i></button>
+    </li>
+    {{else}}
+    <li class="qs-empty">{{localize "QUESTSYSTEM.NoRewardsYet"}}</li>
+    {{/each}}
+  </ul>
+</section>

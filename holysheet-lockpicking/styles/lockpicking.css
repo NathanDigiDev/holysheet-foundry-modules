@@ -1,0 +1,66 @@
+/* Skyrim Lockpicking — habillage sombre minimaliste façon Skyrim.
+   On cible la fenêtre via la classe ajoutée dans DEFAULT_OPTIONS.classes. */
+
+.skyrim-lockpicking-window .window-content {
+  padding: 0;
+  background: #14120f;
+}
+
+.skyrim-lp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  color: #e9e1cf;
+  font-family: "Signika", "Palatino Linotype", serif;
+  user-select: none;
+}
+
+/* Surface de jeu (Canvas 2D). cursor:none → le crochet "remplace" le curseur. */
+.skyrim-lp__canvas {
+  display: block;
+  background: radial-gradient(circle at 50% 38%, #2a261f 0%, #0e0d0b 75%);
+  border: 2px solid #3a352d;
+  border-radius: 8px;
+  cursor: none;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+}
+
+/* HUD : crochets restants + statut */
+.skyrim-lp__hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 6px;
+}
+
+.skyrim-lp__picks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #cdbf9a;
+}
+
+.skyrim-lp__pick-count {
+  font-weight: 700;
+  min-width: 1.4em;
+  text-align: center;
+}
+
+.skyrim-lp__status {
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  color: #b7ad95;
+}
+
+.skyrim-lp__help {
+  margin: 0;
+  font-size: 12px;
+  text-align: center;
+  color: #8c8470;
+  opacity: 0.9;
+}

@@ -1,0 +1,198 @@
+/* Skyrim Lockpicking — Fenêtre de configuration du verrou (MJ). */
+
+.skyrim-lock-config-window .window-content {
+  padding: 0;
+  background: #14120f;
+}
+
+.lock-config {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 18px;
+  color: #e9e1cf;
+  font-family: "Signika", "Palatino Linotype", serif;
+}
+
+.lock-config__field { display: flex; flex-direction: column; gap: 6px; }
+.lock-config__field--row { flex-direction: row; align-items: center; }
+
+.lock-config__label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #cdbf9a;
+  text-transform: uppercase;
+}
+.lock-config__hint { margin: 0; font-size: 12px; color: #8c8470; font-style: italic; }
+
+.lock-config select,
+.lock-config input[type="number"] {
+  background: #221f1a;
+  color: #e9e1cf;
+  border: 1px solid #5c5343;
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+/* --- Choix du type -------------------------------------------------------- */
+.lock-config__types { display: flex; gap: 10px; }
+.lock-config__type {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #d8cdb2;
+  background: linear-gradient(160deg, #322d25, #211e19);
+  border: 1px solid #5c5343;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.12s, transform 0.06s, background 0.12s;
+}
+.lock-config__type i { font-size: 22px; }
+.lock-config__type:hover { background: #3a342a; }
+.lock-config__type.is-active {
+  border-color: #c9a227;
+  background: linear-gradient(160deg, #4a4031, #2c2720);
+  box-shadow: 0 0 0 1px #c9a227 inset;
+}
+
+/* --- Stepper anneaux ------------------------------------------------------ */
+.lock-config__stepper { display: flex; align-items: center; gap: 12px; }
+.lock-config__stepper button {
+  width: 32px; height: 32px;
+  color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f, #b89a4f);
+  border: 1px solid #8a6f2f;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.lock-config__stepper button:active { transform: translateY(1px); }
+.lock-config__stepper span { font-size: 20px; font-weight: 700; min-width: 1.4em; text-align: center; }
+
+/* --- Palette de logos ----------------------------------------------------- */
+.lock-config__palette {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+.lock-config__chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  font-size: 18px;
+  color: #8c8470;
+  background: #1d1a15;
+  border: 1px solid #3a352d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+.lock-config__chip:hover { color: #e9e1cf; border-color: #5c5343; }
+.lock-config__chip.is-on {
+  color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f, #b89a4f);
+  border-color: #8a6f2f;
+}
+.lock-config__chip img,
+.lock-config__dial img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.lock-config__glyph { font-weight: 700; }
+
+/* Bouton « Ajouter un logo » */
+.lock-config__add {
+  align-self: flex-start;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #cdbf9a;
+  background: #2a2620;
+  border: 1px dashed #5c5343;
+  border-radius: 7px;
+  cursor: pointer;
+}
+.lock-config__add:hover { background: #36302a; color: #e9e1cf; border-color: #c9a227; }
+
+/* Dialogue d'ajout de logo perso */
+.lock-config__custom { display: flex; flex-direction: column; gap: 8px; }
+.lock-config__custom input[type="text"] {
+  background: #221f1a; color: #e9e1cf; border: 1px solid #5c5343; border-radius: 6px; padding: 6px 8px;
+}
+.lock-config__custom-img { display: flex; gap: 6px; }
+.lock-config__custom-img input { flex: 1; }
+.lock-config__custom-img button {
+  width: 38px; color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f, #b89a4f);
+  border: 1px solid #8a6f2f; border-radius: 6px; cursor: pointer;
+}
+
+/* --- Combinaison (anneaux cliquables) ------------------------------------- */
+.lock-config__combo { display: flex; flex-wrap: wrap; gap: 10px; }
+.lock-config__dial {
+  position: relative;
+  width: 56px; height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #1a1712;
+  background:
+    repeating-linear-gradient(180deg, #cdbf9a 0px, #b7a982 5px, #cdbf9a 10px);
+  border: 2px solid #5c5343;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.5);
+  transition: transform 0.06s, border-color 0.12s;
+}
+.lock-config__dial:hover { border-color: #c9a227; }
+.lock-config__dial:active { transform: scale(0.96); }
+.lock-config__dial-no {
+  position: absolute;
+  top: 2px; right: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.5);
+}
+
+.lock-config__check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #d8cdb2; cursor: pointer; }
+
+/* --- Footer --------------------------------------------------------------- */
+.lock-config__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid #3a352d;
+}
+.lock-config__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.12s, transform 0.06s;
+}
+.lock-config__btn:active { transform: translateY(1px); }
+.lock-config__btn--ghost {
+  color: #cdbf9a;
+  background: #2a2620;
+  border: 1px solid #5c5343;
+}
+.lock-config__btn--ghost:hover { background: #36302708; filter: brightness(1.2); }
+.lock-config__btn--primary {
+  color: #1a1712;
+  background: linear-gradient(180deg, #d9c98f, #b89a4f);
+  border: 1px solid #8a6f2f;
+}
+.lock-config__btn--primary:hover { filter: brightness(1.08); }

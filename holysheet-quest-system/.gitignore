@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node / tooling
+node_modules/
+npm-debug.log*
+yarn-error.log*
+*.tgz
+
+# Build artifacts
+dist/
+*.zip
+
+# Editor tooling (local plans, scratch)
+nimbalyst-local/
