@@ -32,6 +32,7 @@ Hooks.once("ready", () => {
   game.immersiveBooks = api;
   game.holysheetImmersiveBooks = api;
   game.socket.on(`module.${MODULE_ID}`, handleSocketMessage);
+  installJournalDirectoryPatch();
   console.info("Holysheet Immersive Books | Ready");
 });
 
@@ -39,7 +40,11 @@ Hooks.on("getJournalEntryContextOptions", addJournalContextOptions);
 Hooks.on("getDocumentContextOptions", addJournalContextOptions);
 
 function addJournalContextOptions(_application, options) {
-  options.push(
+  appendJournalContextOptions(options);
+}
+
+function appendJournalContextOptions(options) {
+  const entries = [
     {
       label: "IMMERSIVE_BOOKS.Actions.Open",
       icon: "fa-solid fa-book-open",
@@ -70,7 +75,21 @@ function addJournalContextOptions(_application, options) {
       visible: element => game.user.isGM && isBook(journalFromElement(element)),
       onClick: (_event, element) => unmarkAsBook(journalFromElement(element))
     }
-  );
+  ];
+  const existing = new Set(options.map(option => option.label));
+  options.push(...entries.filter(entry => !existing.has(entry.label)));
+  return options;
+}
+
+function installJournalDirectoryPatch() {
+  const JournalDirectory = foundry?.applications?.sidebar?.tabs?.JournalDirectory;
+  if (!JournalDirectory?.prototype || JournalDirectory.prototype._immersiveBooksPatched) return;
+  const original = JournalDirectory.prototype._getEntryContextOptions;
+  if (typeof original !== "function") return;
+  JournalDirectory.prototype._getEntryContextOptions = function immersiveBooksEntryContextOptions(...args) {
+    return appendJournalContextOptions(original.call(this, ...args));
+  };
+  JournalDirectory.prototype._immersiveBooksPatched = true;
 }
 
 // Foundry 13 compatibility.

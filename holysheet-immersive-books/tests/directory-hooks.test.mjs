@@ -30,8 +30,16 @@ test("registers Foundry 14 and Foundry 13 Journal context hooks", async () => {
 
 test("ready hook exposes the macro api under legacy and holysheet names", async () => {
   const hooks = new Map();
+  class JournalDirectory {
+    _getEntryContextOptions() {
+      return [{ label: "SIDEBAR.Edit", icon: "fa-solid fa-edit" }];
+    }
+  }
   globalThis.foundry = {
-    applications: { api: { ApplicationV2: class {}, HandlebarsApplicationMixin: Base => Base } },
+    applications: {
+      api: { ApplicationV2: class {}, HandlebarsApplicationMixin: Base => Base },
+      sidebar: { tabs: { JournalDirectory } }
+    },
     utils: { deepClone: value => JSON.parse(JSON.stringify(value)), randomID: () => "test-id" }
   };
   globalThis.Hooks = {
@@ -51,4 +59,8 @@ test("ready hook exposes the macro api under legacy and holysheet names", async 
   assert.equal(typeof game.immersiveBooks.open, "function");
   assert.equal(game.holysheetImmersiveBooks, game.immersiveBooks);
   assert.equal(socketListeners[0][0], "module.holysheet-immersive-books");
+
+  const contextOptions = new JournalDirectory()._getEntryContextOptions();
+  assert.ok(contextOptions.some(option => option.label === "IMMERSIVE_BOOKS.Actions.Convert"));
+  assert.equal(contextOptions.filter(option => option.label === "IMMERSIVE_BOOKS.Actions.Convert").length, 1);
 });
