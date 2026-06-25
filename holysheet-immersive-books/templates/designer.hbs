@@ -1,0 +1,255 @@
+<div class="ibd-shell {{#if readOnly}}is-read-only{{/if}}">
+  <header class="ibd-topbar">
+    <div class="ibd-brand">
+      <span class="ibd-brand-mark"><i class="fa-solid fa-feather-pointed"></i></span>
+      <div><strong>{{document.name}}</strong><small>{{localize "IMMERSIVE_BOOKS.Designer.Subtitle"}}</small></div>
+    </div>
+    <div class="ibd-history-tools">
+      <button type="button" data-action="undo" {{#unless canUndo}}disabled{{/unless}} data-tooltip="{{localize 'IMMERSIVE_BOOKS.Designer.Undo'}}"><i class="fa-solid fa-rotate-left"></i></button>
+      <button type="button" data-action="redo" {{#unless canRedo}}disabled{{/unless}} data-tooltip="{{localize 'IMMERSIVE_BOOKS.Designer.Redo'}}"><i class="fa-solid fa-rotate-right"></i></button>
+    </div>
+    <div class="ibd-top-actions">
+      <button type="button" data-action="open-native" class="ibd-quiet"><i class="fa-solid fa-file-lines"></i> {{localize "IMMERSIVE_BOOKS.Actions.OpenNative"}}</button>
+      <button type="button" data-action="preview" class="ibd-quiet"><i class="fa-solid fa-eye"></i> {{localize "IMMERSIVE_BOOKS.Designer.Preview"}}</button>
+      <button type="button" data-action="publish" class="ibd-publish" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-cloud-arrow-up"></i> {{localize "IMMERSIVE_BOOKS.Designer.Publish"}}</button>
+    </div>
+  </header>
+
+  {{#if readOnly}}
+    <div class="ibd-lock-banner">
+      <i class="fa-solid fa-lock"></i>
+      <span>{{localize "IMMERSIVE_BOOKS.Designer.LockedBy"}} <strong>{{lockedBy}}</strong></span>
+      <button type="button" data-action="take-lock">{{localize "IMMERSIVE_BOOKS.Designer.TakeLock"}}</button>
+    </div>
+  {{/if}}
+
+  <div class="ibd-workspace">
+    <aside class="ibd-pages-panel">
+      <div class="ibd-panel-heading"><span>{{localize "IMMERSIVE_BOOKS.Designer.Pages"}}</span><small>{{pages.length}}</small></div>
+      <div class="ibd-add-page-row">
+        <button type="button" data-action="add-page" data-kind="composed" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-layer-group"></i><span>{{localize "IMMERSIVE_BOOKS.Designer.Composed"}}</span></button>
+        <button type="button" data-action="add-page" data-kind="image" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-image"></i><span>{{localize "IMMERSIVE_BOOKS.Designer.FullImage"}}</span></button>
+      </div>
+      <ol class="ibd-page-list">
+        {{#each pages}}
+          <li class="ibd-page-item {{#if selected}}is-selected{{/if}}" draggable="true" data-page-id="{{id}}">
+            <button type="button" data-action="select-page" data-page-id="{{id}}">
+              <span class="ibd-thumb">
+                {{#if isImage}}<img src="{{image.src}}" alt="">{{else}}{{#each thumbnailBlocks}}<i class="ibd-thumb-block type-{{type}}" style="{{style}}"></i>{{/each}}{{/if}}
+                <em>{{number}}</em>
+              </span>
+              <span class="ibd-page-copy"><strong>{{name}}</strong><small><i class="fa-solid {{roleIcon}}"></i> {{kind}}</small></span>
+              <i class="fa-solid fa-grip-vertical ibd-grip"></i>
+            </button>
+          </li>
+        {{/each}}
+      </ol>
+      <details class="ibd-library">
+        <summary><i class="fa-solid fa-table-cells-large"></i> {{localize "IMMERSIVE_BOOKS.Designer.Templates"}}</summary>
+        <div class="ibd-template-grid">
+          <button type="button" data-action="add-template" data-template="chapter">Chapitre</button>
+          <button type="button" data-action="add-template" data-template="illustration">Illustration</button>
+          <button type="button" data-action="add-template" data-template="columns">Deux colonnes</button>
+          <button type="button" data-action="add-template" data-template="letter">Lettre</button>
+          <button type="button" data-action="add-template" data-template="bestiary">Bestiaire</button>
+          <button type="button" data-action="add-template" data-template="toc">Sommaire</button>
+          {{#each customTemplates}}
+            <button type="button" data-action="add-custom-template" data-template-index="{{@index}}"><i class="fa-solid fa-user"></i> {{name}}</button>
+          {{/each}}
+        </div>
+        <div class="ibd-template-transfer"><button type="button" data-action="export-templates"><i class="fa-solid fa-file-export"></i> Exporter</button><button type="button" data-action="import-templates"><i class="fa-solid fa-file-import"></i> Importer</button><input type="file" accept="application/json" data-template-import hidden></div>
+      </details>
+      {{#if trash.length}}
+        <details class="ibd-trash">
+          <summary><i class="fa-solid fa-trash-can-arrow-up"></i> {{localize "IMMERSIVE_BOOKS.Designer.Trash"}} ({{trash.length}})</summary>
+          {{#each trash}}<button type="button" data-action="restore-page" data-page-id="{{id}}"><i class="fa-solid fa-rotate-left"></i> {{name}}</button>{{/each}}
+        </details>
+      {{/if}}
+    </aside>
+
+    <main class="ibd-stage">
+      <div class="ibd-stage-toolbar">
+        <div class="ibd-block-tools">
+          <button type="button" data-action="add-block" data-type="text" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-font"></i> Texte</button>
+          <button type="button" data-action="add-block" data-type="image" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-image"></i> Image</button>
+          <button type="button" data-action="add-block" data-type="callout" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-square-quote"></i> Encadré</button>
+          <button type="button" data-action="add-block" data-type="decoration" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-wand-sparkles"></i> Décoration</button>
+          <button type="button" data-action="add-block" data-type="shape" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-shapes"></i> Forme</button>
+          <button type="button" data-action="add-block" data-type="pageNumber" {{#if readOnly}}disabled{{/if}}><i class="fa-solid fa-hashtag"></i> Numéro</button>
+        </div>
+        {{#if selectedCount}}
+          <div class="ibd-selection-tools">
+            <button type="button" data-action="duplicate-block" data-tooltip="Dupliquer"><i class="fa-solid fa-copy"></i></button>
+            <button type="button" data-action="layer-front" data-tooltip="Avancer"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" data-action="layer-back" data-tooltip="Reculer"><i class="fa-solid fa-arrow-down"></i></button>
+            {{#if multiSelection}}
+              <button type="button" data-action="align" data-align="left"><i class="fa-solid fa-align-left"></i></button>
+              <button type="button" data-action="align" data-align="center"><i class="fa-solid fa-align-center"></i></button>
+              <button type="button" data-action="align" data-align="right"><i class="fa-solid fa-align-right"></i></button>
+              <button type="button" data-action="align" data-align="top"><i class="fa-solid fa-arrow-up-to-line"></i></button>
+              <button type="button" data-action="align" data-align="middle"><i class="fa-solid fa-arrows-up-down"></i></button>
+              <button type="button" data-action="align" data-align="bottom"><i class="fa-solid fa-arrow-down-to-line"></i></button>
+              <button type="button" data-action="distribute" data-axis="horizontal" data-tooltip="Distribuer horizontalement"><i class="fa-solid fa-arrows-left-right-to-line"></i></button>
+              <button type="button" data-action="distribute" data-axis="vertical" data-tooltip="Distribuer verticalement"><i class="fa-solid fa-arrows-up-down-to-line"></i></button>
+            {{/if}}
+            <button type="button" data-action="delete-block" class="is-danger"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        {{/if}}
+      </div>
+
+      {{#if page}}
+        <div class="ibd-canvas-wrap" style="{{pageCanvasStyle}}">
+          <article class="ibd-canvas {{#if isPageImage}}is-image-page{{/if}}" style="{{themeStyle}}">
+            {{#if isPageImage}}
+              <img class="ibd-full-image" src="{{page.image.src}}" style="object-fit:{{page.image.fit}};object-position:{{page.image.focalX}}% {{page.image.focalY}}%" alt="">
+            {{else}}
+              {{#each blocks}}
+                <div class="ibd-block type-{{type}} decoration-{{variant}} {{#if selected}}is-selected{{/if}} {{#if locked}}is-locked{{/if}}"
+                     style="{{style}}" data-block-id="{{id}}" data-textual="{{textual}}" data-action="select-block">
+                  <div class="ib-block-content" style="color:{{color}};font-size:{{fontSize}}px;line-height:{{lineHeight}};text-align:{{align}}">
+                    {{#if isText}}<div class="ib-rich-text {{#if dropCap}}has-drop-cap{{/if}}">{{{html}}}</div>{{/if}}
+                    {{#if isImage}}<img src="{{src}}" style="object-fit:{{fit}};object-position:{{focalX}}% {{focalY}}%;border:{{borderWidth}}px solid {{borderColor}};border-radius:{{radius}}px" alt="">{{/if}}
+                    {{#if isCallout}}<div class="ib-callout" style="background:{{background}};border-color:{{borderColor}}"><strong>{{title}}</strong>{{{html}}}</div>{{/if}}
+                    {{#if isDecoration}}<div class="ib-decoration decoration-{{variant}}" style="color:{{color}}"></div>{{/if}}
+                    {{#if isShape}}<div class="ib-shape shape-{{shape}}" style="background:{{fill}};border:{{strokeWidth}}px solid {{stroke}};border-radius:{{radius}}px"></div>{{/if}}
+                    {{#if isPageNumber}}<span class="ib-page-number-preview">12</span>{{/if}}
+                  </div>
+                  {{#if selected}}<span class="ibd-resize-handle"></span>{{/if}}
+                  <span class="ibd-overflow-warning"><i class="fa-solid fa-triangle-exclamation"></i> {{localize "IMMERSIVE_BOOKS.Designer.Overflow"}}</span>
+                </div>
+              {{/each}}
+            {{/if}}
+            {{#if book.settings.grid.visible}}<div class="ibd-grid" style="--grid-size:{{book.settings.grid.size}}%"></div>{{/if}}
+            <div class="ibd-guide ibd-guide-v"></div><div class="ibd-guide ibd-guide-h"></div>
+          </article>
+        </div>
+      {{else}}
+        <div class="ibd-no-page"><i class="fa-regular fa-file-lines"></i><p>{{localize "IMMERSIVE_BOOKS.Designer.NoPage"}}</p></div>
+      {{/if}}
+    </main>
+
+    <aside class="ibd-properties">
+      {{#if block}}
+        <div class="ibd-panel-heading"><span>{{localize "IMMERSIVE_BOOKS.Designer.BlockProperties"}}</span><small>{{block.type}}</small></div>
+        <div class="ibd-property-scroll">
+          {{#if block.isText}}
+            <div class="ibd-rich-toolbar">
+              <button type="button" data-action="format-text" data-tag="bold"><i class="fa-solid fa-bold"></i></button>
+              <button type="button" data-action="format-text" data-tag="italic"><i class="fa-solid fa-italic"></i></button>
+              <button type="button" data-action="format-text" data-tag="heading">H2</button>
+              <button type="button" data-action="format-text" data-tag="list"><i class="fa-solid fa-list-ul"></i></button>
+            </div>
+            <label>Contenu<textarea data-rich-text data-scope="block" data-bind="html" rows="10">{{block.html}}</textarea></label>
+            <label>Taille<input type="number" min="8" max="96" data-scope="block" data-bind="fontSize" value="{{block.fontSize}}"></label>
+            <label>Interligne<input type="number" min="0.8" max="3" step="0.05" data-scope="block" data-bind="lineHeight" value="{{block.lineHeight}}"></label>
+            <label>Alignement<select data-scope="block" data-bind="align">{{selectOptions alignOptions selected=block.align valueAttr="value" labelAttr="label"}}</select></label>
+            <label>Couleur<input type="color" data-scope="block" data-bind="color" value="{{block.color}}"></label>
+            <label class="ibd-checkbox"><input type="checkbox" data-scope="block" data-bind="dropCap" {{#if block.dropCap}}checked{{/if}}> Lettrine</label>
+          {{/if}}
+          {{#if block.isImage}}
+            <label>Image<div class="ibd-file"><input value="{{block.src}}" data-scope="block" data-bind="src"><button type="button" data-action="pick-image" data-target="block"><i class="fa-solid fa-folder-open"></i></button></div></label>
+            <label>Recadrage<select data-scope="block" data-bind="fit">{{selectOptions fitOptions selected=block.fit valueAttr="value" labelAttr="label"}}</select></label>
+            <label>Point focal horizontal<input type="range" min="0" max="100" data-scope="block" data-bind="focalX" value="{{block.focalX}}"></label>
+            <label>Point focal vertical<input type="range" min="0" max="100" data-scope="block" data-bind="focalY" value="{{block.focalY}}"></label>
+            <label>Contour<input type="number" min="0" max="20" data-scope="block" data-bind="borderWidth" value="{{block.borderWidth}}"></label>
+            <label>Couleur du contour<input type="color" data-scope="block" data-bind="borderColor" value="{{block.borderColor}}"></label>
+            <label>Coins arrondis<input type="number" min="0" max="100" data-scope="block" data-bind="radius" value="{{block.radius}}"></label>
+          {{/if}}
+          {{#if block.isCallout}}
+            <label>Titre<input data-scope="block" data-bind="title" value="{{block.title}}"></label>
+            <label>Contenu<textarea data-rich-text data-scope="block" data-bind="html" rows="8">{{block.html}}</textarea></label>
+            <label>Fond<input type="color" data-scope="block" data-bind="background" value="{{block.background}}"></label>
+            <label>Contour<input type="color" data-scope="block" data-bind="borderColor" value="{{block.borderColor}}"></label>
+          {{/if}}
+          {{#if block.isDecoration}}
+            <label>Ornement<select data-scope="block" data-bind="variant">{{selectOptions decorations selected=block.variant valueAttr="id" labelAttr="label"}}</select></label>
+            <label>Couleur<input type="color" data-scope="block" data-bind="color" value="{{block.color}}"></label>
+          {{/if}}
+          {{#if block.isShape}}
+            <label>Forme<select data-scope="block" data-bind="shape">{{selectOptions shapeOptions selected=block.shape valueAttr="value" labelAttr="label"}}</select></label>
+            <label>Remplissage<input type="color" data-scope="block" data-bind="fill" value="{{block.fill}}"></label>
+            <label>Contour<input type="color" data-scope="block" data-bind="stroke" value="{{block.stroke}}"></label>
+          {{/if}}
+          <div class="ibd-property-grid">
+            <label>X<input type="number" min="0" max="100" data-scope="block" data-bind="x" value="{{block.x}}"></label>
+            <label>Y<input type="number" min="0" max="100" data-scope="block" data-bind="y" value="{{block.y}}"></label>
+            <label>Largeur<input type="number" min="1" max="100" data-scope="block" data-bind="width" value="{{block.width}}"></label>
+            <label>Hauteur<input type="number" min="1" max="100" data-scope="block" data-bind="height" value="{{block.height}}"></label>
+            <label>Rotation<input type="number" min="-180" max="180" data-scope="block" data-bind="rotation" value="{{block.rotation}}"></label>
+            <label>Opacité<input type="number" min="0" max="1" step="0.05" data-scope="block" data-bind="opacity" value="{{block.opacity}}"></label>
+          </div>
+          <label class="ibd-checkbox"><input type="checkbox" data-scope="block" data-bind="locked" {{#if block.locked}}checked{{/if}}> Verrouiller le bloc</label>
+        </div>
+      {{else if multiSelection}}
+        <div class="ibd-panel-heading"><span>{{selectedCount}} blocs sélectionnés</span></div>
+        <div class="ibd-property-empty"><i class="fa-solid fa-object-group"></i><p>Utilisez les outils d’alignement au-dessus de la page.</p></div>
+      {{else if page}}
+        <div class="ibd-panel-heading"><span>{{localize "IMMERSIVE_BOOKS.Designer.PageProperties"}}</span></div>
+        <div class="ibd-property-scroll">
+          <label>Nom<input data-scope="page" data-bind="name" value="{{page.name}}"></label>
+          <label>Type<select data-scope="page" data-bind="kind">{{selectOptions pageKinds selected=page.kind valueAttr="value" labelAttr="label"}}</select></label>
+          <label>Rôle<select data-scope="page" data-bind="role">{{selectOptions pageRoles selected=page.role valueAttr="value" labelAttr="label"}}</select></label>
+          <label>Chapitre<input data-scope="page" data-bind="chapter" value="{{page.chapter}}" placeholder="Facultatif"></label>
+          <label>Accès<select data-scope="page" data-bind="visibility">{{selectOptions visibilityOptions selected=page.visibility valueAttr="value" labelAttr="label"}}</select></label>
+          <label class="ibd-checkbox"><input type="checkbox" data-scope="page" data-bind="numberingHidden" {{#if page.numberingHidden}}checked{{/if}}> Masquer le numéro</label>
+          {{#if isPageImage}}
+            <label>Image<div class="ibd-file"><input data-scope="page" data-bind="image.src" value="{{page.image.src}}"><button type="button" data-action="pick-image" data-target="page"><i class="fa-solid fa-folder-open"></i></button></div></label>
+            <label>Recadrage<select data-scope="page" data-bind="image.fit">{{selectOptions fitOptions selected=page.image.fit valueAttr="value" labelAttr="label"}}</select></label>
+            <label>Point focal horizontal<input type="range" min="0" max="100" data-scope="page" data-bind="image.focalX" value="{{page.image.focalX}}"></label>
+            <label>Point focal vertical<input type="range" min="0" max="100" data-scope="page" data-bind="image.focalY" value="{{page.image.focalY}}"></label>
+          {{else}}
+            <button type="button" data-action="save-template" class="ibd-wide"><i class="fa-solid fa-floppy-disk"></i> Enregistrer comme modèle</button>
+          {{/if}}
+          {{#if isPageLocked}}
+            <hr><strong>Remplacement de la page verrouillée</strong>
+            <label>Titre<input data-scope="page" data-bind="lockedOverride.title" value="{{page.lockedOverride.title}}" placeholder="Utiliser le réglage du livre"></label>
+            <label>Message<textarea data-scope="page" data-bind="lockedOverride.message" placeholder="Utiliser le réglage du livre">{{page.lockedOverride.message}}</textarea></label>
+            <label>Image<input data-scope="page" data-bind="lockedOverride.image" value="{{page.lockedOverride.image}}"></label>
+          {{/if}}
+          <button type="button" data-action="toggle-page-theme" class="ibd-wide"><i class="fa-solid fa-palette"></i> {{#if hasPageTheme}}Retirer le thème de page{{else}}Personnaliser le thème de cette page{{/if}}</button>
+          {{#if hasPageTheme}}
+            <label>Papier de la page<input type="color" data-scope="page" data-bind="pageTheme.paper" value="{{page.pageTheme.paper}}"></label>
+            <label>Encre de la page<input type="color" data-scope="page" data-bind="pageTheme.ink" value="{{page.pageTheme.ink}}"></label>
+            <label>Accent de la page<input type="color" data-scope="page" data-bind="pageTheme.accent" value="{{page.pageTheme.accent}}"></label>
+            <label>Police du corps<select data-scope="page" data-bind="pageTheme.fontBody">{{selectOptions fontOptions selected=page.pageTheme.fontBody valueAttr="value" labelAttr="label"}}</select></label>
+            <label>Police des titres<select data-scope="page" data-bind="pageTheme.fontDisplay">{{selectOptions fontOptions selected=page.pageTheme.fontDisplay valueAttr="value" labelAttr="label"}}</select></label>
+          {{/if}}
+          <div class="ibd-danger-zone">
+            <button type="button" data-action="duplicate-page"><i class="fa-solid fa-copy"></i> Dupliquer la page</button>
+            <button type="button" data-action="delete-page" class="is-danger"><i class="fa-solid fa-trash"></i> Placer dans la corbeille</button>
+          </div>
+        </div>
+      {{else}}
+        <div class="ibd-panel-heading"><span>{{localize "IMMERSIVE_BOOKS.Designer.BookProperties"}}</span></div>
+      {{/if}}
+
+      <details class="ibd-book-settings" {{#unless page}}open{{/unless}}>
+        <summary><i class="fa-solid fa-book"></i> {{localize "IMMERSIVE_BOOKS.Designer.BookSettings"}}</summary>
+        <div>
+          <label>Format<select data-scope="book" data-bind="settings.format">{{selectOptions formats selected=book.settings.format valueAttr="id" labelAttr="label"}}</select></label>
+          <label>Papier<input type="color" data-scope="book" data-bind="settings.theme.paper" value="{{book.settings.theme.paper}}"></label>
+          <label>Encre<input type="color" data-scope="book" data-bind="settings.theme.ink" value="{{book.settings.theme.ink}}"></label>
+          <label>Accent<input type="color" data-scope="book" data-bind="settings.theme.accent" value="{{book.settings.theme.accent}}"></label>
+          <label>Cuir<input type="color" data-scope="book" data-bind="settings.theme.leather" value="{{book.settings.theme.leather}}"></label>
+          <label>Police du corps<select data-scope="book" data-bind="settings.theme.fontBody">{{selectOptions fontOptions selected=book.settings.theme.fontBody valueAttr="value" labelAttr="label"}}</select></label>
+          <label>Police des titres<select data-scope="book" data-bind="settings.theme.fontDisplay">{{selectOptions fontOptions selected=book.settings.theme.fontDisplay valueAttr="value" labelAttr="label"}}</select></label>
+          <label>Départ de numérotation<input type="number" min="0" data-scope="book" data-bind="settings.numbering.start" value="{{book.settings.numbering.start}}"></label>
+          <label>Style des numéros<select data-scope="book" data-bind="settings.numbering.style">{{selectOptions numberingStyles selected=book.settings.numbering.style valueAttr="value" labelAttr="label"}}</select></label>
+          <label class="ibd-checkbox"><input type="checkbox" data-scope="book" data-bind="settings.grid.visible" {{#if book.settings.grid.visible}}checked{{/if}}> Afficher la grille</label>
+          <label class="ibd-checkbox"><input type="checkbox" data-scope="book" data-bind="settings.grid.snap" {{#if book.settings.grid.snap}}checked{{/if}}> Magnétisme</label>
+          <label>Taille de grille<input type="number" min="1" max="25" data-scope="book" data-bind="settings.grid.size" value="{{book.settings.grid.size}}"></label>
+          <hr>
+          <strong>Page verrouillée par défaut</strong>
+          <label>Titre<input data-scope="book" data-bind="settings.lockedPage.title" value="{{book.settings.lockedPage.title}}"></label>
+          <label>Message<textarea data-scope="book" data-bind="settings.lockedPage.message">{{book.settings.lockedPage.message}}</textarea></label>
+        </div>
+      </details>
+      {{#if histories.length}}
+        <details class="ibd-versions">
+          <summary><i class="fa-solid fa-clock-rotate-left"></i> Versions publiées</summary>
+          {{#each histories}}<button type="button" data-action="restore-version" data-revision="{{revision}}">Version {{revision}}</button>{{/each}}
+        </details>
+      {{/if}}
+    </aside>
+  </div>
+</div>

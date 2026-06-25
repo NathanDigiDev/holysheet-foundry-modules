@@ -1,0 +1,93 @@
+<div class="ibr-shell" tabindex="0" style="{{themeStyle}};{{formatStyle}}" aria-label="{{document.name}}">
+  <div class="ibr-backdrop" aria-hidden="true"></div>
+  <button type="button" class="ibr-close" data-action="close" aria-label="{{localize 'IMMERSIVE_BOOKS.Common.Close'}}"><i class="fa-solid fa-xmark"></i></button>
+  {{#if preview}}<div class="ibr-preview-ribbon"><i class="fa-solid fa-eye"></i> {{localize "IMMERSIVE_BOOKS.Designer.DraftPreview"}}</div>{{/if}}
+
+  <nav class="ibr-bookmarks" aria-label="{{localize 'IMMERSIVE_BOOKS.Bookmarks.Title'}}">
+    {{#each bookmarks}}
+      <div class="ibr-bookmark-wrap" style="--bookmark:{{color}}">
+        <button type="button" class="ibr-bookmark" data-action="go-to" data-view-index="{{viewIndex}}" data-page-id="{{pageId}}" data-tooltip="{{label}}">
+          <i class="fa-solid fa-bookmark"></i><span>{{label}}</span>
+        </button>
+        <button type="button" class="ibr-bookmark-remove" data-action="remove-bookmark" data-page-id="{{pageId}}" aria-label="{{localize 'IMMERSIVE_BOOKS.Bookmarks.Remove'}}"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    {{/each}}
+  </nav>
+
+  <main class="ibr-reading-stage">
+    {{#if hasViews}}
+      <div class="ibr-book-object">
+        {{#each views}}
+          <section class="ibr-view {{#if isCover}}is-cover-view{{/if}} {{#if isBack}}is-back-view{{/if}} {{#if isSpread}}is-spread-view{{/if}}" data-view-index="{{viewIndex}}">
+            <div class="ibr-binding" aria-hidden="true"></div>
+            {{#each pages}}
+              <div class="ibr-page-slot {{#if isBlank}}is-blank-slot{{/if}}">
+                {{#unless isBlank}}
+                  <div class="ibr-frame-tools" aria-label="{{localize 'IMMERSIVE_BOOKS.Actions.PageTools'}}">
+                    <button type="button" class="ibr-page-tab bookmark {{#if hasBookmark}}is-active{{/if}}" data-action="toggle-bookmark" data-page-id="{{id}}" data-tooltip="{{localize 'IMMERSIVE_BOOKS.Bookmarks.Add'}}"><i class="fa-solid fa-bookmark"></i></button>
+                    <button type="button" class="ibr-page-tab note {{#if hasNote}}is-active{{/if}}" data-action="toggle-note" data-page-id="{{id}}" data-tooltip="{{localize 'IMMERSIVE_BOOKS.Notes.Open'}}"><i class="fa-solid fa-note-sticky"></i></button>
+                    {{#if ../../canShowAll}}
+                      <button type="button" class="ibr-page-tab show" data-action="show-all" data-page-id="{{id}}" data-tooltip="{{localize 'IMMERSIVE_BOOKS.Actions.ShowAll'}}"><i class="fa-solid fa-users-viewfinder"></i></button>
+                    {{/if}}
+                  </div>
+                {{/unless}}
+                <article class="ibr-page {{#if isBlank}}is-blank{{/if}} {{#if isImage}}is-image{{/if}} {{#if isComposed}}is-composed{{/if}} {{#if isLockedForViewer}}is-locked{{/if}}"
+                         data-page-id="{{id}}" style="{{themeStyle}}" aria-label="{{name}}">
+                  {{#unless isBlank}}
+                  {{#if isLockedForViewer}}
+                    <div class="ibr-locked-page">
+                      {{#if lockedImage}}<img src="{{lockedImage}}" alt="">{{/if}}
+                      <div class="ib-decoration decoration-{{lockedDecoration}}"></div>
+                      <h2>{{lockedTitle}}</h2><p>{{lockedMessage}}</p>
+                    </div>
+                  {{else}}
+                    {{#if isImage}}
+                      <img class="ibr-full-image" src="{{image.src}}" style="object-fit:{{image.fit}};object-position:{{image.focalX}}% {{image.focalY}}%" alt="{{name}}">
+                    {{else}}
+                      <div class="ibr-paper-grain" aria-hidden="true"></div>
+                      {{#each blocks}}
+                        <div class="ib-page-block type-{{type}} decoration-{{variant}}" style="{{style}}">
+                          <div class="ib-block-content" style="color:{{color}};font-size:{{fontSize}}px;line-height:{{lineHeight}};text-align:{{align}}">
+                            {{#if isText}}<div class="ib-rich-text {{#if dropCap}}has-drop-cap{{/if}}">{{{html}}}</div>{{/if}}
+                            {{#if isImage}}<img src="{{src}}" style="object-fit:{{fit}};object-position:{{focalX}}% {{focalY}}%;border:{{borderWidth}}px solid {{borderColor}};border-radius:{{radius}}px" alt="">{{/if}}
+                            {{#if isCallout}}<div class="ib-callout" style="background:{{background}};border-color:{{borderColor}}"><strong>{{title}}</strong>{{{html}}}</div>{{/if}}
+                            {{#if isDecoration}}<div class="ib-decoration decoration-{{variant}}" style="color:{{color}}"></div>{{/if}}
+                            {{#if isShape}}<div class="ib-shape shape-{{shape}}" style="background:{{fill}};border:{{strokeWidth}}px solid {{stroke}};border-radius:{{radius}}px"></div>{{/if}}
+                            {{#if isPageNumber}}<span class="ib-page-number-block">{{../number}}</span>{{/if}}
+                          </div>
+                        </div>
+                      {{/each}}
+                      {{#if number}}<footer class="ibr-page-number">{{number}}</footer>{{/if}}
+                    {{/if}}
+                  {{/if}}
+
+                  {{/unless}}
+                </article>
+              </div>
+            {{/each}}
+          </section>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="ibr-empty"><i class="fa-solid fa-book-open"></i><p>{{localize "IMMERSIVE_BOOKS.Empty.Message"}}</p></div>
+    {{/if}}
+
+    <button type="button" class="ibr-corner ibr-corner-left" data-action="previous" aria-label="{{localize 'IMMERSIVE_BOOKS.Navigation.Previous'}}"><i class="fa-solid fa-chevron-left"></i></button>
+    <button type="button" class="ibr-corner ibr-corner-right" data-action="next" aria-label="{{localize 'IMMERSIVE_BOOKS.Navigation.Next'}}"><i class="fa-solid fa-chevron-right"></i></button>
+  </main>
+
+  <aside class="ibr-panel ibr-bookmark-panel" data-panel="bookmark" hidden>
+    <header><i class="fa-solid fa-bookmark"></i><strong>{{localize "IMMERSIVE_BOOKS.Bookmarks.Add"}}</strong></header>
+    <label>{{localize "IMMERSIVE_BOOKS.Bookmarks.Label"}}<input name="label" maxlength="40"></label>
+    <label>{{localize "IMMERSIVE_BOOKS.Bookmarks.Color"}}<input type="color" name="color" value="#9d3d2d"></label>
+    <footer><button type="button" data-action="close-panels">{{localize "IMMERSIVE_BOOKS.Common.Cancel"}}</button><button type="button" data-action="save-bookmark">{{localize "IMMERSIVE_BOOKS.Common.Save"}}</button></footer>
+  </aside>
+
+  <aside class="ibr-panel ibr-note-panel" data-panel="note" hidden>
+    <header><i class="fa-solid fa-note-sticky"></i><strong>{{localize "IMMERSIVE_BOOKS.Notes.Title"}}</strong><span><i class="fa-solid fa-grip"></i></span></header>
+    <textarea rows="10" maxlength="4000" placeholder="{{localize 'IMMERSIVE_BOOKS.Notes.Placeholder'}}"></textarea>
+    <footer><button type="button" data-action="close-panels">{{localize "IMMERSIVE_BOOKS.Common.Cancel"}}</button><button type="button" data-action="save-note">{{localize "IMMERSIVE_BOOKS.Common.Save"}}</button></footer>
+  </aside>
+
+  {{#if editable}}<button type="button" class="ibr-design-shortcut" data-action="open-designer" data-tooltip="{{localize 'IMMERSIVE_BOOKS.Actions.Design'}}"><i class="fa-solid fa-pen-ruler"></i></button>{{/if}}
+</div>

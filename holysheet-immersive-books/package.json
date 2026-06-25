@@ -1,0 +1,9 @@
+{
+  "name": "holysheet-immersive-books",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check scripts/book-model.mjs && node --check scripts/book-app.mjs && node --check scripts/designer-app.mjs && node --check scripts/main.mjs"
+  }
+}

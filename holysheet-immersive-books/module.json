@@ -1,0 +1,34 @@
+{
+  "id": "holysheet-immersive-books",
+  "title": "Holysheet Immersive Books",
+  "description": "Transforme les journaux Foundry en livres feuilletables avec couvertures, signets et notes personnelles.",
+  "version": "1.0.4",
+  "authors": [
+    {
+      "name": "Hal"
+    }
+  ],
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/immersive-books.css"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "socket": true
+}

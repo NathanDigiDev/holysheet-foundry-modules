@@ -1,0 +1,41 @@
+Holysheet Immersive Books - macros Foundry
+=========================================
+
+Ces macros sont à créer comme macros de script dans Foundry.
+Le livre doit être un Journal converti en livre immersif, et l'utilisateur doit avoir au moins la permission Observateur.
+
+
+1) Ouvrir un livre par ID de Journal
+------------------------------------
+
+game.immersiveBooks.open("JOURNAL_ID");
+
+
+2) Ouvrir un livre par nom exact
+--------------------------------
+
+const journal = game.journal.getName("Nom exact du livre");
+if (!journal) return ui.notifications.warn("Livre introuvable.");
+game.immersiveBooks.open(journal);
+
+
+3) Ouvrir un livre par UUID Foundry
+-----------------------------------
+
+const journal = await fromUuid("JournalEntry.xxxxxxxxxxxxxxxx");
+if (!journal) return ui.notifications.warn("Livre introuvable.");
+game.immersiveBooks.open(journal);
+
+
+4) Ouvrir directement l'atelier du livre, MJ uniquement
+-------------------------------------------------------
+
+const journal = game.journal.getName("Nom exact du livre");
+if (!journal) return ui.notifications.warn("Livre introuvable.");
+game.immersiveBooks.design(journal);
+
+
+5) Montrer une page à tous les joueurs, MJ uniquement
+-----------------------------------------------------
+
+game.immersiveBooks.showToAll("JOURNAL_ID", "PAGE_LAYOUT_ID");
