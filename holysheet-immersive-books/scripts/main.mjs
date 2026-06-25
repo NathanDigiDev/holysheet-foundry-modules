@@ -33,6 +33,7 @@ Hooks.once("ready", () => {
   game.holysheetImmersiveBooks = api;
   game.socket.on(`module.${MODULE_ID}`, handleSocketMessage);
   installJournalDirectoryPatch();
+  globalThis.ui?.journal?.render({ force: true });
   console.info("Holysheet Immersive Books | Ready");
 });
 
@@ -86,9 +87,17 @@ function installJournalDirectoryPatch() {
   if (!JournalDirectory?.prototype || JournalDirectory.prototype._immersiveBooksPatched) return;
   const original = JournalDirectory.prototype._getEntryContextOptions;
   if (typeof original !== "function") return;
+  const originalRender = JournalDirectory.prototype._onRender;
   JournalDirectory.prototype._getEntryContextOptions = function immersiveBooksEntryContextOptions(...args) {
     return appendJournalContextOptions(original.call(this, ...args));
   };
+  if (typeof originalRender === "function") {
+    JournalDirectory.prototype._onRender = async function immersiveBooksOnRender(...args) {
+      const result = await originalRender.call(this, ...args);
+      decorateJournalDirectory(this);
+      return result;
+    };
+  }
   JournalDirectory.prototype._immersiveBooksPatched = true;
 }
 
@@ -128,8 +137,10 @@ Hooks.on("getJournalDirectoryEntryContext", (_html, options) => {
   );
 });
 
-Hooks.on("renderJournalDirectory", (_app, html) => {
-  const root = domRoot(html);
+Hooks.on("renderJournalDirectory", decorateJournalDirectory);
+
+function decorateJournalDirectory(app, html) {
+  const root = domRoot(html) ?? app?.element ?? domRoot(app);
   if (!root) return;
   for (const item of root.querySelectorAll(".directory-item[data-entry-id], .directory-item[data-document-id]")) {
     const journal = journalFromElement(item);
@@ -191,7 +202,7 @@ Hooks.on("renderJournalDirectory", (_app, html) => {
   button.querySelector("span").textContent = game.i18n.localize("IMMERSIVE_BOOKS.Actions.CreateBook");
   button.addEventListener("click", () => createBook());
   create.insertAdjacentElement("afterend", button);
-});
+}
 
 const addJournalControls = (app, html) => {
   const journal = app.document ?? app.object;
