@@ -20,7 +20,7 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", () => {
-  game.immersiveBooks = {
+  const api = {
     open: openBook,
     design: openDesigner,
     create: createBook,
@@ -29,11 +29,16 @@ Hooks.once("ready", () => {
     showToAll,
     isBook
   };
+  game.immersiveBooks = api;
+  game.holysheetImmersiveBooks = api;
   game.socket.on(`module.${MODULE_ID}`, handleSocketMessage);
   console.info("Holysheet Immersive Books | Ready");
 });
 
-Hooks.on("getJournalEntryContextOptions", (_application, options) => {
+Hooks.on("getJournalEntryContextOptions", addJournalContextOptions);
+Hooks.on("getDocumentContextOptions", addJournalContextOptions);
+
+function addJournalContextOptions(_application, options) {
   options.push(
     {
       label: "IMMERSIVE_BOOKS.Actions.Open",
@@ -66,7 +71,7 @@ Hooks.on("getJournalEntryContextOptions", (_application, options) => {
       onClick: (_event, element) => unmarkAsBook(journalFromElement(element))
     }
   );
-});
+}
 
 // Foundry 13 compatibility.
 Hooks.on("getJournalDirectoryEntryContext", (_html, options) => {
