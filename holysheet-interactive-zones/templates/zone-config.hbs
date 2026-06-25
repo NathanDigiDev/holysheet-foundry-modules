@@ -1,0 +1,154 @@
+<div autocomplete="off">
+  <fieldset>
+    <legend>{{localize "HIZ.General"}}</legend>
+    <div class="form-group">
+      <label>{{localize "HIZ.Name"}}</label>
+      <input type="text" name="name" value="{{zone.name}}">
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.Active"}}</label>
+      <input type="checkbox" name="active" {{#if zone.active}}checked{{/if}}>
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.AlwaysVisible"}}</label>
+      <input type="checkbox" name="alwaysVisible" {{#if zone.alwaysVisible}}checked{{/if}}>
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.LabelMode"}}</label>
+      <select name="labelMode">
+        {{#each labelModes}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{localize "HIZ.Highlight"}}</legend>
+    <div class="form-group">
+      <label>{{localize "HIZ.HighlightOutline"}}</label>
+      <input type="checkbox" name="highlightOutline" {{#if zone.highlight.outline}}checked{{/if}}>
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.HighlightFill"}}</label>
+      <input type="checkbox" name="highlightFill" {{#if zone.highlight.fill}}checked{{/if}}>
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.HighlightColor"}}</label>
+      <input type="color" name="highlightColor" value="{{zone.highlight.color}}">
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.HighlightAlpha"}}</label>
+      <input type="range" name="highlightAlpha" min="0.05" max="0.8" step="0.05" value="{{zone.highlight.alpha}}">
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{localize "HIZ.Visibility"}}</legend>
+    <div class="form-group">
+      <label>{{localize "HIZ.Visibility"}}</label>
+      <select name="visibilityMode">
+        {{#each visibilityModes}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>{{localize "HIZ.Users"}}</label>
+      <select name="users" multiple>
+        {{#each users}}
+          <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{localize "HIZ.Action"}}</legend>
+    <div class="form-group">
+      <label>{{localize "HIZ.ActionType"}}</label>
+      <select name="actionType" data-action-type>
+        {{#each actionTypes}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div data-action-panel="vote">
+      <div class="form-group">
+        <label>{{localize "HIZ.VoteVisibility"}}</label>
+        <select name="voteVisibility">
+          {{#each voteVisibilityModes}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div data-action-panel="journal">
+      <div class="form-group">
+        <label>{{localize "HIZ.Journal"}}</label>
+        <select name="journalUuid">
+          <option value=""></option>
+          {{#each journals}}
+            <option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div data-action-panel="image">
+      <div class="form-group">
+        <label>{{localize "HIZ.ImageDocument"}}</label>
+        <select name="imageUuid">
+          <option value=""></option>
+          {{#each imageDocuments}}
+            <option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div data-action-panel="sound">
+      <div class="form-group">
+        <label>{{localize "HIZ.Sound"}}</label>
+        <div class="hiz-picker-row">
+          <input type="text" name="soundPath" value="{{zone.action.soundPath}}" readonly>
+          <button type="button" data-pick-sound><i class="fas fa-file-audio"></i> {{localize "HIZ.Pick"}}</button>
+        </div>
+      </div>
+    </div>
+
+    <div data-action-panel="macro">
+      <div class="form-group">
+        <label>{{localize "HIZ.Macro"}}</label>
+        <select name="macroUuid">
+          <option value=""></option>
+          {{#each macros}}
+            <option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+
+    <div data-action-panel="chat">
+      <div class="form-group">
+        <label>{{localize "HIZ.ChatMode"}}</label>
+        <select name="chatMode">
+          {{#each chatModes}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-group stacked">
+        <label>{{localize "HIZ.ChatMessage"}}</label>
+        <textarea name="chatMessage">{{zone.action.chatMessage}}</textarea>
+      </div>
+    </div>
+  </fieldset>
+
+  <footer class="form-footer">
+    <button type="submit"><i class="fas fa-save"></i> {{localize "HIZ.Save"}}</button>
+    <button type="button" data-close><i class="fas fa-times"></i> {{localize "HIZ.Cancel"}}</button>
+  </footer>
+</div>

@@ -1,0 +1,38 @@
+.holysheet-interactive-zones-config {
+  display: grid;
+  gap: 12px;
+  min-width: 520px;
+}
+
+.holysheet-interactive-zones-config fieldset {
+  border: 1px solid var(--color-border-light-tertiary, #777);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.holysheet-interactive-zones-config legend {
+  padding: 0 6px;
+  font-weight: 600;
+}
+
+.holysheet-interactive-zones-config .form-group {
+  align-items: center;
+}
+
+.holysheet-interactive-zones-config select[multiple] {
+  min-height: 92px;
+}
+
+.holysheet-interactive-zones-config .hiz-picker-row {
+  display: flex;
+  gap: 6px;
+}
+
+.holysheet-interactive-zones-config .hiz-picker-row input {
+  flex: 1;
+}
+
+.holysheet-interactive-zones-config textarea {
+  min-height: 82px;
+  resize: vertical;
+}
