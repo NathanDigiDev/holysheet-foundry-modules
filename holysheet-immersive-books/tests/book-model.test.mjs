@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   computePageNumbers, createBookData, createPage, createReaderViews, pageTemplate,
-  publishDraft, restorePublishedVersion, toRoman
+  getModuleFlag, publishDraft, restorePublishedVersion, toRoman
 } from "../scripts/book-model.mjs";
 
 test("a new book begins with a standalone cover", () => {
@@ -69,4 +69,14 @@ test("every built-in template creates a composed page with blocks", () => {
     assert.equal(page.kind, "composed");
     assert.ok(page.blocks.length > 0);
   }
+});
+
+test("legacy flag lookup does not crash when old module scope is inactive", () => {
+  const document = {
+    getFlag(scope) {
+      if (scope === "immersive-books") throw new Error("Flag scope is not valid");
+      return undefined;
+    }
+  };
+  assert.equal(getModuleFlag(document, "book"), undefined);
 });

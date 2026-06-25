@@ -3,17 +3,33 @@ export const LEGACY_MODULE_ID = "immersive-books";
 export const DATA_VERSION = 2;
 
 export function getModuleFlag(document, key) {
-  return document?.getFlag?.(MODULE_ID, key) ?? document?.getFlag?.(LEGACY_MODULE_ID, key);
+  return safeGetFlag(document, MODULE_ID, key) ?? safeGetFlag(document, LEGACY_MODULE_ID, key);
 }
 
 export async function setModuleFlag(document, key, value) {
   await document?.setFlag?.(MODULE_ID, key, value);
-  if (document?.getFlag?.(LEGACY_MODULE_ID, key) !== undefined) await document?.unsetFlag?.(LEGACY_MODULE_ID, key);
+  if (safeGetFlag(document, LEGACY_MODULE_ID, key) !== undefined) await safeUnsetFlag(document, LEGACY_MODULE_ID, key);
 }
 
 export async function unsetModuleFlag(document, key) {
-  await document?.unsetFlag?.(MODULE_ID, key);
-  await document?.unsetFlag?.(LEGACY_MODULE_ID, key);
+  await safeUnsetFlag(document, MODULE_ID, key);
+  await safeUnsetFlag(document, LEGACY_MODULE_ID, key);
+}
+
+function safeGetFlag(document, scope, key) {
+  try {
+    return document?.getFlag?.(scope, key);
+  } catch (_error) {
+    return undefined;
+  }
+}
+
+async function safeUnsetFlag(document, scope, key) {
+  try {
+    return await document?.unsetFlag?.(scope, key);
+  } catch (_error) {
+    return undefined;
+  }
 }
 
 export const FORMATS = Object.freeze({
