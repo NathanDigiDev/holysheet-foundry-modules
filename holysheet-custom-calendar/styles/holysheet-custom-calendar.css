@@ -12,13 +12,14 @@
 #holysheet-calendar-widget {
   position: fixed;
   z-index: 80;
-  width: min(460px, calc(100vw - 32px));
+  width: min(360px, calc(100vw - 20px));
   background: transparent;
   cursor: grab;
+  touch-action: none;
 }
 
-#holysheet-calendar-widget.locked {
-  cursor: default;
+#holysheet-calendar-widget.dragging {
+  cursor: grabbing;
 }
 
 #holysheet-calendar-widget button,

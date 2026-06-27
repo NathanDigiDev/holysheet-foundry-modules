@@ -134,10 +134,11 @@
 }
 .holysheet .hcc-calendar-card {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr) auto;
-  gap: 14px;
+  grid-template-columns: 62px minmax(0, 1fr) 76px;
+  gap: 10px;
   align-items: center;
-  padding: 14px 16px;
+  min-height: 74px;
+  padding: 12px 14px 12px 18px;
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r);
   background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
@@ -158,6 +159,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   margin: 0;
   color: var(--hs-muted);
@@ -173,42 +175,73 @@
   accent-color: var(--hs-brass);
 }
 .holysheet .hcc-calendar-card.active .hcc-active-choice { color: var(--hs-brass); }
-.holysheet .hcc-calendar-card-main {
+.holysheet .hcc-app .hcc-calendar-card-main {
   display: grid;
-  gap: 3px;
+  gap: 2px;
+  align-content: center;
+  justify-items: start;
+  width: 100%;
+  height: 100%;
+  min-height: 50px;
   min-width: 0;
+  padding: 0;
   border: 0;
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
+  line-height: 1.15;
   text-align: left;
   cursor: pointer;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
-.holysheet .hcc-calendar-card-main:hover { box-shadow: none; }
+.holysheet .hcc-app .hcc-calendar-card-main:hover {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+}
 .holysheet .hcc-calendar-card-main strong {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
   font-family: var(--hs-title);
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.1;
   color: var(--hs-ink-strong);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .holysheet .hcc-calendar-card-main span {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
   color: var(--hs-ink);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .holysheet .hcc-calendar-card-main small {
+  display: block;
+  max-width: 100%;
+  min-width: 0;
   color: var(--hs-muted);
-  font-size: 11px;
+  font-size: 10px;
   font-style: italic;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .holysheet .hcc-calendar-card-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 6px;
+  min-width: 0;
 }
 .holysheet .hcc-calendar-card-actions button {
   display: grid;
@@ -700,7 +733,7 @@
    ========================================================================= */
 .holysheet .hcc-widget {
   width: 100%;
-  padding: 9px 12px 12px;
+  padding: 7px 9px 9px;
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r);
   background: linear-gradient(180deg, rgba(40, 35, 28, 0.82), rgba(18, 15, 10, 0.9));
@@ -713,8 +746,8 @@
 .holysheet .hcc-widget::after {
   content: "";
   display: block;
-  height: 2px;
-  margin: 10px 2px 0;
+  height: 1px;
+  margin: 7px 2px 0;
   border-radius: 2px;
   background: linear-gradient(90deg, transparent 4%, var(--hs-brass) 26%, #eccd80 50%, var(--hs-brass) 74%, transparent 96%);
   box-shadow: 0 0 12px var(--hs-brass-soft);
@@ -724,10 +757,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 0 8px 4px;
+  min-height: 24px;
+  padding: 0 6px 3px;
 }
-.holysheet .hcc-widget.gm .hcc-widget-topline { padding-right: 84px; }
+.holysheet .hcc-widget.gm .hcc-widget-topline { padding-right: 72px; }
 .holysheet .hcc-widget-date {
   width: 100%;
   border: 0;
@@ -736,7 +769,7 @@
   backdrop-filter: none;
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.02em;
   overflow: hidden;
@@ -750,23 +783,23 @@
   top: -1px;
   right: 0;
   display: flex;
-  gap: 5px;
+  gap: 4px;
 }
 .holysheet .hcc-widget-tools button {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
   padding: 0;
-  border-radius: 7px;
-  font-size: 11px;
+  border-radius: 6px;
+  font-size: 10px;
 }
 
 /* Le ciel — on garde la physique, on réchauffe les teintes vers le med-fan */
 .holysheet .hcc-time-visual {
   position: relative;
-  height: 72px;
-  margin-top: 4px;
+  height: 52px;
+  margin-top: 2px;
   overflow: hidden;
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
@@ -805,10 +838,10 @@
   top: var(--hcc-astro-y);
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   transform: translate(-50%, -50%);
-  font-size: 23px;
+  font-size: 18px;
   transition: left 300ms ease, top 300ms ease;
 }
 .holysheet .hcc-astro.sun {
@@ -823,17 +856,17 @@
   position: absolute;
   left: -5%;
   right: -5%;
-  bottom: -24px;
-  height: 46px;
+  bottom: -20px;
+  height: 38px;
   border-radius: 50% 50% 0 0;
   background: linear-gradient(180deg, rgba(36, 26, 14, 0.6), rgba(18, 14, 9, 0.85));
   box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.3);
 }
 .holysheet .hcc-time-label {
   position: absolute;
-  right: 8px;
-  bottom: 6px;
-  padding: 3px 9px;
+  right: 6px;
+  bottom: 5px;
+  padding: 2px 7px;
   border-radius: 999px;
   border: 1px solid rgba(201, 162, 78, 0.4);
   background: rgba(20, 16, 10, 0.6);
@@ -841,7 +874,7 @@
   backdrop-filter: blur(6px);
   color: #f7e6b6;
   font-family: var(--hs-title);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.06em;
 }
@@ -851,8 +884,8 @@
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 9px;
-  margin-top: 10px;
+  height: 7px;
+  margin-top: 8px;
   padding: 0;
   border: 1px solid var(--hs-glass-line-soft);
   border-radius: 999px;
@@ -870,8 +903,8 @@
 }
 .holysheet .hcc-gauge::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   border: 2px solid rgba(7, 12, 9, 0.85);
   border-radius: 50%;
   background: #fff6e6;
@@ -879,8 +912,8 @@
   cursor: pointer;
 }
 .holysheet .hcc-gauge::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   border: 2px solid rgba(7, 12, 9, 0.85);
   border-radius: 50%;
   background: #fff6e6;

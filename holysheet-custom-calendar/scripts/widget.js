@@ -155,25 +155,29 @@ function getVisualClass(percent, dayStart, dayEnd, isDay) {
 }
 
 function makeDraggable(element) {
-  if (!game.user.isGM) return;
   let startX = 0;
   let startY = 0;
   let left = 0;
   let top = 0;
 
   element.addEventListener("pointerdown", (event) => {
-    if (event.target.closest("button, input")) return;
+    if (event.button !== 0 || event.target.closest("button, input, select, textarea, a")) return;
     startX = event.clientX;
     startY = event.clientY;
-    left = element.getBoundingClientRect().left;
-    top = element.getBoundingClientRect().top;
+    const rect = element.getBoundingClientRect();
+    left = rect.left;
+    top = rect.top;
+    element.classList.add("dragging");
     element.setPointerCapture(event.pointerId);
   });
 
-  element.addEventListener("pointermove", async (event) => {
+  element.addEventListener("pointermove", (event) => {
     if (!element.hasPointerCapture(event.pointerId)) return;
-    const nextLeft = left + event.clientX - startX;
-    const nextTop = top + event.clientY - startY;
+    const { left: nextLeft, top: nextTop } = clampWidgetPosition(
+      element,
+      left + event.clientX - startX,
+      top + event.clientY - startY
+    );
     element.style.left = `${nextLeft}px`;
     element.style.top = `${nextTop}px`;
     element.style.transform = "none";
@@ -183,6 +187,25 @@ function makeDraggable(element) {
     if (!element.hasPointerCapture(event.pointerId)) return;
     element.releasePointerCapture(event.pointerId);
     const rect = element.getBoundingClientRect();
-    await setWidgetSettings({ left: rect.left, top: rect.top });
+    element.classList.remove("dragging");
+    await setWidgetSettings({ left: Math.round(rect.left), top: Math.round(rect.top) });
   });
+
+  element.addEventListener("pointercancel", (event) => {
+    if (!element.hasPointerCapture(event.pointerId)) return;
+    element.releasePointerCapture(event.pointerId);
+    element.classList.remove("dragging");
+  });
+}
+
+function clampWidgetPosition(element, left, top) {
+  const margin = 8;
+  const rect = element.getBoundingClientRect();
+  const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
+  const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
+
+  return {
+    left: Math.min(Math.max(margin, left), maxLeft),
+    top: Math.min(Math.max(margin, top), maxTop)
+  };
 }

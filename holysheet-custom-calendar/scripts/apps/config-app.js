@@ -9,7 +9,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     id: "holysheet-calendar-config",
-    classes: ["holysheet-calendar-config", "holysheet", "hs-theme-cuir"],
+    classes: ["holysheet-calendar-config"],
     tag: "section",
     window: {
       title: "HCC.Configure",

@@ -52,9 +52,10 @@
 }
 
 /* ---- Champs : verre dépoli ----------------------------------------------- */
-.holysheet input,
-.holysheet textarea,
-.holysheet select {
+.holysheet .hcc-app input,
+.holysheet .hcc-app textarea,
+.holysheet .hcc-app select,
+.holysheet .hcc-widget input {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -65,13 +66,14 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
 }
-.holysheet input::placeholder,
-.holysheet textarea::placeholder {
+.holysheet .hcc-app input::placeholder,
+.holysheet .hcc-app textarea::placeholder {
   color: rgba(232, 221, 198, 0.4);
 }
-.holysheet input:focus,
-.holysheet textarea:focus,
-.holysheet select:focus {
+.holysheet .hcc-app input:focus,
+.holysheet .hcc-app textarea:focus,
+.holysheet .hcc-app select:focus,
+.holysheet .hcc-widget input:focus {
   outline: none;
   border-color: var(--hs-accent-line);
   background: var(--hs-glass-2);
@@ -79,12 +81,13 @@
     0 0 0 3px var(--hs-accent-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-.holysheet select option {
+.holysheet .hcc-app select option {
   background: #1c1812;
   color: var(--hs-ink-strong);
 }
 
-.holysheet button {
+.holysheet .hcc-app button,
+.holysheet .hcc-widget button {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -95,23 +98,24 @@
   backdrop-filter: blur(6px);
   transition: border-color 130ms ease, color 130ms ease, background 130ms ease, box-shadow 130ms ease;
 }
-.holysheet button:hover {
+.holysheet .hcc-app button:hover,
+.holysheet .hcc-widget button:hover {
   border-color: var(--hs-accent-line);
   color: var(--hs-ink-strong);
   box-shadow: 0 0 14px var(--hs-accent-soft);
 }
 
-.holysheet input[type="number"] {
+.holysheet .hcc-app input[type="number"] {
   width: 48px;
   max-width: 48px;
   text-align: center;
   -moz-appearance: textfield;
 }
-.holysheet input[type="number"]::-webkit-outer-spin-button,
-.holysheet input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.holysheet .hcc-app input[type="number"]::-webkit-outer-spin-button,
+.holysheet .hcc-app input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* Range générique (la jauge du widget a son propre style dédié) */
-.holysheet input[type="range"] {
+.holysheet .hcc-widget input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -123,7 +127,7 @@
   box-shadow: none;
   backdrop-filter: none;
 }
-.holysheet input[type="range"]::-webkit-slider-thumb {
+.holysheet .hcc-widget input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
   height: 14px;
