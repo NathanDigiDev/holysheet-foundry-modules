@@ -1,0 +1,35 @@
+<form class="{{cssClass}} holysheet-equipment" autocomplete="off">
+  <header class="hs-item-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div>
+      <textarea class="hs-name" name="name" rows="1" placeholder="Nom">{{item.name}}</textarea>
+      <div class="hs-item-fields">
+        <label>
+          {{localize "HOLYSHEET.Label.Category"}}
+          <select name="system.category" data-item-category>
+            {{#each hs.categoryChoices}}
+            <option value="{{label}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+          </select>
+        </label>
+        <label>
+          Quantite
+          <input name="system.quantity" type="number" value="{{system.quantity}}" min="0" />
+        </label>
+        <label>
+          Equipable
+          <input name="system.equipable" type="checkbox" {{checked system.equipable}} />
+        </label>
+        <label data-armor-value-field class="{{#unless hs.showArmorValue}}hs-hidden-field{{/unless}}">
+          Valeur d'armure
+          <input name="system.armorValue" type="number" value="{{system.armorValue}}" min="0" />
+        </label>
+      </div>
+    </div>
+  </header>
+
+  <section class="hs-panel" style="margin-top:14px">
+    <h2>{{localize "HOLYSHEET.Label.Description"}}</h2>
+    <textarea name="system.description" rows="8">{{system.description}}</textarea>
+  </section>
+</form>

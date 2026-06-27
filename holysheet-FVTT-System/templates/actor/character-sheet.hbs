@@ -1,0 +1,360 @@
+<form class="{{cssClass}} holysheet-character" autocomplete="off">
+  <section class="hs-top-fixed">
+    <header class="hs-banner">
+      {{#if hs.isGM}}
+      <label class="hs-gm-mode-toggle" title="Mode edition GM">
+        <input type="checkbox" data-gm-config-mode {{checked hs.gmConfigMode}} />
+        <span></span>
+      </label>
+      {{/if}}
+
+      <section class="hs-banner-title">
+        <input class="hs-name hs-name-{{hs.nameSize}}" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage" />
+      </section>
+
+      <section class="hs-banner-meta {{#unless hs.modules.level}}hs-banner-meta-no-level{{/unless}}">
+        <label>
+          <span>Archetype</span>
+          <input name="system.archetype" type="text" value="{{system.archetype}}" />
+        </label>
+        <label>
+          <span>Origine</span>
+          <input name="system.origin" type="text" value="{{system.origin}}" />
+        </label>
+        {{#if hs.modules.level}}
+        <label>
+          <span>{{localize "HOLYSHEET.Label.Level"}}</span>
+          <input name="system.level" type="number" value="{{system.level}}" min="0" />
+        </label>
+        {{/if}}
+      </section>
+    </header>
+
+    {{#if hs.modules.aptitudes}}
+    <section class="hs-banner-aptitudes" aria-label="Aptitudes">
+      {{#each hs.aptitudes}}
+      <article class="hs-aptitude-card" title="{{description}}">
+        <input name="{{field}}" type="number" value="{{value}}" min="1" max="100" />
+        <button type="button" data-roll="aptitude" data-roll-group="aptitude" data-roll-key="{{key}}" data-roll-label="{{label}}" data-roll-target="{{value}}" data-roll-modifier="{{modifier}}">
+          <span>{{abbreviation}}</span>
+        </button>
+      </article>
+      {{/each}}
+    </section>
+    {{/if}}
+  </section>
+
+  <section class="hs-sheet-shell">
+    <aside class="hs-left-panel">
+      <div class="hs-portrait-ring">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" style="{{hs.portrait.style}}" />
+      </div>
+
+      {{#if hs.canConfigure}}
+      <section class="hs-portrait-controls" aria-label="Cadrage du portrait">
+        <label>
+          X
+          <input type="range" name="system.portrait.x" value="{{hs.portrait.x}}" min="0" max="100" step="1" data-portrait-control="x" />
+        </label>
+        <label>
+          Y
+          <input type="range" name="system.portrait.y" value="{{hs.portrait.y}}" min="0" max="100" step="1" data-portrait-control="y" />
+        </label>
+        <label>
+          Zoom
+          <input type="range" name="system.portrait.scale" value="{{hs.portrait.scale}}" min="1" max="2.5" step="0.05" data-portrait-control="scale" />
+        </label>
+      </section>
+      {{/if}}
+
+      {{#if hs.modules.resources}}
+      <section class="hs-resource-orbs">
+        <label class="hs-resource-orb">
+          <input name="system.resources.pv.value" type="number" value="{{system.resources.pv.value}}" min="0" />
+          <small>/<input name="system.resources.pv.max" type="number" value="{{system.resources.pv.max}}" min="0" /></small>
+          <span>{{localize "HOLYSHEET.Label.Pv"}}</span>
+        </label>
+        {{#if hs.modules.armor}}
+        <label class="hs-armor-orb" title="{{localize "HOLYSHEET.Label.Armor"}}">
+          <i class="fa-solid fa-shield"></i>
+          <strong>{{hs.armorTotal}}</strong>
+        </label>
+        {{/if}}
+      </section>
+      {{/if}}
+
+      {{#if hs.modules.customStates}}
+      <section class="hs-custom-states" aria-label="Etats">
+        {{#unless hs.customStates.length}}
+        <span class="hs-empty-state">Aucun etat configure</span>
+        {{/unless}}
+        {{#each hs.customStates}}
+        {{#if isGauge}}
+        <label class="hs-state-gauge" title="{{description}}" style="--hs-state-color: {{color}}; --hs-state-fill: {{percent}}%;">
+          {{#if icon}}<img src="{{icon}}" alt="" />{{else}}<i class="fa-solid fa-circle-dot"></i>{{/if}}
+          <span class="hs-state-gauge-track">
+            <span data-readout="{{value}} / {{max}}">{{#if hasName}}{{name}}{{/if}}</span>
+            <input type="range" name="{{valueField}}" value="{{value}}" min="0" max="{{max}}" data-state-value="{{key}}" />
+          </span>
+        </label>
+        {{else}}
+        <button type="button" class="hs-state-token {{#if checked}}active{{/if}}" data-toggle-state="{{key}}" title="{{description}}" style="--hs-state-color: {{color}};">
+          {{#if icon}}<img src="{{icon}}" alt="" />{{/if}}
+        </button>
+        {{/if}}
+        {{/each}}
+      </section>
+      {{/if}}
+    </aside>
+
+    <main class="hs-content-panel">
+      <nav class="sheet-tabs tabs hs-icon-tabs" data-group="primary">
+        {{#if hs.tabs.bio}}
+        <a class="item" data-tab="bio" title="{{localize "HOLYSHEET.Label.Bio"}}"><i class="fa-solid fa-feather-pointed"></i></a>
+        {{/if}}
+        {{#if hs.tabs.skills}}
+        <a class="item" data-tab="skills" title="Competences"><i class="fa-solid fa-list-check"></i></a>
+        {{/if}}
+        {{#if hs.tabs.inventory}}
+        <a class="item" data-tab="inventory" title="{{localize "HOLYSHEET.Label.Inventory"}}"><i class="fa-solid fa-suitcase"></i></a>
+        {{/if}}
+        {{#if hs.tabs.config}}
+        <a class="item" data-tab="config" title="Configuration GM"><i class="fa-solid fa-gear"></i></a>
+        {{/if}}
+      </nav>
+
+      <section class="sheet-body">
+        {{#if hs.tabs.bio}}
+        <div class="tab" data-group="primary" data-tab="bio">
+          <section class="hs-panel">
+            <h2>{{localize "HOLYSHEET.Label.Description"}}</h2>
+            <textarea name="system.description" rows="8">{{system.description}}</textarea>
+          </section>
+          <section class="hs-panel">
+            <h2>{{localize "HOLYSHEET.Label.History"}}</h2>
+            <textarea name="system.history" rows="8">{{system.history}}</textarea>
+          </section>
+        </div>
+        {{/if}}
+
+        {{#if hs.tabs.skills}}
+        <div class="tab" data-group="primary" data-tab="skills">
+          <section class="hs-skill-columns">
+            {{#if hs.modules.commonSkills}}
+            <div class="hs-panel">
+              <h2>{{localize "HOLYSHEET.Label.CommonSkills"}}</h2>
+              {{#each hs.commonSkills}}
+              <div class="hs-list-row" title="{{description}}">
+                <button type="button" data-roll="commonSkill" data-roll-group="commonSkill" data-roll-key="{{key}}" data-roll-label="{{label}}" data-roll-target="{{value}}" data-roll-modifier="{{modifier}}">
+                  {{label}}
+                </button>
+                <input name="{{field}}" type="number" value="{{value}}" min="1" max="100" />
+              </div>
+              {{/each}}
+            </div>
+            {{/if}}
+
+            {{#if hs.modules.specialSkills}}
+            <div class="hs-panel">
+              <h2>
+                {{localize "HOLYSHEET.Label.SpecialSkills"}}
+                <button type="button" data-create-special-skill>+</button>
+              </h2>
+              {{#each hs.specialSkills}}
+              <div class="hs-list-row hs-special-skill" title="{{description}}">
+                <button type="button" data-roll="specialSkill" data-roll-group="specialSkill" data-roll-key="{{id}}" data-roll-label="{{name}}" data-roll-target="{{value}}" data-roll-modifier="{{modifier}}">
+                  {{name}}
+                </button>
+                <input name="system.specialSkills.{{index}}.value" type="number" value="{{value}}" min="1" max="100" />
+                <input name="system.specialSkills.{{index}}.id" type="hidden" value="{{id}}" />
+                <input name="system.specialSkills.{{index}}.name" type="hidden" value="{{name}}" />
+                <textarea class="hs-hidden-field" name="system.specialSkills.{{index}}.description">{{description}}</textarea>
+                <button type="button" class="hs-icon-button" data-edit-special-skill="{{id}}" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="hs-icon-button" data-delete-special-skill="{{id}}" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+              </div>
+              {{/each}}
+            </div>
+            {{/if}}
+          </section>
+        </div>
+        {{/if}}
+
+        {{#if hs.tabs.inventory}}
+        <div class="tab" data-group="primary" data-tab="inventory">
+          {{#if hs.modules.currency}}
+          <section class="hs-panel hs-currencies">
+            <h2>
+              {{localize "HOLYSHEET.Label.Currencies"}}
+              <span class="hs-panel-actions">
+                <button type="button" class="hs-icon-button" data-open-currency-adjustment title="Ajouter ou retirer de la monnaie">
+                  <i class="fa-solid fa-plus-minus"></i>
+                </button>
+                <button type="button" class="hs-icon-button" data-normalize-currencies title="Convertir la monnaie">
+                  <i class="fa-solid fa-scale-balanced"></i>
+                </button>
+              </span>
+            </h2>
+            {{#each hs.currencies}}
+            <label title="{{label}}">
+              {{#if icon}}<img src="{{icon}}" alt="" />{{/if}}
+              {{label}}
+              <input name="{{field}}" type="number" value="{{amount}}" min="0" />
+            </label>
+            {{/each}}
+          </section>
+          {{/if}}
+
+          {{#if hs.modules.inventory}}
+          <section class="hs-panel">
+            <h2>
+              {{localize "HOLYSHEET.Label.Inventory"}}
+              <button type="button" data-create-equipment>+</button>
+            </h2>
+            {{#each hs.inventoryGroups}}
+            <section class="hs-inventory-group">
+              <h3>{{category}}</h3>
+              {{#each items}}
+              <div class="hs-list-row hs-inventory-row">
+                <span class="hs-item-image">
+                  {{#if img}}<img src="{{img}}" alt="" />{{/if}}
+                </span>
+                {{#if system.equipable}}
+                <input class="hs-equip-toggle" type="checkbox" data-toggle-equipment="{{id}}" {{checked system.equipped}} title="Equiper" />
+                {{else}}
+                <span class="hs-equip-placeholder"></span>
+                {{/if}}
+                <span class="hs-item-name">
+                  {{name}}
+                  {{#if system.armorValue}}
+                  <span class="hs-armor-badge" title="Armure"><i class="fa-solid fa-shield"></i> {{system.armorValue}}</span>
+                  {{/if}}
+                </span>
+                <span class="hs-item-quantity">
+                  <button type="button" data-adjust-quantity="{{id}}" data-delta="-1" title="Retirer 1">-</button>
+                  <strong>{{system.quantity}}</strong>
+                  <button type="button" data-adjust-quantity="{{id}}" data-delta="1" title="Ajouter 1">+</button>
+                </span>
+                <button type="button" class="hs-icon-button" data-item-id="{{id}}" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="hs-icon-button" data-delete-equipment="{{id}}" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+              </div>
+              {{/each}}
+            </section>
+            {{/each}}
+          </section>
+          {{/if}}
+        </div>
+        {{/if}}
+
+        {{#if hs.tabs.config}}
+        <div class="tab" data-group="primary" data-tab="config">
+          <section class="hs-config-layout">
+            <details class="hs-panel hs-config-section" data-config-section="modules" {{#if hs.configSections.modules}}open{{/if}}>
+              <summary><span>Modules de fiche</span></summary>
+              <div class="hs-config-toggles">
+                {{#each hs.moduleToggles}}
+                <label>
+                  <input type="checkbox" data-config-toggle="{{key}}" {{checked enabled}} />
+                  {{label}}
+                </label>
+                {{/each}}
+              </div>
+            </details>
+
+            <details class="hs-panel hs-config-section" data-config-section="aptitudes" {{#if hs.configSections.aptitudes}}open{{/if}}>
+              <summary>
+                <span>Aptitudes globales</span>
+                <button type="button" data-add-config-entry="aptitudes">+</button>
+              </summary>
+              {{#each hs.config.aptitudes}}
+              <div class="hs-config-entry">
+                <input type="text" value="{{label}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="label" placeholder="Nom" />
+                <input type="text" value="{{abbreviation}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="abbreviation" placeholder="Abrev." maxlength="4" />
+                <input type="number" value="{{value}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="value" min="1" max="100" />
+                <button type="button" data-delete-config-entry="aptitudes" data-index="{{@index}}">x</button>
+                <textarea rows="2" data-config-list="aptitudes" data-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+              </div>
+              {{/each}}
+            </details>
+
+            <details class="hs-panel hs-config-section" data-config-section="commonSkills" {{#if hs.configSections.commonSkills}}open{{/if}}>
+              <summary>
+                <span>Competences communes globales</span>
+                <button type="button" data-add-config-entry="commonSkills">+</button>
+              </summary>
+              {{#each hs.config.commonSkills}}
+              <div class="hs-config-entry hs-config-entry-skill">
+                <input type="text" value="{{label}}" data-config-list="commonSkills" data-index="{{@index}}" data-field="label" placeholder="Nom" />
+                <input type="number" value="{{value}}" data-config-list="commonSkills" data-index="{{@index}}" data-field="value" min="1" max="100" />
+                <button type="button" data-delete-config-entry="commonSkills" data-index="{{@index}}">x</button>
+                <textarea rows="2" data-config-list="commonSkills" data-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+              </div>
+              {{/each}}
+            </details>
+
+            <details class="hs-panel hs-config-section" data-config-section="categories" {{#if hs.configSections.categories}}open{{/if}}>
+              <summary>
+                <span>Categories d'inventaire</span>
+                <button type="button" data-add-category>+</button>
+              </summary>
+              {{#each hs.config.itemCategories}}
+              <div class="hs-config-entry hs-config-entry-category">
+                <input type="text" value="{{this}}" data-category-index="{{@index}}" />
+                <button type="button" data-delete-category="{{@index}}">x</button>
+              </div>
+              {{/each}}
+            </details>
+
+            <details class="hs-panel hs-config-section" data-config-section="states" {{#if hs.configSections.states}}open{{/if}}>
+              <summary>
+                <span>Etats de la barre</span>
+                <button type="button" data-add-state>+</button>
+              </summary>
+              {{#each hs.config.customStates}}
+              <div class="hs-config-entry hs-config-entry-state">
+                <button type="button" class="hs-state-icon-picker" data-pick-state-icon="{{@index}}" title="Choisir une icone">
+                  {{#if icon}}<img src="{{icon}}" alt="" />{{else}}<i class="fa-solid fa-circle-dot"></i>{{/if}}
+                </button>
+                <input type="text" value="{{name}}" data-state-index="{{@index}}" data-field="name" placeholder="Nom" />
+                <select data-state-index="{{@index}}" data-field="type">
+                  <option value="gauge" {{#if isGauge}}selected{{/if}}>Jauge</option>
+                  <option value="checkbox" {{#if isCheckbox}}selected{{/if}}>Case</option>
+                </select>
+                <input type="number" value="{{value}}" data-state-index="{{@index}}" data-field="value" placeholder="Actuel" />
+                <input type="number" value="{{max}}" data-state-index="{{@index}}" data-field="max" placeholder="Max" />
+                <input type="color" value="{{color}}" data-state-index="{{@index}}" data-field="color" title="Couleur de jauge" />
+                <button type="button" data-delete-state="{{@index}}">x</button>
+                <textarea rows="2" data-state-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+              </div>
+              {{/each}}
+            </details>
+
+            <details class="hs-panel hs-config-section" data-config-section="currencies" {{#if hs.configSections.currencies}}open{{/if}}>
+              <summary>
+                <span>Monnaies</span>
+                <button type="button" data-add-currency>+</button>
+              </summary>
+            {{#each hs.config.currencies}}
+            <div class="hs-config-entry hs-config-entry-currency">
+                <button type="button" class="hs-currency-icon-picker" data-pick-currency-icon="{{@index}}" title="Choisir une icone">
+                  {{#if icon}}<img src="{{icon}}" alt="" />{{else}}<i class="fa-solid fa-coins"></i>{{/if}}
+                </button>
+                <input type="text" value="{{label}}" data-currency-index="{{@index}}" data-field="label" placeholder="Nom" />
+                <input type="number" value="{{rate}}" data-currency-index="{{@index}}" data-field="rate" min="0" placeholder="Taux" title="Nombre de cette monnaie pour obtenir 1 monnaie liee" />
+                <select data-currency-index="{{@index}}" data-field="equivalentTo">
+                  <option value="">Sans lien</option>
+                  {{#each relationChoices}}
+                  <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+                  {{/each}}
+                </select>
+                <button type="button" data-delete-currency="{{@index}}">x</button>
+                <p>Exemple: taux 10 signifie que 10 {{label}} valent 1 monnaie liee.</p>
+              </div>
+              {{/each}}
+            </details>
+          </section>
+        </div>
+        {{/if}}
+      </section>
+    </main>
+  </section>
+</form>

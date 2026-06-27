@@ -1,0 +1,1512 @@
+/* =========================================================================
+   HolySheet — refonte "med-fan sombre & moderne"
+   Base thematisable. Memes classes que le template Handlebars Foundry v14.
+   Direction : fond cuir/parchemin fonce - accent emeraude - cases en verre
+   depoli - jauges = barres fines translucides a remplissage lumineux.
+
+   Theme par defaut applique sur la fiche : .hs-theme-cuir (cuir & laiton).
+   Themes disponibles (classe sur le conteneur racine .holysheet) :
+     .hs-theme-sobre   — hairlines, peu de glow, le plus calme
+     .hs-theme-lueur   — emeraude lumineuse (= rendu de base)
+     .hs-theme-cuir    — cuir chaud + laiton, cadres plus marques (defaut)
+   ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+
+.holysheet {
+  /* Typo */
+  --hs-title: "Cinzel", "Bookman Old Style", Georgia, serif;
+  --hs-body: "Spectral", "Palatino Linotype", Georgia, serif;
+
+  /* Encres */
+  --hs-ink: #ece1cd;
+  --hs-ink-strong: #fff6e6;
+  --hs-muted: #a3957c;
+
+  /* Fonds */
+  --hs-bg-0: #110e0a;
+  --hs-bg-1: #1a1610;
+  --hs-bg-2: #221d16;
+
+  /* Verre depoli */
+  --hs-glass: rgba(244, 234, 211, 0.055);
+  --hs-glass-2: rgba(244, 234, 211, 0.09);
+  --hs-glass-line: rgba(244, 234, 211, 0.16);
+  --hs-glass-line-soft: rgba(244, 234, 211, 0.1);
+
+  /* Accent emeraude */
+  --hs-accent: #34c98a;
+  --hs-accent-bright: #4ee0a2;
+  --hs-accent-deep: #126b4b;
+  --hs-accent-soft: rgba(52, 201, 138, 0.16);
+  --hs-accent-line: rgba(78, 224, 162, 0.42);
+  --hs-accent-glow: rgba(52, 201, 138, 0.42);
+
+  /* Laiton (secondaire, surtout theme cuir) */
+  --hs-brass: #c9a24e;
+  --hs-brass-soft: rgba(201, 162, 78, 0.22);
+
+  /* Banniere */
+  --hs-banner: linear-gradient(112deg, #0d1410 0%, #0f241b 52%, #103a2a 100%);
+  --hs-banner-edge: var(--hs-accent-line);
+
+  /* Radius + ombres */
+  --hs-r: 14px;
+  --hs-r-sm: 9px;
+  --hs-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --hs-shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.35);
+
+  background: var(--hs-bg-0);
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
+}
+
+/* Retire le parchemin/padding clair applique par la fenetre Foundry. */
+.window-app.holysheet .window-content,
+.app.holysheet .window-content {
+  padding: 0;
+  overflow: hidden;
+  background: var(--hs-bg-0);
+  color: var(--hs-ink);
+}
+.window-app.holysheet .window-content > form,
+.app.holysheet .window-content > form {
+  height: 100%;
+  overflow: auto;
+}
+
+/* ---- Surface du formulaire ------------------------------------------------ */
+.holysheet-character {
+  position: relative;
+  min-height: 100%;
+  overflow: auto;
+  color: var(--hs-ink);
+  background:
+    radial-gradient(900px 420px at 12% -6%, rgba(52, 201, 138, 0.1), transparent 60%),
+    radial-gradient(760px 380px at 96% 4%, rgba(201, 162, 78, 0.07), transparent 58%),
+    radial-gradient(1100px 700px at 50% 120%, rgba(52, 201, 138, 0.06), transparent 60%),
+    linear-gradient(160deg, var(--hs-bg-1), var(--hs-bg-0) 60%);
+}
+/* grain cuir discret */
+.holysheet-character::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    repeating-linear-gradient(122deg, rgba(255, 255, 255, 0.014) 0 1px, transparent 1px 7px),
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.02), transparent 40%);
+  mix-blend-mode: screen;
+}
+
+/* ---- Champs : verre depoli ----------------------------------------------- */
+.holysheet input,
+.holysheet textarea,
+.holysheet select {
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+  color: var(--hs-ink-strong);
+  font-family: inherit;
+  -webkit-backdrop-filter: blur(7px) saturate(1.1);
+  backdrop-filter: blur(7px) saturate(1.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
+}
+.holysheet input::placeholder,
+.holysheet textarea::placeholder {
+  color: rgba(232, 221, 198, 0.4);
+}
+.holysheet input:focus,
+.holysheet textarea:focus,
+.holysheet select:focus {
+  outline: none;
+  border-color: var(--hs-accent-line);
+  background: var(--hs-glass-2);
+  box-shadow:
+    0 0 0 3px var(--hs-accent-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.holysheet select option {
+  background: #1c1812;
+  color: var(--hs-ink-strong);
+}
+
+.holysheet button {
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+  color: var(--hs-ink);
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: border-color 130ms ease, color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+}
+.holysheet button:hover {
+  border-color: var(--hs-accent-line);
+  color: var(--hs-ink-strong);
+  box-shadow: 0 0 14px var(--hs-accent-soft);
+}
+
+.holysheet input[type="number"] {
+  width: 48px;
+  max-width: 48px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.holysheet input[type="number"]::-webkit-outer-spin-button,
+.holysheet input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* scrollbar */
+.holysheet-character::-webkit-scrollbar { width: 11px; height: 11px; }
+.holysheet-character::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: rgba(244, 234, 211, 0.16);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* =========================================================================
+   BANNIERE
+   ========================================================================= */
+.holysheet-character .hs-top-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-bottom: 24px;
+  background:
+    radial-gradient(760px 240px at 12% 0%, rgba(201, 162, 78, 0.09), transparent 62%),
+    linear-gradient(180deg, rgba(20, 16, 10, 0.99), rgba(20, 16, 10, 0.98));
+}
+
+.hs-banner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(280px, 0.85fr);
+  gap: 18px;
+  min-height: 104px;
+  padding: 18px 26px 22px 56px;
+  border-radius: 0 0 20px 20px;
+  background: var(--hs-banner);
+  color: var(--hs-ink-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--hs-shadow);
+}
+.hs-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.5;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.08) 44%, transparent 47%),
+    repeating-linear-gradient(140deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 10px);
+}
+.hs-banner::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 4%, var(--hs-accent) 26%, var(--hs-accent-bright) 50%, var(--hs-accent) 74%, transparent 96%);
+  box-shadow: 0 0 16px var(--hs-accent-glow);
+}
+
+.hs-gm-mode-toggle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: 34px;
+  height: 18px;
+  padding: 0;
+  border: 1px solid rgba(255, 246, 223, 0.4);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.32);
+  cursor: pointer;
+}
+.hs-gm-mode-toggle input { position: absolute; opacity: 0; }
+.hs-gm-mode-toggle span {
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+  border-radius: 50%;
+  background: #f3e6cd;
+  transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+.hs-gm-mode-toggle input:checked + span {
+  transform: translateX(15px);
+  background: var(--hs-accent-bright);
+  box-shadow: 0 0 10px var(--hs-accent-glow);
+}
+
+.hs-banner-title {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.hs-banner-title .hs-name {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+}
+.hs-banner-title .hs-name:focus {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none;
+}
+.hs-banner-title .hs-name-medium { font-size: 34px; }
+.hs-banner-title .hs-name-long { font-size: 29px; }
+.hs-banner-title .hs-name-tiny { font-size: 24px; }
+.hs-banner-title .hs-name::placeholder { color: rgba(255, 246, 223, 0.55); }
+
+.hs-banner-meta {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 76px;
+  gap: 10px;
+  align-self: center;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 246, 223, 0.14);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.24);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.hs-banner-meta.hs-banner-meta-no-level { grid-template-columns: 1fr 1fr; }
+.hs-banner-meta label {
+  display: grid;
+  gap: 4px;
+  color: rgba(255, 246, 223, 0.74);
+  font-family: var(--hs-title);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hs-banner-meta input {
+  height: 28px;
+  border-radius: 8px;
+  border-color: rgba(255, 246, 223, 0.18);
+  background: rgba(255, 246, 223, 0.1);
+  color: var(--hs-ink-strong);
+}
+.hs-banner-meta input[type="number"] { width: 100%; max-width: 100%; }
+
+/* =========================================================================
+   APTITUDES — pastilles rondes en verre depoli
+   ========================================================================= */
+.hs-banner-aptitudes {
+  position: relative;
+  z-index: 22;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(3px, 0.7vw, 8px);
+  margin: -15px 54px 0 220px;
+  min-width: 0;
+}
+.hs-aptitude-card {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+  gap: 5px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 54px;
+  border: 0;
+  background: transparent;
+}
+.holysheet .hs-aptitude-card input {
+  width: min(100%, 44px);
+  max-width: 44px;
+  height: auto;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.1), transparent 60%),
+    var(--hs-glass-2);
+  -webkit-backdrop-filter: blur(9px) saturate(1.15);
+  backdrop-filter: blur(9px) saturate(1.15);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: clamp(13px, 1.25vw, 18px);
+  font-weight: 700;
+  text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 22px rgba(0, 0, 0, 0.4);
+}
+.holysheet .hs-aptitude-card input:focus {
+  border-color: var(--hs-accent-line);
+  box-shadow:
+    0 0 0 3px var(--hs-accent-soft),
+    0 0 22px var(--hs-accent-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.hs-aptitude-card button {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 21px;
+  padding: 2px clamp(2px, 0.55vw, 7px);
+  border: 1px solid var(--hs-glass-line);
+  border-radius: 999px;
+  background: var(--hs-glass);
+  color: var(--hs-ink);
+  font-family: var(--hs-title);
+  font-size: clamp(8px, 0.75vw, 10px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+.hs-aptitude-card button:hover {
+  border-color: var(--hs-accent-line);
+  color: var(--hs-accent-bright);
+  box-shadow: 0 0 14px var(--hs-accent-soft);
+}
+.hs-aptitude-card button span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   SHELL : panneau gauche + contenu
+   ========================================================================= */
+.hs-sheet-shell {
+  display: grid;
+  grid-template-columns: minmax(196px, 25%) minmax(0, 1fr);
+  gap: 16px;
+  padding: 6px 54px 18px 14px;
+}
+
+.hs-left-panel {
+  position: sticky;
+  top: 134px;
+  align-self: start;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background:
+    linear-gradient(180deg, rgba(40, 35, 28, 0.6), rgba(22, 19, 14, 0.66));
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  backdrop-filter: blur(12px) saturate(1.1);
+  box-shadow: var(--hs-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  color: var(--hs-ink);
+}
+
+/* Portrait */
+.holysheet-character .hs-portrait-ring {
+  position: relative;
+  width: calc(100% - 8px);
+  max-width: 196px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--hs-accent-line);
+  border-radius: var(--hs-r);
+  background: #0c0a07;
+  box-shadow:
+    inset 0 0 0 4px rgba(52, 201, 138, 0.16),
+    inset 0 0 40px rgba(0, 0, 0, 0.6),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+}
+.holysheet-character .hs-portrait-ring .profile-img {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: calc(var(--hs-r) - 2px);
+  object-fit: cover;
+  transform-origin: center;
+}
+
+.hs-portrait-controls {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+}
+.hs-portrait-controls label {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 6px;
+  align-items: center;
+  color: var(--hs-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.holysheet input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(244, 234, 211, 0.14);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.holysheet input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #0c0a07;
+  border-radius: 50%;
+  background: var(--hs-accent-bright);
+  box-shadow: 0 0 10px var(--hs-accent-glow);
+  cursor: pointer;
+}
+
+/* =========================================================================
+   ORBES PV / ARMURE
+   ========================================================================= */
+.hs-resource-orbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  justify-items: center;
+}
+.hs-resource-orb,
+.hs-armor-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 86px;
+  min-height: 96px;
+  text-align: center;
+}
+.hs-resource-orb input[name$=".value"] {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  max-width: 70px;
+  height: 70px;
+  border: 1px solid var(--hs-accent-line);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.12), transparent 55%),
+    radial-gradient(circle at 50% 120%, var(--hs-accent-soft), transparent 60%),
+    var(--hs-glass-2);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 18px var(--hs-accent-soft),
+    0 8px 18px rgba(0, 0, 0, 0.4);
+}
+.hs-resource-orb input[name$=".value"] { padding-bottom: 12px; }
+.hs-resource-orb small {
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  transform: translateX(-50%);
+  color: rgba(255, 247, 228, 0.66);
+  font-size: 11px;
+  font-weight: 700;
+}
+.hs-resource-orb small input {
+  width: 26px;
+  max-width: 26px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: rgba(255, 247, 228, 0.82);
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+}
+.hs-resource-orb span {
+  margin-top: 5px;
+  color: var(--hs-muted);
+  font-family: var(--hs-title);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hs-armor-orb::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72px;
+  height: 84px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent-deep));
+  clip-path: polygon(50% 0, 100% 0, 100% 52%, 78% 88%, 50% 100%, 22% 88%, 0 52%, 0 0);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+  box-shadow: 0 0 18px var(--hs-accent-soft);
+}
+.hs-armor-orb i {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 64px;
+  height: 75px;
+  border: 0;
+  border-radius: 0;
+  font-size: 0;
+  transform: none;
+  background:
+    radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.18), transparent 55%),
+    var(--hs-glass-2);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  clip-path: polygon(50% 0, 100% 0, 100% 52%, 78% 88%, 50% 100%, 22% 88%, 0 52%, 0 0);
+  box-shadow: none;
+}
+.hs-armor-orb strong {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  z-index: 2;
+  width: auto;
+  max-width: none;
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transform: translate(-50%, -50%);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 26px;
+  font-weight: 800;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* =========================================================================
+   ETATS / JAUGES CUSTOM — barres fines translucides a remplissage lumineux
+   ========================================================================= */
+.hs-custom-states {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.hs-empty-state {
+  grid-column: 1 / -1;
+  padding: 8px;
+  color: var(--hs-muted);
+  font-style: italic;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* Etats a cocher = jetons */
+.hs-state-token {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 5px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: rgba(12, 10, 7, 0.44);
+  color: var(--hs-muted);
+  cursor: pointer;
+  overflow: hidden;
+}
+.hs-state-token::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: 0;
+  border-radius: 7px;
+  pointer-events: none;
+}
+.hs-state-token img {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  border: 1px solid rgba(244, 234, 211, 0.18);
+  border-radius: 6px;
+  background: rgba(12, 10, 7, 0.42);
+  object-fit: contain;
+  opacity: 0.76;
+}
+.holysheet button.hs-state-token.active {
+  border-color: var(--hs-state-color, var(--hs-accent-line));
+  background: rgba(12, 10, 7, 0.5);
+  box-shadow:
+    0 0 12px var(--hs-state-color, var(--hs-accent)),
+    inset 0 0 0 1px rgba(255, 246, 223, 0.12);
+}
+.holysheet button.hs-state-token.active::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.08)),
+    var(--hs-state-color, var(--hs-accent));
+}
+.holysheet button.hs-state-token.active:hover {
+  border-color: var(--hs-state-color, var(--hs-accent-line));
+  background: rgba(12, 10, 7, 0.56);
+}
+.holysheet button.hs-state-token.active:hover::before {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0.06)),
+    var(--hs-state-color, var(--hs-accent));
+}
+.hs-state-token.active img {
+  border-color: rgba(255, 246, 223, 0.54);
+  background: rgba(12, 10, 7, 0.46);
+  opacity: 1;
+  box-shadow: inset 0 0 0 1px rgba(12, 10, 7, 0.45);
+}
+
+/* Jauges = barre fine pleine largeur */
+.hs-state-gauge {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+}
+.hs-state-gauge > img { width: 22px; height: 22px; object-fit: contain; opacity: 0.85; }
+.hs-state-gauge > i { width: 22px; text-align: center; color: var(--hs-state-color, var(--hs-accent)); opacity: 0.85; }
+.hs-state-gauge-track { display: grid; gap: 6px; min-width: 0; }
+.hs-state-gauge-track span {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  color: var(--hs-ink);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.hs-state-gauge-track span::after {
+  content: attr(data-readout);
+  color: var(--hs-muted);
+  font-variant-numeric: tabular-nums;
+}
+/* la barre elle-meme (input range custom) */
+.hs-state-gauge input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 9px;
+  padding: 0;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  background-image:
+    linear-gradient(90deg,
+      var(--hs-state-color, var(--hs-accent)) 0 var(--hs-state-fill, 50%),
+      rgba(255, 255, 255, 0.08) var(--hs-state-fill, 50%) 100%);
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 0 10px var(--hs-state-color, var(--hs-accent));
+}
+.hs-state-gauge input[type="range"]::-webkit-slider-runnable-track {
+  height: 9px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg,
+      var(--hs-state-color, var(--hs-accent)) 0 var(--hs-state-fill, 50%),
+      rgba(255, 255, 255, 0.08) var(--hs-state-fill, 50%) 100%);
+}
+.hs-state-gauge input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -3px;
+  border: 2px solid rgba(7, 12, 9, 0.85);
+  border-radius: 50%;
+  background: var(--hs-state-color, #fff);
+  box-shadow: 0 0 8px var(--hs-state-color, var(--hs-accent));
+  cursor: pointer;
+}
+.hs-state-gauge input[type="range"]::-moz-range-track {
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+.hs-state-gauge input[type="range"]::-moz-range-progress {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--hs-state-color, var(--hs-accent));
+}
+.hs-state-gauge input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(7, 12, 9, 0.85);
+  border-radius: 50%;
+  background: var(--hs-state-color, #fff);
+  box-shadow: 0 0 8px var(--hs-state-color, var(--hs-accent));
+  cursor: pointer;
+}
+
+/* =========================================================================
+   CONTENU + ONGLETS EN ICONES
+   ========================================================================= */
+.hs-content-panel { position: relative; min-width: 0; padding-right: 8px; }
+
+.holysheet-character .hs-icon-tabs {
+  position: absolute;
+  top: 0;
+  right: -46px;
+  z-index: 10;
+  display: grid;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: rgba(15, 13, 9, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--hs-shadow);
+}
+.holysheet-character .hs-icon-tabs .item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--hs-muted);
+  font-size: 15px;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 130ms ease, color 130ms ease, transform 130ms ease, box-shadow 130ms ease;
+}
+.holysheet-character .hs-icon-tabs .item i {
+  margin: 0;
+  line-height: 1;
+}
+.holysheet-character .hs-icon-tabs .item:hover {
+  background: var(--hs-glass-2);
+  color: var(--hs-accent-bright);
+  transform: translateX(-2px);
+}
+.holysheet-character .hs-icon-tabs .item.active {
+  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent-deep));
+  color: #07150f;
+  box-shadow: 0 0 18px var(--hs-accent-glow);
+}
+
+.holysheet-character .sheet-body { min-height: 520px; padding: 0; background: transparent; }
+.holysheet-character .tab { display: none; }
+.holysheet-character .tab.active { display: block; }
+
+/* =========================================================================
+   PANNEAUX
+   ========================================================================= */
+.hs-panel {
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background:
+    linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px) saturate(1.08);
+  backdrop-filter: blur(12px) saturate(1.08);
+  box-shadow: var(--hs-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+.hs-panel h2,
+.hs-panel h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--hs-glass-line-soft);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hs-panel h2::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent-deep));
+  box-shadow: 0 0 12px var(--hs-accent-glow);
+}
+.hs-panel-actions { display: inline-flex; gap: 5px; margin-left: auto; }
+
+.hs-panel textarea { width: 100%; min-height: 150px; resize: vertical; line-height: 1.55; padding: 10px 12px; }
+
+/* boutons d'action ronds */
+.holysheet button[data-create-special-skill],
+.holysheet button[data-create-equipment],
+.holysheet .hs-panel h2 > button {
+  min-width: 26px;
+  height: 26px;
+  margin-left: auto;
+  padding: 0 9px;
+  border-radius: 999px;
+  border-color: var(--hs-accent-line);
+  color: var(--hs-accent-bright);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+.holysheet .hs-icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 8px;
+  font-size: 11px;
+}
+
+/* =========================================================================
+   COMPETENCES
+   ========================================================================= */
+.hs-skill-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+.hs-list-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: 9px;
+  transition: background 120ms ease;
+}
+.hs-list-row:hover { background: var(--hs-accent-soft); }
+.hs-list-row > button[data-roll] {
+  justify-self: start;
+  padding: 3px 6px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
+  font-size: 14px;
+  text-align: left;
+}
+.hs-list-row > button[data-roll]::before {
+  content: "\f6cf"; /* dice-d20 */
+  font-family: "Font Awesome 6 Free", "FontAwesome";
+  font-weight: 900;
+  margin-right: 8px;
+  color: var(--hs-accent);
+  opacity: 0.55;
+  font-size: 12px;
+}
+.hs-list-row > button[data-roll]:hover { color: var(--hs-accent-bright); box-shadow: none; }
+.hs-list-row > button[data-roll]:hover::before { opacity: 1; }
+.hs-list-row input[type="number"] {
+  height: 30px;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 8px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.hs-special-skill { grid-template-columns: minmax(0, 1fr) 52px 26px 26px; }
+.hs-hidden-field { display: none; }
+
+/* =========================================================================
+   INVENTAIRE + MONNAIES
+   ========================================================================= */
+.hs-currencies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
+  gap: 10px;
+  align-items: start;
+}
+.hs-currencies h2 { grid-column: 1 / -1; }
+.hs-currencies label {
+  display: grid;
+  grid-template-columns: 24px max-content 56px;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: 999px;
+  background: var(--hs-glass);
+  font-family: var(--hs-title);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.hs-currencies img { width: 22px; height: 22px; object-fit: contain; }
+.hs-currencies input[type="number"] { width: 56px; max-width: 56px; height: 26px; }
+
+.hs-inventory-group { margin-bottom: 14px; }
+.hs-inventory-group > h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 6px;
+  color: var(--hs-accent-bright);
+  font-family: var(--hs-title);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.hs-inventory-group > h3::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--hs-accent-soft), transparent);
+}
+.hs-inventory-row {
+  display: grid;
+  grid-template-columns: 32px 22px minmax(0, 1fr) 78px 26px 26px;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.hs-inventory-row:hover { background: var(--hs-glass); border-color: var(--hs-glass-line-soft); }
+.hs-item-image {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: 8px;
+  background: rgba(12, 10, 7, 0.55);
+}
+.hs-item-image img {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  object-fit: cover;
+}
+.hs-item-quantity {
+  display: grid;
+  grid-template-columns: 20px 26px 20px;
+  gap: 2px;
+  align-items: center;
+  height: 26px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--hs-glass);
+  border: 1px solid var(--hs-glass-line-soft);
+}
+.hs-item-quantity strong { color: var(--hs-ink-strong); font-size: 13px; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; }
+.hs-item-quantity button { width: 20px; height: 20px; padding: 0; border-radius: 6px; font-size: 12px; line-height: 1; }
+.hs-equip-toggle { width: 16px; height: 16px; accent-color: var(--hs-accent); }
+.hs-equip-placeholder { display: block; width: 16px; }
+.hs-item-name { min-width: 0; overflow: hidden; color: var(--hs-ink-strong); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.hs-armor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--hs-accent-soft);
+  color: var(--hs-accent-bright);
+  font-size: 11px;
+  font-weight: 800;
+}
+.hs-item-price { color: var(--hs-muted); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* =========================================================================
+   CONFIGURATION GM
+   ========================================================================= */
+.hs-config-layout { display: grid; gap: 10px; }
+.hs-config-section { padding: 0; overflow: hidden; }
+.hs-config-section summary {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 14px;
+  list-style: none;
+  cursor: pointer;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hs-config-section summary::-webkit-details-marker { display: none; }
+.hs-config-section summary::before {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--hs-accent-soft);
+  color: var(--hs-accent-bright);
+  font-size: 15px;
+}
+.hs-config-section[open] summary::before { content: "\2212"; }
+.hs-config-section summary > span { justify-self: start; }
+.hs-config-section > :not(summary) { margin: 0 14px 12px; }
+.hs-config-toggles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+.hs-config-toggles label { display: flex; gap: 9px; align-items: center; font-size: 13px; }
+.hs-config-toggles input[type="checkbox"] { accent-color: var(--hs-accent); width: 16px; height: 16px; }
+.hs-config-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px 64px auto;
+  gap: 7px;
+  align-items: start;
+  margin-bottom: 9px;
+  padding: 9px;
+  border: 1px solid var(--hs-glass-line-soft);
+  border-radius: 10px;
+  background: var(--hs-glass);
+}
+.hs-config-entry textarea { grid-column: 1 / -1; min-height: 0; }
+.hs-config-entry-skill { grid-template-columns: minmax(0, 1fr) 64px auto; }
+
+/* =========================================================================
+   FICHE OBJET (.holysheet-equipment)
+   ========================================================================= */
+.holysheet-equipment {
+  padding: 14px;
+  color: var(--hs-ink);
+  background:
+    radial-gradient(700px 360px at 14% -10%, rgba(52, 201, 138, 0.1), transparent 60%),
+    linear-gradient(160deg, var(--hs-bg-1), var(--hs-bg-0) 60%);
+}
+.holysheet-equipment .hs-item-header {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-height: 110px;
+  padding: 14px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.5), rgba(22, 19, 14, 0.55));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.holysheet-equipment .hs-item-header > div { min-width: 0; }
+.holysheet-equipment .hs-item-header .profile-img {
+  width: 96px;
+  height: 96px;
+  border: 1px solid var(--hs-accent-line);
+  border-radius: var(--hs-r-sm);
+  object-fit: cover;
+  box-shadow: inset 0 0 0 3px rgba(52, 201, 138, 0.16), 0 8px 18px rgba(0, 0, 0, 0.4);
+}
+.holysheet-equipment .hs-item-header .hs-name {
+  width: 100%;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 26px;
+  font-weight: 700;
+  resize: none;
+}
+.holysheet-equipment .hs-item-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  align-items: end;
+}
+.holysheet-equipment .hs-item-fields label {
+  display: grid;
+  gap: 5px;
+  flex: 1 1 96px;
+  min-width: 0;
+  color: var(--hs-muted);
+  font-family: var(--hs-title);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.holysheet-equipment .hs-item-fields label:first-child { flex: 2 1 150px; }
+.holysheet-equipment .hs-item-fields input,
+.holysheet-equipment .hs-item-fields select { height: 30px; width: 100%; }
+.holysheet-equipment .hs-item-fields input[type="checkbox"] { width: 18px; height: 18px; justify-self: start; accent-color: var(--hs-accent); }
+.holysheet-equipment .hs-item-fields input[type="number"] { width: 100%; max-width: 100%; }
+.holysheet-equipment textarea { width: 100%; min-height: 160px; margin-top: 12px; resize: vertical; line-height: 1.55; padding: 10px 12px; }
+
+/* =========================================================================
+   FICHE PNJ (.holysheet-npc) — page unique, sans onglets
+   ========================================================================= */
+.holysheet-npc {
+  display: block;
+  padding: 16px;
+  color: var(--hs-ink);
+  background:
+    radial-gradient(700px 360px at 12% -8%, rgba(201, 162, 78, 0.12), transparent 60%),
+    linear-gradient(160deg, var(--hs-bg-1), var(--hs-bg-0) 60%);
+}
+.holysheet-npc .hs-npc-head {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.holysheet-npc .hs-portrait-ring {
+  position: relative;
+  width: 150px;
+  max-width: 150px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--hs-accent-line);
+  border-radius: var(--hs-r);
+  background: #0c0a07;
+  box-shadow:
+    inset 0 0 0 4px rgba(52, 201, 138, 0.16),
+    inset 0 0 40px rgba(0, 0, 0, 0.6),
+    0 10px 24px rgba(0, 0, 0, 0.4);
+}
+.holysheet-npc .hs-portrait-ring .profile-img {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: calc(var(--hs-r) - 2px);
+  object-fit: cover;
+}
+.holysheet-npc .hs-npc-id { display: grid; gap: 14px; min-width: 0; align-content: center; }
+.holysheet-npc .hs-name {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+.holysheet-npc .hs-name:focus {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none;
+}
+.holysheet-npc .hs-name-medium { font-size: 26px; }
+.holysheet-npc .hs-name-long { font-size: 22px; }
+.holysheet-npc .hs-name-tiny { font-size: 19px; }
+.holysheet-npc .hs-resource-orbs {
+  grid-template-columns: repeat(2, max-content);
+  justify-content: start;
+  width: auto;
+  gap: 18px;
+}
+.holysheet-npc .hs-banner-aptitudes {
+  position: static;
+  flex-wrap: wrap;
+  margin: 0 0 14px;
+  justify-content: center;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.holysheet-npc .hs-custom-states {
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r);
+  background: linear-gradient(180deg, rgba(40, 35, 28, 0.46), rgba(22, 19, 14, 0.5));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* =========================================================================
+   THEME : SOBRE — hairlines, peu de glow
+   ========================================================================= */
+.hs-theme-sobre {
+  --hs-accent: #43b489;
+  --hs-accent-bright: #5cc79b;
+  --hs-accent-line: rgba(92, 199, 155, 0.34);
+  --hs-accent-glow: rgba(67, 180, 137, 0.22);
+  --hs-accent-soft: rgba(67, 180, 137, 0.1);
+  --hs-glass-line: rgba(244, 234, 211, 0.13);
+  --hs-banner: linear-gradient(115deg, #11100c 0%, #16201b 60%, #18241e 100%);
+  --hs-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  --hs-shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.3);
+  --hs-r: 10px;
+  --hs-r-sm: 7px;
+}
+.hs-theme-sobre .hs-banner::after { box-shadow: none; height: 1px; }
+.hs-theme-sobre .hs-aptitude-card input { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
+.hs-theme-sobre .holysheet-character .hs-icon-tabs .item.active,
+.hs-theme-sobre .hs-armor-orb i { box-shadow: none; }
+.hs-theme-sobre .hs-resource-orb input[name$=".value"],
+.hs-theme-sobre .hs-armor-orb strong { box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 14px rgba(0,0,0,0.35); }
+.hs-theme-sobre .hs-panel h2::before { box-shadow: none; }
+
+/* =========================================================================
+   THEME : LUEUR — = base, on accentue juste un peu le halo
+   ========================================================================= */
+.hs-theme-lueur {
+  --hs-accent: #2fd398;
+  --hs-accent-bright: #56f0b6;
+  --hs-accent-glow: rgba(47, 211, 152, 0.55);
+  --hs-accent-soft: rgba(47, 211, 152, 0.2);
+  --hs-accent-line: rgba(86, 240, 182, 0.5);
+}
+.hs-theme-lueur .hs-banner { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 44px rgba(0,0,0,0.5), 0 0 60px rgba(47,211,152,0.08); }
+.hs-theme-lueur .hs-aptitude-card input:focus,
+.hs-theme-lueur .holysheet-character .hs-icon-tabs .item.active { box-shadow: 0 0 26px var(--hs-accent-glow); }
+
+/* =========================================================================
+   THEME : CUIR & LAITON — chaud, laiton, cadres marques (DEFAUT)
+   ========================================================================= */
+.hs-theme-cuir {
+  --hs-ink: #ede0c4;
+  --hs-ink-strong: #fff3d8;
+  --hs-bg-0: #14100a;
+  --hs-bg-1: #211a10;
+  --hs-accent: #3bbf86;
+  --hs-accent-bright: #54d79e;
+  --hs-accent-line: rgba(201, 162, 78, 0.5);   /* bordures laiton */
+  --hs-accent-soft: rgba(201, 162, 78, 0.16);
+  --hs-glass: rgba(247, 230, 196, 0.06);
+  --hs-glass-2: rgba(247, 230, 196, 0.1);
+  --hs-glass-line: rgba(201, 162, 78, 0.34);
+  --hs-glass-line-soft: rgba(201, 162, 78, 0.2);
+  --hs-banner: linear-gradient(115deg, #160f08 0%, #2a1c0d 55%, #3a2a12 100%);
+}
+.hs-theme-cuir .holysheet-character {
+  background:
+    radial-gradient(900px 440px at 12% -6%, rgba(201, 162, 78, 0.12), transparent 60%),
+    radial-gradient(800px 400px at 92% 6%, rgba(59, 191, 134, 0.08), transparent 58%),
+    linear-gradient(160deg, #221a10, #14100a 62%);
+}
+.hs-theme-cuir .hs-banner::after {
+  background: linear-gradient(90deg, transparent 4%, var(--hs-brass) 26%, #eccd80 50%, var(--hs-brass) 74%, transparent 96%);
+  box-shadow: 0 0 16px var(--hs-brass-soft);
+}
+.hs-theme-cuir .hs-portrait-ring,
+.hs-theme-cuir .hs-aptitude-card input,
+.hs-theme-cuir .hs-resource-orb input[name$=".value"],
+.hs-theme-cuir .hs-armor-orb strong { border-width: 2px; }
+.hs-theme-cuir .hs-panel h2::before,
+.hs-theme-cuir .holysheet-character .hs-icon-tabs .item.active {
+  background: linear-gradient(180deg, #eccd80, var(--hs-brass));
+  color: #2a1c0d;
+}
+.hs-theme-cuir .hs-armor-orb::before { background: linear-gradient(180deg, #eccd80, var(--hs-brass)); }
+.hs-theme-cuir .hs-inventory-group > h3 { color: var(--hs-brass); }
+.hs-theme-cuir .hs-inventory-group > h3::after { background: linear-gradient(90deg, var(--hs-brass-soft), transparent); }
+.hs-theme-cuir .holysheet-character .hs-icon-tabs .item:hover { color: var(--hs-brass); }
+
+/* =========================================================================
+   COMPLEMENTS SYSTEME — elements du template Foundry hors maquette
+   (config monnaies / categories / etats, selecteurs d'icone, dialogues,
+   carte de chat). Stylises dans la meme direction sombre / verre depoli.
+   ========================================================================= */
+
+/* Config : etat de la barre (icone + nom + type + val + max + couleur + suppr.) */
+.hs-config-entry-state {
+  grid-template-columns: 30px minmax(120px, 1fr) 86px 48px 48px 34px auto;
+  align-items: center;
+}
+.hs-config-entry-state textarea { grid-column: 1 / -1; }
+.holysheet .hs-config-entry-state input[type="color"] {
+  width: 34px;
+  max-width: 34px;
+  height: 28px;
+  padding: 2px;
+}
+
+/* Config : categories d'inventaire (nom + suppr.) */
+.hs-config-entry-category {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+/* Config : monnaies (icone + nom + taux + lien + suppr. + aide) */
+.hs-config-entry-currency {
+  grid-template-columns: 30px minmax(130px, 1fr) 56px minmax(120px, 0.9fr) auto;
+  align-items: center;
+}
+.holysheet .hs-config-entry-currency input[data-field="rate"] { width: 100%; max-width: 100%; }
+.hs-config-entry-currency p {
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+  color: var(--hs-muted);
+  font-size: 11px;
+}
+
+/* Selecteurs d'icone (monnaie / etat) */
+.holysheet .hs-currency-icon-picker,
+.holysheet .hs-state-icon-picker {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: var(--hs-r-sm);
+}
+.hs-currency-icon-picker img,
+.hs-state-icon-picker img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border: 0;
+}
+
+/* Petits boutons de suppression "x" dans les entrees de config */
+.holysheet [data-delete-config-entry],
+.holysheet [data-delete-category],
+.holysheet [data-delete-state],
+.holysheet [data-delete-currency] {
+  width: 26px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+/* =========================================================================
+   DIALOGUE D'AJUSTEMENT DE MONNAIE (rendu hors fiche, autonome)
+   ========================================================================= */
+.hs-currency-dialog { display: grid; gap: 8px; }
+.hs-currency-dialog-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 90px;
+  gap: 8px;
+  align-items: center;
+}
+.hs-currency-dialog-row input { text-align: right; }
+
+/* =========================================================================
+   CARTE DE CHAT (jets D100) — autonome, sombre med-fan
+   ========================================================================= */
+.holysheet-chat-card {
+  padding: 8px 12px;
+  border: 1px solid rgba(201, 162, 78, 0.4);
+  border-radius: 10px;
+  background: linear-gradient(160deg, #221a10, #14100a);
+  color: #ede0c4;
+}
+.holysheet-chat-card h3 {
+  margin: 0 0 6px;
+  border: 0;
+  color: #fff3d8;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+.holysheet-chat-card ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.holysheet-chat-card strong { color: #54d79e; }
+
+/* =========================================================================
+   PETITS ECRANS
+   ========================================================================= */
+@media (max-width: 760px) {
+  .hs-banner { grid-template-columns: 1fr; }
+  .hs-banner-aptitudes { justify-content: center; margin: -14px 12px 0; }
+  .hs-aptitude-card { min-width: 0; max-width: 46px; }
+  .hs-sheet-shell { grid-template-columns: 1fr; padding-right: 12px; }
+  .hs-left-panel { position: relative; top: auto; }
+  .holysheet-character .hs-icon-tabs { position: sticky; top: 8px; right: auto; grid-auto-flow: column; }
+  .holysheet-npc .hs-npc-head { grid-template-columns: 1fr; justify-items: center; }
+  .hs-config-entry-state,
+  .hs-config-entry-currency { grid-template-columns: 1fr; }
+}

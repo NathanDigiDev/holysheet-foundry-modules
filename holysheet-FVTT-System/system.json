@@ -1,0 +1,52 @@
+{
+  "id": "holysheet",
+  "type": "system",
+  "title": "HolySheet",
+  "description": "Systeme D100 simple, generique et customisable pour Foundry Virtual Tabletop.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14.364"
+  },
+  "authors": [
+    {
+      "name": "HalTorns"
+    },
+    {
+      "name": "Nathantenpouin"
+    }
+  ],
+  "media": [],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Francais",
+      "path": "lang/fr.json"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/holysheet.css"
+  ],
+  "template": "template.json",
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    },
+    "Item": {
+      "equipment": {
+        "htmlFields": [
+          "description",
+          "notes"
+        ]
+      }
+    }
+  },
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  }
+}

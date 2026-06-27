@@ -1,0 +1,75 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc"
+    ],
+    "templates": {
+      "identity": {
+        "archetype": "",
+        "origin": "",
+        "description": "",
+        "history": "",
+        "level": 1,
+        "portrait": {
+          "x": 50,
+          "y": 35,
+          "scale": 1
+        }
+      },
+      "resources": {
+        "resources": {
+          "pv": {
+            "value": 10,
+            "max": 10
+          },
+          "armure": {
+            "value": 0
+          }
+        }
+      },
+      "rolls": {
+        "aptitudeValues": {},
+        "commonSkillValues": {},
+        "specialSkills": [],
+        "rollModifiers": {}
+      },
+      "custom": {
+        "currencies": {},
+        "customStates": {}
+      }
+    },
+    "character": {
+      "templates": [
+        "identity",
+        "resources",
+        "rolls",
+        "custom"
+      ]
+    },
+    "npc": {
+      "templates": [
+        "identity",
+        "resources",
+        "rolls",
+        "custom"
+      ]
+    }
+  },
+  "Item": {
+    "types": [
+      "equipment"
+    ],
+    "equipment": {
+      "category": "Divers",
+      "description": "",
+      "quantity": 1,
+      "price": "",
+      "prices": {},
+      "equipable": false,
+      "equipped": false,
+      "armorValue": 0,
+      "notes": ""
+    }
+  }
+}
