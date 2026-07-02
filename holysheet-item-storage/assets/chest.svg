@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Chest">
+  <defs>
+    <linearGradient id="wood" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#4a2c16"/>
+      <stop offset="1" stop-color="#1b1009"/>
+    </linearGradient>
+    <linearGradient id="brass" x1="0" x2="1">
+      <stop offset="0" stop-color="#eccd80"/>
+      <stop offset="1" stop-color="#9f7424"/>
+    </linearGradient>
+  </defs>
+  <rect x="26" y="78" width="204" height="142" rx="18" fill="url(#wood)" stroke="#c9a24e" stroke-width="8"/>
+  <path d="M42 92c7-38 38-60 86-60s79 22 86 60" fill="#2b190d" stroke="#c9a24e" stroke-width="8"/>
+  <path d="M26 112h204" stroke="#eccd80" stroke-width="12"/>
+  <path d="M78 82v138M178 82v138" stroke="#c9a24e" stroke-width="10"/>
+  <rect x="103" y="108" width="50" height="64" rx="8" fill="url(#brass)" stroke="#fff6e6" stroke-width="4"/>
+  <circle cx="128" cy="137" r="8" fill="#110e0a"/>
+  <path d="M128 145v18" stroke="#110e0a" stroke-width="7" stroke-linecap="round"/>
+</svg>

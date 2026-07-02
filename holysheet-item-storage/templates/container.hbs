@@ -1,0 +1,66 @@
+{{#if missing}}
+  <section class="his-shell">
+    <p class="his-empty">{{localize "HIS.MissingContainer"}}</p>
+  </section>
+{{else}}
+  <section class="his-shell">
+    <header class="his-hero">
+      {{#if isGM}}
+        <button type="button" class="his-hero__image-button" data-action="pickIcon" title="{{localize "HIS.PickImage"}}">
+          <img class="his-hero__image" src="{{image}}" alt="{{item.name}}" />
+        </button>
+      {{else}}
+        <img class="his-hero__image" src="{{image}}" alt="{{item.name}}" />
+      {{/if}}
+      <div class="his-hero__body">
+        {{#if isGM}}
+          <label class="his-field">
+            <span>{{localize "HIS.Name"}}</span>
+            <input type="text" name="name" value="{{item.name}}" />
+          </label>
+        {{else}}
+          <h2>{{item.name}}</h2>
+        {{/if}}
+      </div>
+    </header>
+
+    {{#if isGM}}
+      <label class="his-field">
+        <span>{{localize "HIS.Note"}}</span>
+        <textarea name="note" rows="3">{{note}}</textarea>
+      </label>
+    {{else if note}}
+      <p class="his-note">{{note}}</p>
+    {{/if}}
+
+    <section class="his-list" data-container-drop aria-label="{{localize "HIS.Contents"}}">
+      {{#if empty}}
+        <p class="his-empty">
+          {{#if isGM}}{{localize "HIS.EmptyGM"}}{{else}}{{localize "HIS.Empty"}}{{/if}}
+        </p>
+      {{else}}
+        {{#each contents}}
+          <article class="his-entry" data-entry-id="{{id}}">
+            <img src="{{img}}" alt="{{name}}" />
+            <div class="his-entry__main">
+              <strong>{{name}}</strong>
+              {{#if showQuantity}}
+                <span>{{localize "HIS.Quantity"}} {{quantity}}</span>
+              {{/if}}
+            </div>
+            <div class="his-entry__actions">
+              <button type="button" data-action="takeEntry" data-entry-id="{{id}}" title="{{localize "HIS.Take"}}">
+                <i class="fa-solid fa-hand"></i>
+              </button>
+              {{#if ../isGM}}
+                <button type="button" data-action="removeEntry" data-entry-id="{{id}}" title="{{localize "HIS.Remove"}}">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              {{/if}}
+            </div>
+          </article>
+        {{/each}}
+      {{/if}}
+    </section>
+  </section>
+{{/if}}
