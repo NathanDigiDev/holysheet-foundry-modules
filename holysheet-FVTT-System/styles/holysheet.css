@@ -84,21 +84,6 @@
 .application.holysheet .window-header {
   font-family: var(--font-primary, sans-serif);
 }
-.window-app.holysheet .window-header :is(button, .header-control, .window-control),
-.app.holysheet .window-header :is(button, .header-control, .window-control),
-.application.holysheet .window-header :is(button, .header-control, .window-control) {
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-.window-app.holysheet .window-header :is(.fa-solid, .fa-regular, .fa-brands, i),
-.app.holysheet .window-header :is(.fa-solid, .fa-regular, .fa-brands, i),
-.application.holysheet .window-header :is(.fa-solid, .fa-regular, .fa-brands, i) {
-  font-family: "Font Awesome 6 Free", "FontAwesome" !important;
-  font-weight: 900;
-}
 
 /* ---- Surface du formulaire ------------------------------------------------ */
 .holysheet-character {
@@ -129,9 +114,9 @@
 }
 
 /* ---- Champs : verre depoli ----------------------------------------------- */
-.holysheet input:not([type="checkbox"]),
-.holysheet textarea,
-.holysheet select {
+.holysheet .window-content input:not([type="checkbox"]),
+.holysheet .window-content textarea,
+.holysheet .window-content select {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -142,13 +127,13 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
 }
-.holysheet input:not([type="checkbox"])::placeholder,
-.holysheet textarea::placeholder {
+.holysheet .window-content input:not([type="checkbox"])::placeholder,
+.holysheet .window-content textarea::placeholder {
   color: rgba(232, 221, 198, 0.4);
 }
-.holysheet input:not([type="checkbox"]):focus,
-.holysheet textarea:focus,
-.holysheet select:focus {
+.holysheet .window-content input:not([type="checkbox"]):focus,
+.holysheet .window-content textarea:focus,
+.holysheet .window-content select:focus {
   outline: none;
   border-color: var(--hs-accent-line);
   background: var(--hs-glass-2);
@@ -156,7 +141,7 @@
     0 0 0 3px var(--hs-accent-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-.holysheet input[type="checkbox"] {
+.holysheet .window-content input[type="checkbox"] {
   width: 16px;
   height: 16px;
   margin: 0;
@@ -169,7 +154,7 @@
   backdrop-filter: none;
   accent-color: var(--hs-accent);
 }
-.holysheet select option {
+.holysheet .window-content select option {
   background: #1c1812;
   color: var(--hs-ink-strong);
 }
@@ -191,14 +176,14 @@
   box-shadow: 0 0 14px var(--hs-accent-soft);
 }
 
-.holysheet input[type="number"] {
+.holysheet .window-content input[type="number"] {
   width: 48px;
   max-width: 48px;
   text-align: center;
   -moz-appearance: textfield;
 }
-.holysheet input[type="number"]::-webkit-outer-spin-button,
-.holysheet input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.holysheet .window-content input[type="number"]::-webkit-outer-spin-button,
+.holysheet .window-content input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* scrollbar */
 .holysheet-character::-webkit-scrollbar { width: 11px; height: 11px; }
@@ -410,7 +395,7 @@
     0 10px 22px rgba(0, 0, 0, 0.4);
   pointer-events: none;
 }
-.holysheet .hs-aptitude-card input {
+.holysheet .window-content .hs-aptitude-card input {
   position: relative;
   z-index: 1;
   grid-row: 1;
@@ -433,7 +418,7 @@
   text-align: center;
   box-shadow: none;
 }
-.holysheet .hs-aptitude-card input:focus {
+.holysheet .window-content .hs-aptitude-card input:focus {
   border-color: var(--hs-accent-line);
   background: var(--hs-accent-soft);
   box-shadow:
@@ -629,7 +614,7 @@
   font-size: 11px;
   font-weight: 700;
 }
-.holysheet .hs-resource-orb small input {
+.holysheet .window-content .hs-resource-orb small input {
   width: 26px;
   max-width: 26px;
   height: 16px;
@@ -1085,7 +1070,7 @@
 }
 .hs-list-row > button[data-roll]:hover { color: var(--hs-accent-bright); box-shadow: none; }
 .hs-list-row > button[data-roll]:hover::before { opacity: 1; }
-.hs-list-row input[type="number"] {
+.holysheet .window-content .hs-list-row input[type="number"] {
   height: 30px;
   width: 100%;
   max-width: 100%;
@@ -1099,15 +1084,15 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-.hs-list-row:hover input[type="number"],
-.hs-list-row input[type="number"]:focus {
+.holysheet .window-content .hs-list-row:hover input[type="number"],
+.holysheet .window-content .hs-list-row input[type="number"]:focus {
   border-color: var(--hs-glass-line);
   background: var(--hs-glass);
   -webkit-backdrop-filter: blur(7px) saturate(1.1);
   backdrop-filter: blur(7px) saturate(1.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
-.hs-list-row input[type="number"]:focus {
+.holysheet .window-content .hs-list-row input[type="number"]:focus {
   border-color: var(--hs-accent-line);
   background: var(--hs-glass-2);
   box-shadow:
@@ -1461,7 +1446,7 @@
   --hs-r-sm: 7px;
 }
 .hs-theme-sobre .hs-banner::after { box-shadow: none; height: 1px; }
-.hs-theme-sobre .hs-aptitude-card input { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
+.hs-theme-sobre .hs-aptitude-card::before { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
 .hs-theme-sobre .holysheet-character .hs-icon-tabs .item.active,
 .hs-theme-sobre .hs-armor-orb i { box-shadow: none; }
 .hs-theme-sobre .hs-resource-orb input[name$=".value"],
@@ -1511,7 +1496,7 @@
   box-shadow: 0 0 16px var(--hs-brass-soft);
 }
 .hs-theme-cuir .hs-portrait-ring,
-.hs-theme-cuir .hs-aptitude-card input,
+.hs-theme-cuir .hs-aptitude-card::before,
 .hs-theme-cuir .hs-resource-orb input[name$=".value"],
 .hs-theme-cuir .hs-armor-orb strong { border-width: 2px; }
 .hs-theme-cuir .hs-panel h2::before,
