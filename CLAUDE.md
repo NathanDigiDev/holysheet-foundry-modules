@@ -80,3 +80,47 @@ toujours passer par les jetons `var(--hs-*)`.
   existants qui documentent les pièges v14 directement dans le code).
 - Identifiants de module en kebab-case, préfixe `holysheet-`.
 - Namespace des flags = l'ID du module.
+
+## Releases et auto-update Foundry
+
+Chaque module/systeme publie doit pouvoir s'auto-mettre a jour via Foundry.
+Pour cela, son manifest (`module.json` ou `system.json`) doit contenir :
+
+```json
+"url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+"manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/<dossier>/module.json",
+"download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<asset>.zip"
+```
+
+Pour le systeme HolySheet, utiliser `system.json` dans l'URL `manifest` et
+`holysheet.zip` comme asset `download`.
+
+Quand un module change, augmenter uniquement le `version` du module concerne.
+Les modules inchanges gardent leur version. La release peut regenerer tous les
+zips : Foundry ne proposera une mise a jour que pour les packages dont la
+version a augmente.
+
+Ordre obligatoire pour livrer une mise a jour :
+
+1. Modifier le code du ou des modules.
+2. Incrementer `version` dans chaque manifest concerne.
+3. Commit + push sur `main`.
+4. Creer une GitHub Release, par exemple :
+
+```powershell
+gh release create v0.1.1 --repo NathanDigiDev/holysheet-foundry-modules --target main --title "v0.1.1" --notes "Update <module>"
+```
+
+5. Attendre que le workflow `Package Foundry releases` termine avec succes.
+
+Pour ajouter un nouveau module, creer un dossier racine `holysheet-.../`, ajouter
+ses champs `url`/`manifest`/`download`, puis ajouter son entree dans
+`.github/workflows/release-packages.yml` sous la forme :
+
+```bash
+"holysheet-mon-module:holysheet-mon-module.zip"
+```
+
+Ne pas placer un module autonome sous le dossier d'un autre module ou du
+systeme. Un module installable Foundry doit vivre dans son propre dossier
+racine.

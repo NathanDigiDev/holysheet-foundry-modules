@@ -55,3 +55,16 @@ jetons `var(--hs-*)`.
   Ajouter un bouton/onglet dans la sidebar sans casser l'alignement (fix v13/v14).
 
 Lire le `SKILL.md` correspondant avant d'agir sur l'un de ces sujets.
+
+## Releases et auto-update Foundry
+
+- Chaque module/systeme publie doit contenir `url`, `manifest` et `download`
+  dans son `module.json` ou `system.json`.
+- Quand un module change, incrementer uniquement le `version` du module
+  concerne avant commit/release. Les modules inchanges gardent leur version.
+- Apres push sur `main`, publier une GitHub Release pour declencher
+  `.github/workflows/release-packages.yml`, qui genere les zips utilises par
+  Foundry.
+- Un nouveau module installable doit vivre dans son propre dossier racine
+  `holysheet-.../` et etre ajoute au workflow de packaging.
+- Voir `CLAUDE.md` pour la procedure complete.
