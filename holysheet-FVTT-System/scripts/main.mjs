@@ -22,17 +22,16 @@ Hooks.once("init", async () => {
     equipment: HolySheetEquipmentData
   });
 
-  const ActorSheetBase = foundry.appv1.sheets.ActorSheet;
-  const ItemSheetBase = foundry.appv1.sheets.ItemSheet;
+  const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
 
-  foundry.documents.collections.Actors.unregisterSheet("core", ActorSheetBase);
-  foundry.documents.collections.Actors.registerSheet(SYSTEM_ID, HolySheetActorSheet, {
+  DocumentSheetConfig.unregisterSheet(Actor, "core", foundry.appv1.sheets.ActorSheet);
+  DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, HolySheetActorSheet, {
     types: ["character", "npc"],
     makeDefault: true
   });
 
-  foundry.documents.collections.Items.unregisterSheet("core", ItemSheetBase);
-  foundry.documents.collections.Items.registerSheet(SYSTEM_ID, HolySheetItemSheet, {
+  DocumentSheetConfig.unregisterSheet(Item, "core", foundry.appv1.sheets.ItemSheet);
+  DocumentSheetConfig.registerSheet(Item, SYSTEM_ID, HolySheetItemSheet, {
     types: ["equipment"],
     makeDefault: true
   });

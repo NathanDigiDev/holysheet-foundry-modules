@@ -63,14 +63,16 @@
 
 /* Retire le parchemin/padding clair applique par la fenetre Foundry. */
 .window-app.holysheet .window-content,
-.app.holysheet .window-content {
+.app.holysheet .window-content,
+.application.holysheet .window-content {
   padding: 0;
   overflow: hidden;
   background: var(--hs-bg-0);
   color: var(--hs-ink);
 }
-.window-app.holysheet .window-content > form,
-.app.holysheet .window-content > form {
+.window-app.holysheet .window-content > :is(form, section),
+.app.holysheet .window-content > :is(form, section),
+.application.holysheet .window-content > :is(form, section) {
   height: 100%;
   overflow: auto;
 }
@@ -78,8 +80,11 @@
 /* ---- Surface du formulaire ------------------------------------------------ */
 .holysheet-character {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   min-height: 100%;
-  overflow: auto;
+  overflow: hidden;
   color: var(--hs-ink);
   background:
     radial-gradient(900px 420px at 12% -6%, rgba(52, 201, 138, 0.1), transparent 60%),
@@ -101,7 +106,7 @@
 }
 
 /* ---- Champs : verre depoli ----------------------------------------------- */
-.holysheet input,
+.holysheet input:not([type="checkbox"]),
 .holysheet textarea,
 .holysheet select {
   border: 1px solid var(--hs-glass-line);
@@ -114,11 +119,11 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
 }
-.holysheet input::placeholder,
+.holysheet input:not([type="checkbox"])::placeholder,
 .holysheet textarea::placeholder {
   color: rgba(232, 221, 198, 0.4);
 }
-.holysheet input:focus,
+.holysheet input:not([type="checkbox"]):focus,
 .holysheet textarea:focus,
 .holysheet select:focus {
   outline: none;
@@ -128,12 +133,25 @@
     0 0 0 3px var(--hs-accent-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
+.holysheet input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  accent-color: var(--hs-accent);
+}
 .holysheet select option {
   background: #1c1812;
   color: var(--hs-ink-strong);
 }
 
-.holysheet button {
+.holysheet .window-content button {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -144,7 +162,7 @@
   backdrop-filter: blur(6px);
   transition: border-color 130ms ease, color 130ms ease, background 130ms ease, box-shadow 130ms ease;
 }
-.holysheet button:hover {
+.holysheet .window-content button:hover {
   border-color: var(--hs-accent-line);
   color: var(--hs-ink-strong);
   box-shadow: 0 0 14px var(--hs-accent-soft);
@@ -175,7 +193,8 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  padding-bottom: 24px;
+  flex: 0 0 auto;
+  padding-bottom: 18px;
   background:
     radial-gradient(760px 240px at 12% 0%, rgba(201, 162, 78, 0.09), transparent 62%),
     linear-gradient(180deg, rgba(20, 16, 10, 0.99), rgba(20, 16, 10, 0.98));
@@ -185,9 +204,9 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(220px, 1fr) minmax(280px, 0.85fr);
-  gap: 18px;
-  min-height: 104px;
-  padding: 18px 26px 22px 56px;
+  gap: 14px;
+  min-height: 88px;
+  padding: 14px 26px 18px 56px;
   border-radius: 0 0 20px 20px;
   background: var(--hs-banner);
   color: var(--hs-ink-strong);
@@ -269,7 +288,7 @@
   backdrop-filter: none !important;
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -284,9 +303,9 @@
   box-shadow: none !important;
   outline: none;
 }
-.hs-banner-title .hs-name-medium { font-size: 34px; }
-.hs-banner-title .hs-name-long { font-size: 29px; }
-.hs-banner-title .hs-name-tiny { font-size: 24px; }
+.hs-banner-title .hs-name-medium { font-size: 31px; }
+.hs-banner-title .hs-name-long { font-size: 27px; }
+.hs-banner-title .hs-name-tiny { font-size: 23px; }
 .hs-banner-title .hs-name::placeholder { color: rgba(255, 246, 223, 0.55); }
 
 .hs-banner-meta {
@@ -296,7 +315,7 @@
   grid-template-columns: 1fr 1fr 76px;
   gap: 10px;
   align-self: center;
-  padding: 11px 12px;
+  padding: 9px 12px;
   border: 1px solid rgba(255, 246, 223, 0.14);
   border-radius: 14px;
   background: rgba(0, 0, 0, 0.24);
@@ -315,7 +334,7 @@
   text-transform: uppercase;
 }
 .hs-banner-meta input {
-  height: 28px;
+  height: 26px;
   border-radius: 8px;
   border-color: rgba(255, 246, 223, 0.18);
   background: rgba(255, 246, 223, 0.1);
@@ -333,24 +352,24 @@
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: center;
-  gap: clamp(3px, 0.7vw, 8px);
-  margin: -15px 54px 0 220px;
+  gap: clamp(3px, 0.55vw, 7px);
+  margin: -13px 54px 0 220px;
   min-width: 0;
 }
 .hs-aptitude-card {
   display: grid;
   grid-template-rows: auto auto;
   justify-items: center;
-  gap: 5px;
+  gap: 4px;
   flex: 1 1 0;
   min-width: 0;
-  max-width: 54px;
+  max-width: 66px;
   border: 0;
   background: transparent;
 }
 .holysheet .hs-aptitude-card input {
-  width: min(100%, 44px);
-  max-width: 44px;
+  width: min(100%, 58px);
+  max-width: 58px;
   height: auto;
   aspect-ratio: 1;
   padding: 0;
@@ -363,7 +382,7 @@
   backdrop-filter: blur(9px) saturate(1.15);
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
-  font-size: clamp(13px, 1.25vw, 18px);
+  font-size: clamp(15px, 1.45vw, 22px);
   font-weight: 700;
   text-align: center;
   box-shadow:
@@ -382,14 +401,14 @@
   place-items: center;
   width: 100%;
   min-width: 0;
-  min-height: 21px;
-  padding: 2px clamp(2px, 0.55vw, 7px);
+  min-height: 22px;
+  padding: 2px clamp(2px, 0.45vw, 6px);
   border: 1px solid var(--hs-glass-line);
   border-radius: 999px;
   background: var(--hs-glass);
   color: var(--hs-ink);
   font-family: var(--hs-title);
-  font-size: clamp(8px, 0.75vw, 10px);
+  font-size: clamp(8px, 0.7vw, 10px);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -415,18 +434,21 @@
 .hs-sheet-shell {
   display: grid;
   grid-template-columns: minmax(196px, 25%) minmax(0, 1fr);
-  gap: 16px;
-  padding: 6px 54px 18px 14px;
+  flex: 1 1 auto;
+  gap: 14px;
+  min-height: 0;
+  padding: 6px 54px 12px 14px;
+  overflow: hidden;
 }
 
 .hs-left-panel {
   position: sticky;
-  top: 134px;
+  top: 0;
   align-self: start;
   display: grid;
   justify-items: center;
-  gap: 12px;
-  padding: 13px;
+  gap: 10px;
+  padding: 12px;
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r);
   background:
@@ -441,7 +463,7 @@
 .holysheet-character .hs-portrait-ring {
   position: relative;
   width: calc(100% - 8px);
-  max-width: 196px;
+  max-width: 170px;
   aspect-ratio: 1;
   overflow: hidden;
   border: 1px solid var(--hs-accent-line);
@@ -510,7 +532,7 @@
 .hs-resource-orbs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   justify-items: center;
 }
@@ -518,17 +540,19 @@
 .hs-armor-orb {
   position: relative;
   display: grid;
-  place-items: center;
+  grid-template-rows: 72px auto;
+  justify-items: center;
+  align-items: start;
   width: 86px;
-  min-height: 96px;
+  min-height: 90px;
   text-align: center;
 }
 .hs-resource-orb input[name$=".value"] {
   display: grid;
   place-items: center;
-  width: 70px;
-  max-width: 70px;
-  height: 70px;
+  width: 66px;
+  max-width: 66px;
+  height: 66px;
   border: 1px solid var(--hs-accent-line);
   border-radius: 50%;
   background:
@@ -539,7 +563,7 @@
   backdrop-filter: blur(8px);
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 700;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
@@ -549,7 +573,7 @@
 .hs-resource-orb input[name$=".value"] { padding-bottom: 12px; }
 .hs-resource-orb small {
   position: absolute;
-  top: 46px;
+  top: 43px;
   left: 50%;
   display: inline-flex;
   align-items: center;
@@ -559,14 +583,16 @@
   font-size: 11px;
   font-weight: 700;
 }
-.hs-resource-orb small input {
+.holysheet .hs-resource-orb small input {
   width: 26px;
   max-width: 26px;
   height: 16px;
   padding: 0;
   border: 0;
+  border-radius: 0;
   background: transparent;
   box-shadow: none;
+  -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: rgba(255, 247, 228, 0.82);
   font-size: 11px;
@@ -585,37 +611,44 @@
 .hs-armor-orb::before {
   content: "";
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 50%;
   width: 72px;
-  height: 84px;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(180deg, var(--hs-accent-bright), var(--hs-accent-deep));
-  clip-path: polygon(50% 0, 100% 0, 100% 52%, 78% 88%, 50% 100%, 22% 88%, 0 52%, 0 0);
+  height: 72px;
+  transform: translateX(-50%);
+  border: 1px solid var(--hs-accent-line);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.12), transparent 54%),
+    radial-gradient(circle at 50% 85%, var(--hs-accent-soft), transparent 62%),
+    rgba(12, 10, 7, 0.45);
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
-  box-shadow: 0 0 18px var(--hs-accent-soft);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 18px var(--hs-accent-soft);
 }
 .hs-armor-orb i {
   position: relative;
   z-index: 1;
-  display: block;
-  width: 64px;
-  height: 75px;
+  display: grid;
+  place-items: center;
+  grid-row: 1;
+  width: 68px;
+  height: 68px;
   border: 0;
   border-radius: 0;
-  font-size: 0;
+  font-size: 58px;
   transform: none;
-  background:
-    radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.18), transparent 55%),
-    var(--hs-glass-2);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  clip-path: polygon(50% 0, 100% 0, 100% 52%, 78% 88%, 50% 100%, 22% 88%, 0 52%, 0 0);
+  background: none;
+  color: var(--hs-brass);
   box-shadow: none;
+  text-shadow:
+    0 2px 0 rgba(255, 246, 223, 0.18),
+    0 7px 14px rgba(0, 0, 0, 0.58);
 }
 .hs-armor-orb strong {
   position: absolute;
-  top: 44%;
+  top: 33px;
   left: 50%;
   z-index: 2;
   width: auto;
@@ -631,7 +664,7 @@
   transform: translate(-50%, -50%);
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 800;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
@@ -810,7 +843,14 @@
 /* =========================================================================
    CONTENU + ONGLETS EN ICONES
    ========================================================================= */
-.hs-content-panel { position: relative; min-width: 0; padding-right: 8px; }
+.hs-content-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding-right: 8px;
+}
 
 .holysheet-character .hs-icon-tabs {
   position: absolute;
@@ -861,9 +901,25 @@
   box-shadow: 0 0 18px var(--hs-accent-glow);
 }
 
-.holysheet-character .sheet-body { min-height: 520px; padding: 0; background: transparent; }
+.holysheet-character .sheet-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  padding: 0;
+  overflow: auto;
+  background: transparent;
+}
 .holysheet-character .tab { display: none; }
-.holysheet-character .tab.active { display: block; }
+.holysheet-character .tab.active {
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+}
+.holysheet-character .tab[data-tab="bio"].active {
+  display: flex;
+  min-height: 0;
+}
 
 /* =========================================================================
    PANNEAUX
@@ -878,6 +934,12 @@
   -webkit-backdrop-filter: blur(12px) saturate(1.08);
   backdrop-filter: blur(12px) saturate(1.08);
   box-shadow: var(--hs-shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+.hs-description-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
 }
 .hs-panel h2,
 .hs-panel h3 {
@@ -905,6 +967,11 @@
 .hs-panel-actions { display: inline-flex; gap: 5px; margin-left: auto; }
 
 .hs-panel textarea { width: 100%; min-height: 150px; resize: vertical; line-height: 1.55; padding: 10px 12px; }
+.hs-description-panel textarea {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
 
 /* boutons d'action ronds */
 .holysheet button[data-create-special-skill],
@@ -1385,7 +1452,7 @@
   background: linear-gradient(180deg, #eccd80, var(--hs-brass));
   color: #2a1c0d;
 }
-.hs-theme-cuir .hs-armor-orb::before { background: linear-gradient(180deg, #eccd80, var(--hs-brass)); }
+.hs-theme-cuir .hs-armor-orb i { color: #eccd80; }
 .hs-theme-cuir .hs-inventory-group > h3 { color: var(--hs-brass); }
 .hs-theme-cuir .hs-inventory-group > h3::after { background: linear-gradient(90deg, var(--hs-brass-soft), transparent); }
 .hs-theme-cuir .holysheet-character .hs-icon-tabs .item:hover { color: var(--hs-brass); }

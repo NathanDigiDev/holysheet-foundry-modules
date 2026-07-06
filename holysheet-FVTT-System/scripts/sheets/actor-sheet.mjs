@@ -1,29 +1,65 @@
 import { SYSTEM_ID, clampPercent, getHolySheetWorldConfig, normalizeConfigKey } from "../config.mjs";
 import { rollD100 } from "../rolls.mjs";
 
-export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ActorSheetV2 } = foundry.applications.sheets;
+
+export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _gmConfigMode = false;
   _scrollMemory = null;
   _collapsedConfigSections = new Set();
+  _activeTab = "bio";
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["holysheet", "hs-theme-cuir", "sheet", "actor"],
-      popOut: true,
-      minimizable: true,
-      resizable: true,
+  static DEFAULT_OPTIONS = {
+    classes: ["holysheet", "hs-theme-cuir", "sheet", "actor"],
+    form: {
+      closeOnSubmit: false,
+      handler: this.#onSubmit,
+      submitOnChange: true
+    },
+    position: {
       width: 920,
-      height: 820,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "bio" }]
-    });
+      height: 820
+    },
+    tag: "form",
+    window: {
+      resizable: true
+    }
+  };
+
+  static PARTS = {
+    body: {
+      template: "systems/holysheet/templates/actor/character-sheet.hbs",
+      scrollable: [""]
+    }
+  };
+
+  get actor() {
+    return this.document;
+  }
+
+  get title() {
+    return this.actor.name;
   }
 
   get template() {
     return `systems/holysheet/templates/actor/${this.actor.type}-sheet.hbs`;
   }
 
-  async getData(options = {}) {
-    const context = await super.getData(options);
+  _configureRenderOptions(options) {
+    super._configureRenderOptions(options);
+    options.window ??= {};
+    options.window.title = this.title;
+  }
+
+  _configureRenderParts(options) {
+    const parts = super._configureRenderParts(options);
+    parts.body.template = this.template;
+    return parts;
+  }
+
+  async _prepareContext(options = {}) {
+    const context = await super._prepareContext(options);
     const system = this.actor.system;
     const world = getHolySheetWorldConfig();
     const modules = world.sheetModules ?? {};
@@ -37,6 +73,8 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     };
 
     context.system = system;
+    context.actor = this.actor;
+    context.cssClass = "";
     context.hs = {
       modules,
       tabs,
@@ -67,15 +105,41 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     return context;
   }
 
-  async _render(force = false, options = {}) {
-    await super._render(force, options);
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    this.#activateTabs();
+    this.#activateListeners();
     this.#restoreScrollPosition();
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  static async #onSubmit(event, form, formData) {
+    const submitData = this._prepareSubmitData(event, form, formData);
+    await this.actor.update(submitData);
+  }
 
-    html.find([
+  _prepareSubmitData(_event, _form, formData) {
+    const expanded = foundry.utils.expandObject(formData.object);
+    const specialSkills = expanded.system?.specialSkills;
+
+    if (typeof expanded.name === "string") {
+      expanded.name = expanded.name.replace(/\s*\n+\s*/g, " ").trim();
+    }
+
+    if (specialSkills && !Array.isArray(specialSkills)) {
+      expanded.system.specialSkills = Object.values(specialSkills);
+    }
+
+    return foundry.utils.flattenObject(expanded);
+  }
+
+  #activateListeners() {
+    const html = this.element;
+    if (!html) return;
+
+    html.addEventListener("input", () => this.#captureScrollPosition(), { capture: true });
+    html.addEventListener("change", () => this.#captureScrollPosition(), { capture: true });
+
+    this.#on([
       "[data-add-config-entry]",
       "[data-delete-config-entry]",
       "[data-add-category]",
@@ -96,13 +160,13 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
       "[data-pick-currency-icon]",
       "[data-pick-state-icon]",
       "[data-toggle-state]"
-    ].join(", ")).on("click", (event) => {
+    ].join(", "), "click", (event) => {
       event.preventDefault();
       if (event.currentTarget.closest?.("summary")) event.stopPropagation();
       this.#captureScrollPosition();
     });
 
-    html.find([
+    this.#on([
       "[data-config-toggle]",
       "[data-config-list]",
       "[data-portrait-control]",
@@ -110,59 +174,84 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
       "[data-state-index]",
       "[data-state-value]",
       "[data-currency-index]"
-    ].join(", ")).on("change", () => this.#captureScrollPosition());
+    ].join(", "), "change", () => this.#captureScrollPosition());
 
-    html.find("[data-roll]").on("click", (event) => this.#onRoll(event));
-    html.find("[data-roll]").on("contextmenu", (event) => this.#onRollModifier(event));
-    html.find("[data-item-id]").on("click", (event) => this.#openEmbeddedItem(event));
-    html.find("[data-gm-config-mode]").on("change", (event) => this.#toggleGmConfigMode(event));
-    html.find("[data-config-toggle]").on("change", (event) => this.#updateModuleToggle(event));
-    html.find("[data-config-list]").on("change", (event) => this.#updateConfigList(event));
-    html.find("[data-add-config-entry]").on("click", (event) => this.#addConfigEntry(event));
-    html.find("[data-delete-config-entry]").on("click", (event) => this.#deleteConfigEntry(event));
-    html.find("[data-portrait-control]").on("change", (event) => this.#updatePortraitCrop(event));
-    html.find("[data-category-index]").on("change", (event) => this.#updateCategory(event));
-    html.find("[data-add-category]").on("click", () => this.#addCategory());
-    html.find("[data-delete-category]").on("click", (event) => this.#deleteCategory(event));
-    html.find("[data-state-index]").on("change", (event) => this.#updateConfiguredState(event));
-    html.find("[data-add-state]").on("click", () => this.#addConfiguredState());
-    html.find("[data-delete-state]").on("click", (event) => this.#deleteConfiguredState(event));
-    html.find("[data-config-section]").on("toggle", (event) => this.#toggleConfigSection(event));
-    html.find("[data-currency-index]").on("change", (event) => this.#updateCurrencyConfig(event));
-    html.find("[data-add-currency]").on("click", () => this.#addCurrency());
-    html.find("[data-delete-currency]").on("click", (event) => this.#deleteCurrency(event));
-    html.find("[data-pick-currency-icon]").on("click", (event) => this.#pickCurrencyIcon(event));
-    html.find("[data-pick-state-icon]").on("click", (event) => this.#pickStateIcon(event));
+    this.#on("[data-roll]", "click", (event) => this.#onRoll(event));
+    this.#on("[data-roll]", "contextmenu", (event) => this.#onRollModifier(event));
+    this.#on("[data-item-id]", "click", (event) => this.#openEmbeddedItem(event));
+    this.#on("[data-gm-config-mode]", "change", (event) => this.#toggleGmConfigMode(event));
+    this.#on("[data-config-toggle]", "change", (event) => this.#updateModuleToggle(event));
+    this.#on("[data-config-list]", "change", (event) => this.#updateConfigList(event));
+    this.#on("[data-add-config-entry]", "click", (event) => this.#addConfigEntry(event));
+    this.#on("[data-delete-config-entry]", "click", (event) => this.#deleteConfigEntry(event));
+    this.#on("[data-portrait-control]", "change", (event) => this.#updatePortraitCrop(event));
+    this.#on("[data-category-index]", "change", (event) => this.#updateCategory(event));
+    this.#on("[data-add-category]", "click", () => this.#addCategory());
+    this.#on("[data-delete-category]", "click", (event) => this.#deleteCategory(event));
+    this.#on("[data-state-index]", "change", (event) => this.#updateConfiguredState(event));
+    this.#on("[data-add-state]", "click", () => this.#addConfiguredState());
+    this.#on("[data-delete-state]", "click", (event) => this.#deleteConfiguredState(event));
+    this.#on("[data-config-section]", "toggle", (event) => this.#toggleConfigSection(event));
+    this.#on("[data-currency-index]", "change", (event) => this.#updateCurrencyConfig(event));
+    this.#on("[data-add-currency]", "click", () => this.#addCurrency());
+    this.#on("[data-delete-currency]", "click", (event) => this.#deleteCurrency(event));
+    this.#on("[data-pick-currency-icon]", "click", (event) => this.#pickCurrencyIcon(event));
+    this.#on("[data-pick-state-icon]", "click", (event) => this.#pickStateIcon(event));
 
     if (!this.isEditable) return;
 
-    html.find("[data-create-special-skill]").on("click", () => this.#createSpecialSkill());
-    html.find("[data-edit-special-skill]").on("click", (event) => this.#editSpecialSkill(event));
-    html.find("[data-delete-special-skill]").on("click", (event) => this.#deleteSpecialSkill(event));
-    html.find("[data-create-equipment]").on("click", () => this.#createEquipment());
-    html.find("[data-toggle-equipment]").on("click", (event) => this.#toggleEquipment(event));
-    html.find("[data-adjust-quantity]").on("click", (event) => this.#adjustEquipmentQuantity(event));
-    html.find("[data-delete-equipment]").on("click", (event) => this.#deleteEquipment(event));
-    html.find("[data-open-currency-adjustment]").on("click", () => this.#showCurrencyAdjustmentDialog());
-    html.find("[data-normalize-currencies]").on("click", () => this.#normalizeCurrencies());
-    html.find("[data-toggle-state]").on("click", (event) => this.#toggleCustomState(event));
-    html.find("[data-state-value]").on("input", (event) => this.#previewCustomStateGauge(event));
-    html.find("[data-state-value]").on("change", (event) => this.#updateCustomStateValue(event));
+    this.#on("[data-edit='img']", "click", (event) => this.#editImage(event));
+    this.#on("[data-create-special-skill]", "click", () => this.#createSpecialSkill());
+    this.#on("[data-edit-special-skill]", "click", (event) => this.#editSpecialSkill(event));
+    this.#on("[data-delete-special-skill]", "click", (event) => this.#deleteSpecialSkill(event));
+    this.#on("[data-create-equipment]", "click", () => this.#createEquipment());
+    this.#on("[data-toggle-equipment]", "click", (event) => this.#toggleEquipment(event));
+    this.#on("[data-adjust-quantity]", "click", (event) => this.#adjustEquipmentQuantity(event));
+    this.#on("[data-delete-equipment]", "click", (event) => this.#deleteEquipment(event));
+    this.#on("[data-open-currency-adjustment]", "click", () => this.#showCurrencyAdjustmentDialog());
+    this.#on("[data-normalize-currencies]", "click", () => this.#normalizeCurrencies());
+    this.#on("[data-toggle-state]", "click", (event) => this.#toggleCustomState(event));
+    this.#on("[data-state-value]", "input", (event) => this.#previewCustomStateGauge(event));
+    this.#on("[data-state-value]", "change", (event) => this.#updateCustomStateValue(event));
   }
 
-  async _updateObject(_event, formData) {
-    const expanded = foundry.utils.expandObject(formData);
-    const specialSkills = expanded.system?.specialSkills;
+  #on(selector, eventName, handler) {
+    this.element.querySelectorAll(selector).forEach((element) => {
+      element.addEventListener(eventName, handler);
+    });
+  }
 
-    if (typeof expanded.name === "string") {
-      expanded.name = expanded.name.replace(/\s*\n+\s*/g, " ").trim();
-    }
+  #activateTabs() {
+    const tabs = Array.from(this.element.querySelectorAll(".sheet-tabs [data-tab]"));
+    const panels = Array.from(this.element.querySelectorAll(".tab[data-tab]"));
+    const available = tabs.map((tab) => tab.dataset.tab);
+    if (!available.includes(this._activeTab)) this._activeTab = available[0] ?? this._activeTab;
 
-    if (specialSkills && !Array.isArray(specialSkills)) {
-      expanded.system.specialSkills = Object.values(specialSkills);
-    }
+    const setActive = (tabId) => {
+      this._activeTab = tabId;
+      tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === tabId));
+      panels.forEach((panel) => panel.classList.toggle("active", panel.dataset.tab === tabId));
+    };
 
-    return this.actor.update(foundry.utils.flattenObject(expanded));
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", (event) => {
+        event.preventDefault();
+        setActive(tab.dataset.tab);
+      });
+    });
+    setActive(this._activeTab);
+  }
+
+  #editImage(event) {
+    event.preventDefault();
+    const field = event.currentTarget.dataset.edit;
+    if (!field) return;
+
+    new FilePicker({
+      type: "image",
+      current: foundry.utils.getProperty(this.actor, field),
+      callback: (path) => this.actor.update({ [field]: path })
+    }).render(true);
   }
 
   #prepareModuleToggles(modules) {
@@ -501,7 +590,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
       }
     ]);
 
-    item?.sheet?.render(true);
+    item?.sheet?.render({ force: true });
   }
 
   async #toggleEquipment(event) {
@@ -522,14 +611,14 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
   #openEmbeddedItem(event) {
     const item = this.actor.items.get(event.currentTarget.dataset.itemId);
-    item?.sheet?.render(true);
+    item?.sheet?.render({ force: true });
   }
 
   #toggleGmConfigMode(event) {
     if (!game.user?.isGM) return;
 
     this._gmConfigMode = event.currentTarget.checked;
-    this.render(false);
+    this.render({ force: false });
   }
 
   #toggleConfigSection(event) {
@@ -546,7 +635,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     const modules = getHolySheetWorldConfig().sheetModules;
     modules[event.currentTarget.dataset.configToggle] = event.currentTarget.checked;
     await game.settings.set(SYSTEM_ID, "sheetModules", modules);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #updatePortraitCrop(event) {
@@ -573,7 +662,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     entries[index][field] = field === "value" ? clampPercent(input.value) : input.value;
     await game.settings.set(SYSTEM_ID, setting, entries);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #updateCategory(event) {
@@ -585,7 +674,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     categories[index] = String(event.currentTarget.value || "Nouvelle categorie");
     await game.settings.set(SYSTEM_ID, "itemCategories", categories);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #addCategory() {
@@ -594,7 +683,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     const categories = getHolySheetWorldConfig().itemCategories;
     categories.push("Nouvelle categorie");
     await game.settings.set(SYSTEM_ID, "itemCategories", categories);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #deleteCategory(event) {
@@ -610,7 +699,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     categories.splice(index, 1);
     await game.settings.set(SYSTEM_ID, "itemCategories", categories);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #updateConfiguredState(event) {
@@ -624,7 +713,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     states[index][field] = ["value", "max"].includes(field) ? Number(input.value) || 0 : input.value;
     await game.settings.set(SYSTEM_ID, "customStates", states);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #pickStateIcon(event) {
@@ -641,7 +730,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
         this.#captureScrollPosition();
         states[index].icon = path;
         await game.settings.set(SYSTEM_ID, "customStates", states);
-        this.render(false);
+        this.render({ force: false });
       }
     });
 
@@ -687,7 +776,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     else currencies[index][field] = input.value;
 
     await game.settings.set(SYSTEM_ID, "currencies", currencies);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #pickCurrencyIcon(event) {
@@ -704,7 +793,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
         this.#captureScrollPosition();
         currencies[index].icon = path;
         await game.settings.set(SYSTEM_ID, "currencies", currencies);
-        this.render(false);
+        this.render({ force: false });
       }
     });
 
@@ -726,7 +815,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     });
 
     await game.settings.set(SYSTEM_ID, "currencies", currencies);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #deleteCurrency(event) {
@@ -747,7 +836,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     await game.settings.set(SYSTEM_ID, "currencies", currencies);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #showCurrencyAdjustmentDialog() {
@@ -844,7 +933,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     });
 
     await game.settings.set(SYSTEM_ID, "customStates", states);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #deleteConfiguredState(event) {
@@ -856,7 +945,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     states.splice(index, 1);
     await game.settings.set(SYSTEM_ID, "customStates", states);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #addConfigEntry(event) {
@@ -883,7 +972,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     });
 
     await game.settings.set(SYSTEM_ID, setting, entries);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #deleteConfigEntry(event) {
@@ -900,7 +989,7 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     entries.splice(index, 1);
     await game.settings.set(SYSTEM_ID, setting, entries);
-    this.render(false);
+    this.render({ force: false });
   }
 
   async #deleteEquipment(event) {
@@ -911,12 +1000,12 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
 
   #captureScrollPosition() {
     const element = this.element;
-    if (!element?.length) return;
+    if (!element) return;
 
     this._scrollMemory = {
-      windowContent: element.find(".window-content")[0]?.scrollTop ?? 0,
-      form: element.find("form.holysheet-character")[0]?.scrollTop ?? 0,
-      body: element.find(".sheet-body")[0]?.scrollTop ?? 0
+      windowContent: element.querySelector(".window-content")?.scrollTop ?? 0,
+      sheet: element.querySelector(".holysheet-character, .holysheet-npc")?.scrollTop ?? 0,
+      body: element.querySelector(".sheet-body")?.scrollTop ?? 0
     };
   }
 
@@ -926,9 +1015,9 @@ export class HolySheetActorSheet extends foundry.appv1.sheets.ActorSheet {
     const memory = this._scrollMemory;
     window.requestAnimationFrame(() => {
       const element = this.element;
-      element.find(".window-content")[0]?.scrollTo({ top: memory.windowContent });
-      element.find("form.holysheet-character")[0]?.scrollTo({ top: memory.form });
-      element.find(".sheet-body")[0]?.scrollTo({ top: memory.body });
+      element?.querySelector(".window-content")?.scrollTo({ top: memory.windowContent });
+      element?.querySelector(".holysheet-character, .holysheet-npc")?.scrollTo({ top: memory.sheet });
+      element?.querySelector(".sheet-body")?.scrollTo({ top: memory.body });
       this._scrollMemory = null;
     });
   }

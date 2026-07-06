@@ -1,4 +1,4 @@
-<form class="{{cssClass}} holysheet-npc" autocomplete="off">
+<section class="holysheet-npc">
   <header class="hs-npc-head">
     <div class="hs-portrait-ring">
       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" style="{{hs.portrait.style}}" />
@@ -15,7 +15,7 @@
         </label>
         {{#if hs.modules.armor}}
         <label class="hs-armor-orb" title="{{localize "HOLYSHEET.Label.Armor"}}">
-          <i class="fa-solid fa-shield"></i>
+          <i class="fa-solid fa-shield-halved"></i>
           <strong>{{hs.armorTotal}}</strong>
         </label>
         {{/if}}
@@ -102,4 +102,4 @@
     {{/each}}
   </section>
   {{/if}}
-</form>
+</section>
