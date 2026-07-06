@@ -30,5 +30,8 @@
       "name": "English",
       "path": "lang/en.json"
     }
-  ]
+  ],
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-foundry-friendly-interface/module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-foundry-friendly-interface.zip"
 }

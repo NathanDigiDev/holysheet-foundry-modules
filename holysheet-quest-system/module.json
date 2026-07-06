@@ -29,9 +29,9 @@
     }
   ],
   "socket": true,
-  "url": "https://github.com/NathanDigiDev/holysheet-quest-system",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-quest-system/module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-quest-system.zip",
   "license": "MIT",
   "readme": "README.md",
   "flags": {

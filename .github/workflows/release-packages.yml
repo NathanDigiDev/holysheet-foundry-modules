@@ -1,0 +1,71 @@
+name: Package Foundry releases
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Build package zips
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Foundry package archives
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+
+          packages=(
+            "holysheet-custom-calendar:holysheet-custom-calendar.zip"
+            "holysheet-foundry-friendly-interface:holysheet-foundry-friendly-interface.zip"
+            "holysheet-FVTT-System:holysheet.zip"
+            "holysheet-FVTT-System/generated-modules/holysheet-dnd-compendiums-updated:holysheet-dnd-compendiums.zip"
+            "holysheet-immersive-books:holysheet-immersive-books.zip"
+            "holysheet-interactive-zones:holysheet-interactive-zones.zip"
+            "holysheet-item-storage:holysheet-item-storage.zip"
+            "holysheet-lockpicking:holysheet-lockpicking.zip"
+            "holysheet-quest-system:holysheet-quest-system.zip"
+          )
+
+          for package in "${packages[@]}"; do
+            source_dir="${package%%:*}"
+            archive_name="${package##*:}"
+
+            if [[ ! -d "$source_dir" ]]; then
+              echo "Missing package directory: $source_dir" >&2
+              exit 1
+            fi
+
+            if [[ ! -f "$source_dir/module.json" && ! -f "$source_dir/system.json" ]]; then
+              echo "Package directory has no module.json or system.json: $source_dir" >&2
+              exit 1
+            fi
+
+            echo "Building dist/$archive_name from $source_dir"
+            (
+              cd "$source_dir"
+              zip -r "$GITHUB_WORKSPACE/dist/$archive_name" .
+            )
+          done
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundry-packages
+          path: dist/*.zip
+
+      - name: Upload zips to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: gh release upload "$GITHUB_REF_NAME" dist/*.zip --clobber

@@ -30,5 +30,8 @@
       "path": "lang/en.json"
     }
   ],
-  "socket": true
+  "socket": true,
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-immersive-books/module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books.zip"
 }

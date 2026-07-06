@@ -36,8 +36,8 @@
     "holysheet-lockpicking": {}
   },
 
-  "url": "",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-lockpicking/module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-lockpicking.zip",
   "license": "MIT"
 }
