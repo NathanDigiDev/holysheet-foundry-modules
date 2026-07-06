@@ -28,7 +28,7 @@ jobs:
             "holysheet-custom-calendar:holysheet-custom-calendar.zip"
             "holysheet-foundry-friendly-interface:holysheet-foundry-friendly-interface.zip"
             "holysheet-FVTT-System:holysheet.zip"
-            "holysheet-FVTT-System/generated-modules/holysheet-dnd-compendiums-updated:holysheet-dnd-compendiums.zip"
+            "holysheet-dnd-compendiums:holysheet-dnd-compendiums.zip"
             "holysheet-immersive-books:holysheet-immersive-books.zip"
             "holysheet-interactive-zones:holysheet-interactive-zones.zip"
             "holysheet-item-storage:holysheet-item-storage.zip"

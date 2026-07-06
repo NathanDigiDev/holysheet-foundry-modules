@@ -801,7 +801,10 @@ function buildModuleManifest() {
           sourceSystem: "dnd5e"
         }
       }
-    }))
+    })),
+    url: "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+    manifest: "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-dnd-compendiums/module.json",
+    download: "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-dnd-compendiums.zip"
   };
 }
 
