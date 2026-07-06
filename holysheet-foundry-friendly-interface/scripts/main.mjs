@@ -370,10 +370,9 @@ function openCharacterMenu(anchor, actors, tabTarget = null) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "hsffi-character-choice";
-    button.innerHTML = `
-      <img src="${actor.img || "icons/svg/mystery-man.svg"}" alt="">
-      <span>${actor.name}</span>
-    `;
+    const label = document.createElement("span");
+    label.textContent = actor.name;
+    button.append(label);
     button.addEventListener("click", () => {
       menu.remove();
       openDocumentSheet(actor, tabTarget);
