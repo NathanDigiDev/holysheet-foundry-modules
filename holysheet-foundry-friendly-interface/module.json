@@ -1,0 +1,34 @@
+{
+  "id": "holysheet-foundry-friendly-interface",
+  "title": "Holysheet Foundry Friendly Interface",
+  "description": "Raccourcis d'aide joueur Holysheet pour Foundry VTT v14 : personnage et notes sans modifier l'interface native.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "HolySheet"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "styles": [
+    "styles/holysheet-interface.css"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}
