@@ -124,3 +124,32 @@ ses champs `url`/`manifest`/`download`, puis ajouter son entree dans
 Ne pas placer un module autonome sous le dossier d'un autre module ou du
 systeme. Un module installable Foundry doit vivre dans son propre dossier
 racine.
+
+## Messages GitHub
+
+Pour les messages lies aux commits, releases, PR ou push GitHub, utiliser ce
+format :
+
+```text
+New/Fix/Update {Nom du module ou systeme}: commentaire en francais sur ce qui a ete fait - {utilisateur}
+```
+
+Regles :
+
+- `New` pour une creation de module, fonctionnalite ou asset majeur.
+- `Fix` pour une correction de bug, de manifest, de packaging ou de compatibilite.
+- `Update` pour une evolution, une maintenance ou une mise a jour de version.
+- `{Nom du module ou systeme}` doit etre le dossier ou l'ID Foundry concerne,
+  par exemple `holysheet-lockpicking`, `holysheet-dnd-compendiums` ou
+  `holysheet`.
+- Le commentaire doit etre en francais et resumer ce qui a ete fait.
+- `{utilisateur}` doit identifier la personne ou l'agent qui a fait le
+  changement.
+
+Exemples :
+
+```text
+Fix holysheet-lockpicking: correction du manifest et du packaging release - Codex
+Update holysheet-item-storage: ajout de la synchronisation des conteneurs - Hal
+New holysheet-calendar-tools: creation du nouveau module calendrier - Claude
+```

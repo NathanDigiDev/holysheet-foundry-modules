@@ -68,3 +68,9 @@ Lire le `SKILL.md` correspondant avant d'agir sur l'un de ces sujets.
 - Un nouveau module installable doit vivre dans son propre dossier racine
   `holysheet-.../` et etre ajoute au workflow de packaging.
 - Voir `CLAUDE.md` pour la procedure complete.
+
+## Messages GitHub
+
+- Pour les messages de commit/release/push GitHub, utiliser le format :
+  `New/Fix/Update {Nom du module ou systeme}: commentaire en francais sur ce qui a ete fait - {utilisateur}`.
+- Choisir `New`, `Fix` ou `Update` selon la nature du changement.
