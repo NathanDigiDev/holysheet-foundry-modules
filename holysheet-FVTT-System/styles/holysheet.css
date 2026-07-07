@@ -374,6 +374,7 @@
   max-width: 58px;
   height: auto;
   aspect-ratio: 1;
+  min-height: 0;
   padding: 0;
   border: 1px solid var(--hs-glass-line);
   border-radius: 50%;
@@ -386,8 +387,11 @@
   font-family: var(--hs-title);
   font-size: clamp(15px, 1.45vw, 22px);
   font-weight: 700;
+  letter-spacing: 0;
   line-height: 1;
   text-align: center;
+  text-transform: none;
+  overflow: visible;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 10px 22px rgba(0, 0, 0, 0.4);
@@ -401,7 +405,14 @@
     0 0 22px var(--hs-accent-glow),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
-.hs-aptitude-card button {
+.hs-edit-number .hs-value-text {
+  display: block;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  pointer-events: none;
+}
+.hs-aptitude-card button[data-roll] {
   display: grid;
   place-items: center;
   width: 100%;
@@ -419,12 +430,12 @@
   text-transform: uppercase;
   overflow: hidden;
 }
-.hs-aptitude-card button:hover {
+.hs-aptitude-card button[data-roll]:hover {
   border-color: var(--hs-accent-line);
   color: var(--hs-accent-bright);
   box-shadow: 0 0 14px var(--hs-accent-soft);
 }
-.hs-aptitude-card button span {
+.hs-aptitude-card button[data-roll] span {
   display: block;
   max-width: 100%;
   overflow: hidden;
@@ -558,6 +569,8 @@
   width: 66px;
   max-width: 66px;
   height: 66px;
+  min-height: 0;
+  padding: 0 0 12px;
   border: 1px solid var(--hs-accent-line);
   border-radius: 50%;
   background:
@@ -570,13 +583,15 @@
   font-family: var(--hs-title);
   font-size: 23px;
   font-weight: 700;
+  letter-spacing: 0;
   line-height: 1;
+  text-transform: none;
+  overflow: visible;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 0 18px var(--hs-accent-soft),
     0 8px 18px rgba(0, 0, 0, 0.4);
 }
-.holysheet .window-content .hs-resource-value { padding-bottom: 12px; }
 .hs-resource-orb small {
   position: absolute;
   top: 43px;
@@ -590,6 +605,8 @@
   font-weight: 700;
 }
 .holysheet .window-content .hs-resource-max {
+  display: inline-grid;
+  place-items: center;
   width: 26px;
   min-width: 26px;
   max-width: 26px;
@@ -602,10 +619,14 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: rgba(255, 247, 228, 0.82);
+  font-family: var(--hs-title);
   font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0;
   line-height: 1;
   text-align: center;
+  text-transform: none;
+  overflow: visible;
 }
 .hs-resource-orb span {
   margin-top: 5px;

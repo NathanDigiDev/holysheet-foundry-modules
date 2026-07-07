@@ -9,10 +9,10 @@
       {{#if hs.modules.resources}}
       <section class="hs-resource-orbs">
         <label class="hs-resource-orb">
-          <button type="button" class="hs-resource-value hs-edit-number" data-edit-number="system.resources.pv.value" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}}" data-edit-min="0">
-            {{system.resources.pv.value}}
+          <button type="button" class="hs-resource-value hs-edit-number" data-edit-number="system.resources.pv.value" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}}" data-edit-min="0" data-edit-value="{{system.resources.pv.value}}">
+            <span class="hs-value-text">{{system.resources.pv.value}}</span>
           </button>
-          <small>/<button type="button" class="hs-resource-max hs-edit-number" data-edit-number="system.resources.pv.max" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}} max" data-edit-min="0">{{system.resources.pv.max}}</button></small>
+          <small>/<button type="button" class="hs-resource-max hs-edit-number" data-edit-number="system.resources.pv.max" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}} max" data-edit-min="0" data-edit-value="{{system.resources.pv.max}}"><span class="hs-value-text">{{system.resources.pv.max}}</span></button></small>
           <span>{{localize "HOLYSHEET.Label.Pv"}}</span>
         </label>
         {{#if hs.modules.armor}}
@@ -30,8 +30,8 @@
   <section class="hs-banner-aptitudes" aria-label="Aptitudes">
     {{#each hs.aptitudes}}
     <article class="hs-aptitude-card" title="{{description}}">
-      <button type="button" class="hs-aptitude-value hs-edit-number" data-edit-number="{{field}}" data-edit-label="{{label}}" data-edit-min="1" data-edit-max="100">
-        {{value}}
+      <button type="button" class="hs-aptitude-value hs-edit-number" data-edit-number="{{field}}" data-edit-label="{{label}}" data-edit-min="1" data-edit-max="100" data-edit-value="{{value}}">
+        <span class="hs-value-text">{{value}}</span>
       </button>
       <button type="button" data-roll="aptitude" data-roll-group="aptitude" data-roll-key="{{key}}" data-roll-label="{{label}}" data-roll-target="{{value}}" data-roll-modifier="{{modifier}}">
         <span>{{abbreviation}}</span>
