@@ -3,11 +3,6 @@ import { rollD100 } from "../rolls.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
-const TEMPLATE_VERSION = "0.1.7";
-
-function versionTemplate(path) {
-  return `${path}?v=${TEMPLATE_VERSION}`;
-}
 
 export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _gmConfigMode = false;
@@ -34,7 +29,7 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
   static PARTS = {
     body: {
-      template: versionTemplate("systems/holysheet/templates/actor/character-sheet.hbs"),
+      template: "systems/holysheet/templates/actor/character-sheet.hbs",
       scrollable: [""]
     }
   };
@@ -48,7 +43,7 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   }
 
   get template() {
-    return versionTemplate(`systems/holysheet/templates/actor/${this.actor.type}-sheet.hbs`);
+    return `systems/holysheet/templates/actor/${this.actor.type}-sheet.hbs`;
   }
 
   _configureRenderOptions(options) {
@@ -216,7 +211,6 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
     this.#on("[data-open-currency-adjustment]", "click", () => this.#showCurrencyAdjustmentDialog());
     this.#on("[data-normalize-currencies]", "click", () => this.#normalizeCurrencies());
     this.#on("[data-toggle-state]", "click", (event) => this.#toggleCustomState(event));
-    this.#on("[data-edit-number]", "click", (event) => this.#editNumberField(event));
     this.#on("[data-state-value]", "input", (event) => this.#previewCustomStateGauge(event));
     this.#on("[data-state-value]", "change", (event) => this.#updateCustomStateValue(event));
   }
@@ -509,50 +503,6 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
           icon: '<i class="fa-solid fa-xmark"></i>',
           label: "Retirer",
           callback: () => this.actor.update({ [`system.rollModifiers.${group}.${key}`]: 0 })
-        }
-      },
-      default: "save"
-    }).render(true);
-  }
-
-  #editNumberField(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (!this.isEditable) return;
-
-    const dataset = event.currentTarget.dataset;
-    const field = dataset.editNumber;
-    if (!field) return;
-
-    const min = Number(dataset.editMin ?? 0);
-    const rawMax = Number(dataset.editMax);
-    const max = Number.isFinite(rawMax) ? rawMax : Number.POSITIVE_INFINITY;
-    const current = Number(foundry.utils.getProperty(this.actor, field));
-    const fallback = Number.isFinite(current) ? current : Number(event.currentTarget.textContent?.trim() ?? min);
-    const value = clampNumber(fallback, min, max, min);
-    const label = escapeHTML(dataset.editLabel ?? "Valeur");
-    const maxAttribute = Number.isFinite(max) ? ` max="${max}"` : "";
-    const content = `
-      <form>
-        <div class="form-group">
-          <label>${label}</label>
-          <input type="number" name="value" value="${value}" min="${min}"${maxAttribute} step="1" autofocus />
-        </div>
-      </form>
-    `;
-
-    new Dialog({
-      title: `Modifier ${label}`,
-      content,
-      buttons: {
-        save: {
-          icon: '<i class="fa-solid fa-check"></i>',
-          label: "Valider",
-          callback: async (html) => {
-            const input = html[0].querySelector("[name='value']");
-            const next = clampNumber(input?.value, min, max, value);
-            await this.actor.update({ [field]: next });
-          }
         }
       },
       default: "save"

@@ -2,11 +2,6 @@ import { getHolySheetWorldConfig } from "../config.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
-const TEMPLATE_VERSION = "0.1.7";
-
-function versionTemplate(path) {
-  return `${path}?v=${TEMPLATE_VERSION}`;
-}
 
 export class HolySheetItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   static DEFAULT_OPTIONS = {
@@ -28,7 +23,7 @@ export class HolySheetItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
 
   static PARTS = {
     body: {
-      template: versionTemplate("systems/holysheet/templates/item/equipment-sheet.hbs"),
+      template: "systems/holysheet/templates/item/equipment-sheet.hbs",
       scrollable: [""]
     }
   };
@@ -42,7 +37,7 @@ export class HolySheetItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
   }
 
   get template() {
-    return versionTemplate(`systems/holysheet/templates/item/${this.item.type}-sheet.hbs`);
+    return `systems/holysheet/templates/item/${this.item.type}-sheet.hbs`;
   }
 
   _configureRenderOptions(options) {

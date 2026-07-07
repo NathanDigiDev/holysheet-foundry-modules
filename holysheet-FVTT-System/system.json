@@ -3,7 +3,7 @@
   "type": "system",
   "title": "HolySheet",
   "description": "Systeme D100 simple, generique et customisable pour Foundry Virtual Tabletop.",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "compatibility": {
     "minimum": "14",
     "verified": "14.364"
@@ -25,10 +25,10 @@
     }
   ],
   "esmodules": [
-    "scripts/main-0.1.8.mjs"
+    "scripts/main.mjs"
   ],
   "styles": [
-    "styles/holysheet-0.1.8.css"
+    "styles/holysheet.css"
   ],
   "template": "template.json",
   "documentTypes": {
@@ -51,5 +51,5 @@
   },
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-FVTT-System/system.json",
-  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/download/v0.1.8/holysheet.zip"
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/download/v0.2.0/holysheet.zip"
 }

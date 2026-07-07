@@ -367,14 +367,11 @@
   border: 0;
   background: transparent;
 }
-.holysheet .window-content .hs-aptitude-value {
-  display: grid;
-  place-items: center;
+.holysheet .hs-aptitude-card input {
   width: min(100%, 58px);
   max-width: 58px;
   height: auto;
   aspect-ratio: 1;
-  min-height: 0;
   padding: 0;
   border: 1px solid var(--hs-glass-line);
   border-radius: 50%;
@@ -387,32 +384,19 @@
   font-family: var(--hs-title);
   font-size: clamp(15px, 1.45vw, 22px);
   font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1;
   text-align: center;
-  text-transform: none;
-  overflow: visible;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
     0 10px 22px rgba(0, 0, 0, 0.4);
 }
-.holysheet .window-content .hs-aptitude-value:hover,
-.holysheet .window-content .hs-aptitude-value:focus {
+.holysheet .hs-aptitude-card input:focus {
   border-color: var(--hs-accent-line);
-  color: var(--hs-ink-strong);
   box-shadow:
     0 0 0 3px var(--hs-accent-soft),
     0 0 22px var(--hs-accent-glow),
     inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
-.hs-edit-number .hs-value-text {
-  display: block;
-  color: inherit;
-  font: inherit;
-  line-height: inherit;
-  pointer-events: none;
-}
-.hs-aptitude-card button[data-roll] {
+.hs-aptitude-card button {
   display: grid;
   place-items: center;
   width: 100%;
@@ -430,12 +414,12 @@
   text-transform: uppercase;
   overflow: hidden;
 }
-.hs-aptitude-card button[data-roll]:hover {
+.hs-aptitude-card button:hover {
   border-color: var(--hs-accent-line);
   color: var(--hs-accent-bright);
   box-shadow: 0 0 14px var(--hs-accent-soft);
 }
-.hs-aptitude-card button[data-roll] span {
+.hs-aptitude-card button span {
   display: block;
   max-width: 100%;
   overflow: hidden;
@@ -563,14 +547,12 @@
   min-height: 90px;
   text-align: center;
 }
-.holysheet .window-content .hs-resource-value {
+.hs-resource-orb input[name$=".value"] {
   display: grid;
   place-items: center;
   width: 66px;
   max-width: 66px;
   height: 66px;
-  min-height: 0;
-  padding: 0 0 12px;
   border: 1px solid var(--hs-accent-line);
   border-radius: 50%;
   background:
@@ -583,15 +565,12 @@
   font-family: var(--hs-title);
   font-size: 23px;
   font-weight: 700;
-  letter-spacing: 0;
-  line-height: 1;
-  text-transform: none;
-  overflow: visible;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 0 18px var(--hs-accent-soft),
     0 8px 18px rgba(0, 0, 0, 0.4);
 }
+.hs-resource-orb input[name$=".value"] { padding-bottom: 12px; }
 .hs-resource-orb small {
   position: absolute;
   top: 43px;
@@ -604,11 +583,8 @@
   font-size: 11px;
   font-weight: 700;
 }
-.holysheet .window-content .hs-resource-max {
-  display: inline-grid;
-  place-items: center;
+.holysheet .hs-resource-orb small input {
   width: 26px;
-  min-width: 26px;
   max-width: 26px;
   height: 16px;
   padding: 0;
@@ -619,14 +595,9 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: rgba(255, 247, 228, 0.82);
-  font-family: var(--hs-title);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1;
   text-align: center;
-  text-transform: none;
-  overflow: visible;
 }
 .hs-resource-orb span {
   margin-top: 5px;
@@ -1068,31 +1039,13 @@
 }
 .hs-list-row > button[data-roll]:hover { color: var(--hs-accent-bright); box-shadow: none; }
 .hs-list-row > button[data-roll]:hover::before { opacity: 1; }
-.holysheet .window-content .hs-list-row .hs-skill-value {
-  display: grid;
-  place-items: center;
+.hs-list-row input[type="number"] {
   height: 30px;
   width: 100%;
   max-width: 100%;
-  padding: 0;
-  border: 1px solid var(--hs-glass-line);
   border-radius: 8px;
-  background: var(--hs-glass);
-  color: var(--hs-ink-strong);
-  font-family: var(--hs-title);
-  font-size: 13px;
   font-weight: 700;
-  line-height: 1;
   font-variant-numeric: tabular-nums;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-.holysheet .window-content .hs-list-row .hs-skill-value:hover,
-.holysheet .window-content .hs-list-row .hs-skill-value:focus {
-  border-color: var(--hs-accent-line);
-  color: var(--hs-ink-strong);
-  box-shadow:
-    0 0 0 3px var(--hs-accent-soft),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 .hs-special-skill { grid-template-columns: minmax(0, 1fr) 52px 26px 26px; }
 .hs-hidden-field { display: none; }
@@ -1441,10 +1394,10 @@
   --hs-r-sm: 7px;
 }
 .hs-theme-sobre .hs-banner::after { box-shadow: none; height: 1px; }
-.hs-theme-sobre .hs-aptitude-value { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
+.hs-theme-sobre .hs-aptitude-card input { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
 .hs-theme-sobre .holysheet-character .hs-icon-tabs .item.active,
 .hs-theme-sobre .hs-armor-orb i { box-shadow: none; }
-.hs-theme-sobre .hs-resource-value,
+.hs-theme-sobre .hs-resource-orb input[name$=".value"],
 .hs-theme-sobre .hs-armor-orb strong { box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 14px rgba(0,0,0,0.35); }
 .hs-theme-sobre .hs-panel h2::before { box-shadow: none; }
 
@@ -1459,7 +1412,7 @@
   --hs-accent-line: rgba(86, 240, 182, 0.5);
 }
 .hs-theme-lueur .hs-banner { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 44px rgba(0,0,0,0.5), 0 0 60px rgba(47,211,152,0.08); }
-.hs-theme-lueur .hs-aptitude-value:focus,
+.hs-theme-lueur .hs-aptitude-card input:focus,
 .hs-theme-lueur .holysheet-character .hs-icon-tabs .item.active { box-shadow: 0 0 26px var(--hs-accent-glow); }
 
 /* =========================================================================
@@ -1491,8 +1444,8 @@
   box-shadow: 0 0 16px var(--hs-brass-soft);
 }
 .hs-theme-cuir .hs-portrait-ring,
-.hs-theme-cuir .hs-aptitude-value,
-.hs-theme-cuir .hs-resource-value,
+.hs-theme-cuir .hs-aptitude-card input,
+.hs-theme-cuir .hs-resource-orb input[name$=".value"],
 .hs-theme-cuir .hs-armor-orb strong { border-width: 2px; }
 .hs-theme-cuir .hs-panel h2::before,
 .hs-theme-cuir .holysheet-character .hs-icon-tabs .item.active {
