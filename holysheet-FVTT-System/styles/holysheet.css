@@ -77,14 +77,6 @@
   overflow: auto;
 }
 
-/* L'habillage HolySheet vit dans le contenu de la fiche. Les controles natifs
-   Foundry de la barre de fenetre doivent garder leurs icones et styles core. */
-.window-app.holysheet .window-header,
-.app.holysheet .window-header,
-.application.holysheet .window-header {
-  font-family: var(--font-primary, sans-serif);
-}
-
 /* ---- Surface du formulaire ------------------------------------------------ */
 .holysheet-character {
   position: relative;
@@ -114,9 +106,9 @@
 }
 
 /* ---- Champs : verre depoli ----------------------------------------------- */
-.holysheet .window-content input:not([type="checkbox"]),
-.holysheet .window-content textarea,
-.holysheet .window-content select {
+.holysheet input:not([type="checkbox"]),
+.holysheet textarea,
+.holysheet select {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -127,13 +119,13 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
 }
-.holysheet .window-content input:not([type="checkbox"])::placeholder,
-.holysheet .window-content textarea::placeholder {
+.holysheet input:not([type="checkbox"])::placeholder,
+.holysheet textarea::placeholder {
   color: rgba(232, 221, 198, 0.4);
 }
-.holysheet .window-content input:not([type="checkbox"]):focus,
-.holysheet .window-content textarea:focus,
-.holysheet .window-content select:focus {
+.holysheet input:not([type="checkbox"]):focus,
+.holysheet textarea:focus,
+.holysheet select:focus {
   outline: none;
   border-color: var(--hs-accent-line);
   background: var(--hs-glass-2);
@@ -141,7 +133,7 @@
     0 0 0 3px var(--hs-accent-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-.holysheet .window-content input[type="checkbox"] {
+.holysheet input[type="checkbox"] {
   width: 16px;
   height: 16px;
   margin: 0;
@@ -154,7 +146,7 @@
   backdrop-filter: none;
   accent-color: var(--hs-accent);
 }
-.holysheet .window-content select option {
+.holysheet select option {
   background: #1c1812;
   color: var(--hs-ink-strong);
 }
@@ -176,14 +168,14 @@
   box-shadow: 0 0 14px var(--hs-accent-soft);
 }
 
-.holysheet .window-content input[type="number"] {
+.holysheet input[type="number"] {
   width: 48px;
   max-width: 48px;
   text-align: center;
   -moz-appearance: textfield;
 }
-.holysheet .window-content input[type="number"]::-webkit-outer-spin-button,
-.holysheet .window-content input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.holysheet input[type="number"]::-webkit-outer-spin-button,
+.holysheet input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
 /* scrollbar */
 .holysheet-character::-webkit-scrollbar { width: 11px; height: 11px; }
@@ -365,7 +357,6 @@
   min-width: 0;
 }
 .hs-aptitude-card {
-  position: relative;
   display: grid;
   grid-template-rows: auto auto;
   justify-items: center;
@@ -376,13 +367,14 @@
   border: 0;
   background: transparent;
 }
-.hs-aptitude-card::before {
-  content: "";
-  grid-row: 1;
-  grid-column: 1;
+.holysheet .window-content .hs-aptitude-value {
+  display: grid;
+  place-items: center;
   width: min(100%, 58px);
   max-width: 58px;
+  height: auto;
   aspect-ratio: 1;
+  padding: 0;
   border: 1px solid var(--hs-glass-line);
   border-radius: 50%;
   background:
@@ -390,44 +382,26 @@
     var(--hs-glass-2);
   -webkit-backdrop-filter: blur(9px) saturate(1.15);
   backdrop-filter: blur(9px) saturate(1.15);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 10px 22px rgba(0, 0, 0, 0.4);
-  pointer-events: none;
-}
-.holysheet .window-content .hs-aptitude-card input {
-  position: relative;
-  z-index: 1;
-  grid-row: 1;
-  grid-column: 1;
-  width: min(100%, 58px);
-  max-width: 58px;
-  height: auto;
-  aspect-ratio: 1;
-  padding: 0;
-  margin: 0;
-  border: 1px solid transparent;
-  border-radius: 50%;
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
   color: var(--hs-ink-strong);
   font-family: var(--hs-title);
   font-size: clamp(15px, 1.45vw, 22px);
   font-weight: 700;
+  line-height: 1;
   text-align: center;
-  box-shadow: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 22px rgba(0, 0, 0, 0.4);
 }
-.holysheet .window-content .hs-aptitude-card input:focus {
+.holysheet .window-content .hs-aptitude-value:hover,
+.holysheet .window-content .hs-aptitude-value:focus {
   border-color: var(--hs-accent-line);
-  background: var(--hs-accent-soft);
+  color: var(--hs-ink-strong);
   box-shadow:
     0 0 0 3px var(--hs-accent-soft),
-    0 0 22px var(--hs-accent-glow);
+    0 0 22px var(--hs-accent-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 .hs-aptitude-card button {
-  grid-row: 2;
-  grid-column: 1;
   display: grid;
   place-items: center;
   width: 100%;
@@ -578,7 +552,7 @@
   min-height: 90px;
   text-align: center;
 }
-.hs-resource-orb input[name$=".value"] {
+.holysheet .window-content .hs-resource-value {
   display: grid;
   place-items: center;
   width: 66px;
@@ -596,12 +570,13 @@
   font-family: var(--hs-title);
   font-size: 23px;
   font-weight: 700;
+  line-height: 1;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     0 0 18px var(--hs-accent-soft),
     0 8px 18px rgba(0, 0, 0, 0.4);
 }
-.hs-resource-orb input[name$=".value"] { padding-bottom: 12px; }
+.holysheet .window-content .hs-resource-value { padding-bottom: 12px; }
 .hs-resource-orb small {
   position: absolute;
   top: 43px;
@@ -614,8 +589,9 @@
   font-size: 11px;
   font-weight: 700;
 }
-.holysheet .window-content .hs-resource-orb small input {
+.holysheet .window-content .hs-resource-max {
   width: 26px;
+  min-width: 26px;
   max-width: 26px;
   height: 16px;
   padding: 0;
@@ -628,6 +604,7 @@
   color: rgba(255, 247, 228, 0.82);
   font-size: 11px;
   font-weight: 800;
+  line-height: 1;
   text-align: center;
 }
 .hs-resource-orb span {
@@ -756,23 +733,23 @@
   object-fit: contain;
   opacity: 0.76;
 }
-.holysheet .window-content button.hs-state-token.active {
+.holysheet button.hs-state-token.active {
   border-color: var(--hs-state-color, var(--hs-accent-line));
   background: rgba(12, 10, 7, 0.5);
   box-shadow:
     0 0 12px var(--hs-state-color, var(--hs-accent)),
     inset 0 0 0 1px rgba(255, 246, 223, 0.12);
 }
-.holysheet .window-content button.hs-state-token.active::before {
+.holysheet button.hs-state-token.active::before {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.08)),
     var(--hs-state-color, var(--hs-accent));
 }
-.holysheet .window-content button.hs-state-token.active:hover {
+.holysheet button.hs-state-token.active:hover {
   border-color: var(--hs-state-color, var(--hs-accent-line));
   background: rgba(12, 10, 7, 0.56);
 }
-.holysheet .window-content button.hs-state-token.active:hover::before {
+.holysheet button.hs-state-token.active:hover::before {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(0, 0, 0, 0.06)),
     var(--hs-state-color, var(--hs-accent));
@@ -1005,9 +982,9 @@
 }
 
 /* boutons d'action ronds */
-.holysheet .window-content button[data-create-special-skill],
-.holysheet .window-content button[data-create-equipment],
-.holysheet .window-content .hs-panel h2 > button {
+.holysheet button[data-create-special-skill],
+.holysheet button[data-create-equipment],
+.holysheet .hs-panel h2 > button {
   min-width: 26px;
   height: 26px;
   margin-left: auto;
@@ -1019,7 +996,7 @@
   font-weight: 700;
   line-height: 1;
 }
-.holysheet .window-content .hs-icon-button {
+.holysheet .hs-icon-button {
   display: inline-grid;
   place-items: center;
   width: 26px;
@@ -1070,31 +1047,28 @@
 }
 .hs-list-row > button[data-roll]:hover { color: var(--hs-accent-bright); box-shadow: none; }
 .hs-list-row > button[data-roll]:hover::before { opacity: 1; }
-.holysheet .window-content .hs-list-row input[type="number"] {
+.holysheet .window-content .hs-list-row .hs-skill-value {
+  display: grid;
+  place-items: center;
   height: 30px;
   width: 100%;
   max-width: 100%;
-  border-color: transparent;
+  padding: 0;
+  border: 1px solid var(--hs-glass-line);
   border-radius: 8px;
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
-  color: var(--hs-ink-strong);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.holysheet .window-content .hs-list-row:hover input[type="number"],
-.holysheet .window-content .hs-list-row input[type="number"]:focus {
-  border-color: var(--hs-glass-line);
   background: var(--hs-glass);
-  -webkit-backdrop-filter: blur(7px) saturate(1.1);
-  backdrop-filter: blur(7px) saturate(1.1);
+  color: var(--hs-ink-strong);
+  font-family: var(--hs-title);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
-.holysheet .window-content .hs-list-row input[type="number"]:focus {
+.holysheet .window-content .hs-list-row .hs-skill-value:hover,
+.holysheet .window-content .hs-list-row .hs-skill-value:focus {
   border-color: var(--hs-accent-line);
-  background: var(--hs-glass-2);
+  color: var(--hs-ink-strong);
   box-shadow:
     0 0 0 3px var(--hs-accent-soft),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -1446,10 +1420,10 @@
   --hs-r-sm: 7px;
 }
 .hs-theme-sobre .hs-banner::after { box-shadow: none; height: 1px; }
-.hs-theme-sobre .hs-aptitude-card::before { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
+.hs-theme-sobre .hs-aptitude-value { box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.35); }
 .hs-theme-sobre .holysheet-character .hs-icon-tabs .item.active,
 .hs-theme-sobre .hs-armor-orb i { box-shadow: none; }
-.hs-theme-sobre .hs-resource-orb input[name$=".value"],
+.hs-theme-sobre .hs-resource-value,
 .hs-theme-sobre .hs-armor-orb strong { box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 6px 14px rgba(0,0,0,0.35); }
 .hs-theme-sobre .hs-panel h2::before { box-shadow: none; }
 
@@ -1464,7 +1438,7 @@
   --hs-accent-line: rgba(86, 240, 182, 0.5);
 }
 .hs-theme-lueur .hs-banner { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 44px rgba(0,0,0,0.5), 0 0 60px rgba(47,211,152,0.08); }
-.hs-theme-lueur .hs-aptitude-card input:focus,
+.hs-theme-lueur .hs-aptitude-value:focus,
 .hs-theme-lueur .holysheet-character .hs-icon-tabs .item.active { box-shadow: 0 0 26px var(--hs-accent-glow); }
 
 /* =========================================================================
@@ -1496,8 +1470,8 @@
   box-shadow: 0 0 16px var(--hs-brass-soft);
 }
 .hs-theme-cuir .hs-portrait-ring,
-.hs-theme-cuir .hs-aptitude-card::before,
-.hs-theme-cuir .hs-resource-orb input[name$=".value"],
+.hs-theme-cuir .hs-aptitude-value,
+.hs-theme-cuir .hs-resource-value,
 .hs-theme-cuir .hs-armor-orb strong { border-width: 2px; }
 .hs-theme-cuir .hs-panel h2::before,
 .hs-theme-cuir .holysheet-character .hs-icon-tabs .item.active {

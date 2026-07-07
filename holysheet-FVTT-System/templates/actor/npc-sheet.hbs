@@ -9,8 +9,10 @@
       {{#if hs.modules.resources}}
       <section class="hs-resource-orbs">
         <label class="hs-resource-orb">
-          <input name="system.resources.pv.value" type="number" value="{{system.resources.pv.value}}" min="0" />
-          <small>/<input name="system.resources.pv.max" type="number" value="{{system.resources.pv.max}}" min="0" /></small>
+          <button type="button" class="hs-resource-value hs-edit-number" data-edit-number="system.resources.pv.value" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}}" data-edit-min="0">
+            {{system.resources.pv.value}}
+          </button>
+          <small>/<button type="button" class="hs-resource-max hs-edit-number" data-edit-number="system.resources.pv.max" data-edit-label="{{localize "HOLYSHEET.Label.Pv"}} max" data-edit-min="0">{{system.resources.pv.max}}</button></small>
           <span>{{localize "HOLYSHEET.Label.Pv"}}</span>
         </label>
         {{#if hs.modules.armor}}
@@ -28,7 +30,9 @@
   <section class="hs-banner-aptitudes" aria-label="Aptitudes">
     {{#each hs.aptitudes}}
     <article class="hs-aptitude-card" title="{{description}}">
-      <input name="{{field}}" type="number" value="{{value}}" min="1" max="100" />
+      <button type="button" class="hs-aptitude-value hs-edit-number" data-edit-number="{{field}}" data-edit-label="{{label}}" data-edit-min="1" data-edit-max="100">
+        {{value}}
+      </button>
       <button type="button" data-roll="aptitude" data-roll-group="aptitude" data-roll-key="{{key}}" data-roll-label="{{label}}" data-roll-target="{{value}}" data-roll-modifier="{{modifier}}">
         <span>{{abbreviation}}</span>
       </button>
