@@ -1,9 +1,15 @@
-import { registerSettings, SYSTEM_ID } from "./config.mjs";
-import { HolySheetCharacterData, HolySheetEquipmentData, HolySheetNpcData } from "./data-models.mjs";
-import { HolySheetActor } from "./documents/actor.mjs";
-import { HolySheetItem } from "./documents/item.mjs";
-import { HolySheetActorSheet } from "./sheets/actor-sheet.mjs";
-import { HolySheetItemSheet } from "./sheets/item-sheet.mjs";
+import { registerSettings, SYSTEM_ID } from "./config.mjs?v=0.1.7";
+import { HolySheetCharacterData, HolySheetEquipmentData, HolySheetNpcData } from "./data-models.mjs?v=0.1.7";
+import { HolySheetActor } from "./documents/actor.mjs?v=0.1.7";
+import { HolySheetItem } from "./documents/item.mjs?v=0.1.7";
+import { HolySheetActorSheet } from "./sheets/actor-sheet.mjs?v=0.1.7";
+import { HolySheetItemSheet } from "./sheets/item-sheet.mjs?v=0.1.7";
+
+const TEMPLATE_VERSION = "0.1.7";
+
+function versionTemplate(path) {
+  return `${path}?v=${TEMPLATE_VERSION}`;
+}
 
 Hooks.once("init", async () => {
   console.log("HolySheet | Initialisation du systeme");
@@ -41,8 +47,8 @@ Hooks.once("init", async () => {
 
 async function preloadTemplates() {
   return loadTemplates([
-    "systems/holysheet/templates/actor/character-sheet.hbs",
-    "systems/holysheet/templates/actor/npc-sheet.hbs",
-    "systems/holysheet/templates/item/equipment-sheet.hbs"
+    versionTemplate("systems/holysheet/templates/actor/character-sheet.hbs"),
+    versionTemplate("systems/holysheet/templates/actor/npc-sheet.hbs"),
+    versionTemplate("systems/holysheet/templates/item/equipment-sheet.hbs")
   ]);
 }

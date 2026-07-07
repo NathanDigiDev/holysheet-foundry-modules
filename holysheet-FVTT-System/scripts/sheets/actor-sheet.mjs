@@ -3,6 +3,11 @@ import { rollD100 } from "../rolls.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
+const TEMPLATE_VERSION = "0.1.7";
+
+function versionTemplate(path) {
+  return `${path}?v=${TEMPLATE_VERSION}`;
+}
 
 export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   _gmConfigMode = false;
@@ -29,7 +34,7 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
 
   static PARTS = {
     body: {
-      template: "systems/holysheet/templates/actor/character-sheet.hbs",
+      template: versionTemplate("systems/holysheet/templates/actor/character-sheet.hbs"),
       scrollable: [""]
     }
   };
@@ -43,7 +48,7 @@ export class HolySheetActorSheet extends HandlebarsApplicationMixin(ActorSheetV2
   }
 
   get template() {
-    return `systems/holysheet/templates/actor/${this.actor.type}-sheet.hbs`;
+    return versionTemplate(`systems/holysheet/templates/actor/${this.actor.type}-sheet.hbs`);
   }
 
   _configureRenderOptions(options) {
