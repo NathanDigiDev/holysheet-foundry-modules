@@ -1458,6 +1458,158 @@
 .hs-theme-cuir .holysheet-character .hs-icon-tabs .item:hover { color: var(--hs-brass); }
 
 /* =========================================================================
+   ISOLATION SERVEUR
+   Des modules HolySheet externes peuvent charger des styles generiques
+   .holysheet dans la couche CSS "modules", apres la couche "system".
+   Ces rappels protegent uniquement les controles de fiche du systeme.
+   ========================================================================= */
+.application.sheet.holysheet.actor input[type="number"],
+.application.sheet.holysheet.item input[type="number"],
+.window-app.holysheet.actor input[type="number"],
+.window-app.holysheet.item input[type="number"],
+.app.holysheet.actor input[type="number"],
+.app.holysheet.item input[type="number"] {
+  box-sizing: border-box !important;
+  -webkit-appearance: none !important;
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
+}
+.application.sheet.holysheet.actor input[type="number"]::-webkit-outer-spin-button,
+.application.sheet.holysheet.actor input[type="number"]::-webkit-inner-spin-button,
+.application.sheet.holysheet.item input[type="number"]::-webkit-outer-spin-button,
+.application.sheet.holysheet.item input[type="number"]::-webkit-inner-spin-button,
+.window-app.holysheet.actor input[type="number"]::-webkit-outer-spin-button,
+.window-app.holysheet.actor input[type="number"]::-webkit-inner-spin-button,
+.window-app.holysheet.item input[type="number"]::-webkit-outer-spin-button,
+.window-app.holysheet.item input[type="number"]::-webkit-inner-spin-button,
+.app.holysheet.actor input[type="number"]::-webkit-outer-spin-button,
+.app.holysheet.actor input[type="number"]::-webkit-inner-spin-button,
+.app.holysheet.item input[type="number"]::-webkit-outer-spin-button,
+.app.holysheet.item input[type="number"]::-webkit-inner-spin-button {
+  margin: 0 !important;
+  -webkit-appearance: none !important;
+}
+.application.sheet.holysheet.actor .hs-aptitude-card input[type="number"],
+.window-app.holysheet.actor .hs-aptitude-card input[type="number"],
+.app.holysheet.actor .hs-aptitude-card input[type="number"] {
+  width: min(100%, 58px) !important;
+  max-width: 58px !important;
+  height: auto !important;
+  aspect-ratio: 1 / 1 !important;
+  padding: 0 !important;
+  border: 1px solid var(--hs-glass-line) !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.1), transparent 60%),
+    var(--hs-glass-2) !important;
+  color: var(--hs-ink-strong) !important;
+  font-family: var(--hs-title) !important;
+  font-size: clamp(15px, 1.45vw, 22px) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 22px rgba(0, 0, 0, 0.4) !important;
+}
+.application.sheet.holysheet.actor .hs-aptitude-card input[type="number"]:focus,
+.window-app.holysheet.actor .hs-aptitude-card input[type="number"]:focus,
+.app.holysheet.actor .hs-aptitude-card input[type="number"]:focus {
+  border-color: var(--hs-accent-line) !important;
+  box-shadow:
+    0 0 0 3px var(--hs-accent-soft),
+    0 0 22px var(--hs-accent-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+}
+.application.sheet.holysheet.actor.hs-theme-cuir .hs-aptitude-card input[type="number"],
+.window-app.holysheet.actor.hs-theme-cuir .hs-aptitude-card input[type="number"],
+.app.holysheet.actor.hs-theme-cuir .hs-aptitude-card input[type="number"] {
+  border-width: 2px !important;
+}
+.application.sheet.holysheet.actor .hs-resource-orb input[name$=".value"],
+.window-app.holysheet.actor .hs-resource-orb input[name$=".value"],
+.app.holysheet.actor .hs-resource-orb input[name$=".value"] {
+  display: block !important;
+  width: 66px !important;
+  max-width: 66px !important;
+  height: 66px !important;
+  padding: 0 0 12px !important;
+  border: 1px solid var(--hs-accent-line) !important;
+  border-radius: 50% !important;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.12), transparent 55%),
+    radial-gradient(circle at 50% 120%, var(--hs-accent-soft), transparent 60%),
+    var(--hs-glass-2) !important;
+  color: var(--hs-ink-strong) !important;
+  font-family: var(--hs-title) !important;
+  font-size: 23px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 18px var(--hs-accent-soft),
+    0 8px 18px rgba(0, 0, 0, 0.4) !important;
+}
+.application.sheet.holysheet.actor.hs-theme-cuir .hs-resource-orb input[name$=".value"],
+.window-app.holysheet.actor.hs-theme-cuir .hs-resource-orb input[name$=".value"],
+.app.holysheet.actor.hs-theme-cuir .hs-resource-orb input[name$=".value"] {
+  border-width: 2px !important;
+}
+.application.sheet.holysheet.actor .hs-resource-orb small input[type="number"],
+.window-app.holysheet.actor .hs-resource-orb small input[type="number"],
+.app.holysheet.actor .hs-resource-orb small input[type="number"] {
+  width: 26px !important;
+  max-width: 26px !important;
+  height: 16px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: rgba(255, 247, 228, 0.82) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 16px !important;
+  text-align: center !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.application.sheet.holysheet.actor .hs-list-row input[type="number"],
+.application.sheet.holysheet.actor .hs-currencies input[type="number"],
+.application.sheet.holysheet.item .hs-item-fields input[type="number"],
+.window-app.holysheet.actor .hs-list-row input[type="number"],
+.window-app.holysheet.actor .hs-currencies input[type="number"],
+.window-app.holysheet.item .hs-item-fields input[type="number"],
+.app.holysheet.actor .hs-list-row input[type="number"],
+.app.holysheet.actor .hs-currencies input[type="number"],
+.app.holysheet.item .hs-item-fields input[type="number"] {
+  border: 1px solid var(--hs-glass-line) !important;
+  background: var(--hs-glass) !important;
+  color: var(--hs-ink-strong) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  text-align: center !important;
+}
+.application.sheet.holysheet.actor input[type="checkbox"],
+.application.sheet.holysheet.item input[type="checkbox"],
+.window-app.holysheet.actor input[type="checkbox"],
+.window-app.holysheet.item input[type="checkbox"],
+.app.holysheet.actor input[type="checkbox"],
+.app.holysheet.item input[type="checkbox"] {
+  width: 16px !important;
+  height: 16px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  accent-color: var(--hs-accent) !important;
+  -webkit-appearance: checkbox !important;
+  appearance: auto !important;
+}
+
+/* =========================================================================
    COMPLEMENTS SYSTEME — elements du template Foundry hors maquette
    (config monnaies / categories / etats, selecteurs d'icone, dialogues,
    carte de chat). Stylises dans la meme direction sombre / verre depoli.
