@@ -96,7 +96,7 @@ export const BANNER_PRESETS = {
     colorSecondary: "#2b1d0e",
     textColor: "#f3e9d2",
     font: "'Modesto Condensed', 'Signika', serif",
-    background: "modules/holysheet-quest-system/assets/themes/medieval.webp",
+    background: "",
     borderStyle: "ridge"
   },
   scifi: {
@@ -106,7 +106,7 @@ export const BANNER_PRESETS = {
     colorSecondary: "#04121b",
     textColor: "#d6f6ff",
     font: "'Orbitron', 'Signika', sans-serif",
-    background: "modules/holysheet-quest-system/assets/themes/scifi.webp",
+    background: "",
     borderStyle: "solid"
   },
   steampunk: {
@@ -116,7 +116,7 @@ export const BANNER_PRESETS = {
     colorSecondary: "#241a10",
     textColor: "#f0dfc0",
     font: "'IM Fell English', 'Signika', serif",
-    background: "modules/holysheet-quest-system/assets/themes/steampunk.webp",
+    background: "",
     borderStyle: "groove"
   }
 };

@@ -45,17 +45,17 @@ concepts (Actors, Items, Users), so it works in any game system.
 
 ### Data storage
 
-Quests are stored in a single **world setting** (`quest-system.quests`), an object
+Quests are stored in a single **world setting** (`holysheet-quest-system.quests`), an object
 keyed by quest id. This keeps the module portable and independent of any system's
 data model. Because only GMs may write world settings, player actions (e.g. ticking
 a manual objective) are relayed to the GM through the core socket channel.
 
 ## Public API
 
-Available as `game.modules.get("quest-system").api` and `globalThis.QuestSystem`:
+Available as `game.modules.get("holysheet-quest-system").api` and `globalThis.QuestSystem`:
 
 ```js
-const { QuestAPI } = game.modules.get("quest-system").api;
+const { QuestAPI } = game.modules.get("holysheet-quest-system").api;
 const quest = await QuestAPI.create({ name: "The Lost Heirloom" });
 await QuestAPI.start(quest.id);
 await QuestAPI.complete(quest.id); // grants rewards + fires the banner
@@ -81,9 +81,9 @@ Foundry user data (the folder name **must** match the manifest `id`), then enabl
 
 ## Notes
 
-- Banner theme background images live under `assets/themes/`. The presets reference
-  optional images there; drop your own to taste (the gradient renders fine without
-  them).
+- Banner theme backgrounds are optional: presets ship with a gradient look, and
+  you can point any quest (or preset override) at your own image, e.g. under
+  `assets/themes/`.
 - Kill objective matching is name-based (case-insensitive substring) to remain
   system-agnostic.
 
