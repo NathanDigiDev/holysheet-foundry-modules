@@ -60,13 +60,20 @@ Lire le `SKILL.md` correspondant avant d'agir sur l'un de ces sujets.
 
 - Chaque module/systeme publie doit contenir `url`, `manifest` et `download`
   dans son `module.json` ou `system.json`.
+- **NEVER** pointer `manifest` vers `raw.githubusercontent.com/.../main/...`.
+  Le manifest public doit etre un asset de GitHub Release stable :
+  `https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>-module.json`
+  pour un module, ou `.../holysheet-system.json` pour le systeme.
+- Le `download` public doit pointer vers le zip correspondant dans la meme
+  release latest : `.../releases/latest/download/<id>.zip`.
 - Quand un module change, incrementer uniquement le `version` du module
   concerne avant commit/release. Les modules inchanges gardent leur version.
 - Apres push sur `main`, publier une GitHub Release pour declencher
-  `.github/workflows/release-packages.yml`, qui genere les zips utilises par
-  Foundry.
+  `.github/workflows/release-packages.yml`, qui genere les zips et copie les
+  `module.json`/`system.json` comme assets de release utilises par Foundry.
 - Un nouveau module installable doit vivre dans son propre dossier racine
-  `holysheet-.../` et etre ajoute au workflow de packaging.
+  `holysheet-.../` et etre ajoute au workflow de packaging au format
+  `dossier:asset.zip:asset-module.json`.
 - Voir `CLAUDE.md` pour la procedure complete.
 
 ## Messages GitHub

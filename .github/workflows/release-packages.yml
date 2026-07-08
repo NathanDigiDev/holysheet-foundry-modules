@@ -25,28 +25,30 @@ jobs:
           mkdir -p dist
 
           packages=(
-            "holysheet-custom-calendar:holysheet-custom-calendar.zip"
-            "holysheet-foundry-friendly-interface:holysheet-foundry-friendly-interface.zip"
-            "holysheet-FVTT-System:holysheet.zip"
-            "holysheet-gm-stories:holysheet-gm-stories.zip"
-            "holysheet-dnd-compendiums:holysheet-dnd-compendiums.zip"
-            "holysheet-immersive-books:holysheet-immersive-books.zip"
-            "holysheet-interactive-zones:holysheet-interactive-zones.zip"
-            "holysheet-item-storage:holysheet-item-storage.zip"
-            "holysheet-lockpicking:holysheet-lockpicking.zip"
-            "holysheet-quest-system:holysheet-quest-system.zip"
+            "holysheet-custom-calendar:holysheet-custom-calendar.zip:holysheet-custom-calendar-module.json"
+            "holysheet-foundry-friendly-interface:holysheet-foundry-friendly-interface.zip:holysheet-foundry-friendly-interface-module.json"
+            "holysheet-FVTT-System:holysheet.zip:holysheet-system.json"
+            "holysheet-gm-stories:holysheet-gm-stories.zip:holysheet-gm-stories-module.json"
+            "holysheet-immersive-books:holysheet-immersive-books.zip:holysheet-immersive-books-module.json"
+            "holysheet-interactive-zones:holysheet-interactive-zones.zip:holysheet-interactive-zones-module.json"
+            "holysheet-item-storage:holysheet-item-storage.zip:holysheet-item-storage-module.json"
+            "holysheet-lockpicking:holysheet-lockpicking.zip:holysheet-lockpicking-module.json"
+            "holysheet-quest-system:holysheet-quest-system.zip:holysheet-quest-system-module.json"
           )
 
           for package in "${packages[@]}"; do
-            source_dir="${package%%:*}"
-            archive_name="${package##*:}"
+            IFS=":" read -r source_dir archive_name manifest_asset <<< "$package"
 
             if [[ ! -d "$source_dir" ]]; then
               echo "Missing package directory: $source_dir" >&2
               exit 1
             fi
 
-            if [[ ! -f "$source_dir/module.json" && ! -f "$source_dir/system.json" ]]; then
+            if [[ -f "$source_dir/module.json" ]]; then
+              manifest_file="module.json"
+            elif [[ -f "$source_dir/system.json" ]]; then
+              manifest_file="system.json"
+            else
               echo "Package directory has no module.json or system.json: $source_dir" >&2
               exit 1
             fi
@@ -56,17 +58,20 @@ jobs:
               cd "$source_dir"
               zip -r "$GITHUB_WORKSPACE/dist/$archive_name" .
             )
+
+            echo "Copying $source_dir/$manifest_file to dist/$manifest_asset"
+            cp "$source_dir/$manifest_file" "dist/$manifest_asset"
           done
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: foundry-packages
-          path: dist/*.zip
+          path: dist/*
 
-      - name: Upload zips to release
+      - name: Upload package assets to release
         if: github.event_name == 'release'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
-        run: gh release upload "$GITHUB_REF_NAME" dist/*.zip --clobber
+        run: gh release upload "$GITHUB_REF_NAME" dist/* --clobber

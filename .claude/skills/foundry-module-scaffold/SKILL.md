@@ -58,9 +58,9 @@ Demander (ou déduire) :
     { "lang": "fr", "name": "Français", "path": "lang/fr.json" }
   ],
   "socket": false,
-  "url": "",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>-module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>.zip",
   "license": "MIT",
   "flags": { "<id>": {} }
 }
@@ -72,6 +72,11 @@ Règles v14 NON négociables :
 - **`esmodules`** (un seul point d'entrée qui importe le reste).
 - Mettre `"socket": true` seulement si une action joueur doit être appliquée
   par le MJ via le canal `module.<id>`.
+- **NEVER** utiliser `raw.githubusercontent.com/.../main/...` pour `manifest`.
+  Le manifest public doit etre un asset de GitHub Release :
+  `releases/latest/download/<id>-module.json`.
+- Ajouter le module dans `.github/workflows/release-packages.yml` avec trois
+  segments : `dossier:asset.zip:asset-module.json`.
 
 ## 2. `scripts/main.js` (point d'entrée)
 
@@ -153,3 +158,7 @@ collisions avec le core ou d'autres modules.
 - [ ] Chemins de templates en `modules/<id>/templates/...`.
 - [ ] Doc API vérifiée via `foundry-docs-context7` pour tout appel non trivial.
 - [ ] README minimal (titre, install, compatibilité v14).
+- [ ] `.github/workflows/release-packages.yml` contient l'entree
+      `<id>:<id>.zip:<id>-module.json`.
+- [ ] `manifest` pointe vers `releases/latest/download/<id>-module.json`, jamais
+      vers `main`.

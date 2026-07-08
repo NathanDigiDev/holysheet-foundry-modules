@@ -50,6 +50,6 @@
     "units": "m"
   },
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-FVTT-System/system.json",
-  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/download/v0.2.4/holysheet.zip"
+  "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-system.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet.zip"
 }

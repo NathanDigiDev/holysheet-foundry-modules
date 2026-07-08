@@ -34,7 +34,7 @@
   ],
   "socket": false,
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-gm-stories/module.json",
+  "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-gm-stories-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-gm-stories.zip",
   "license": "MIT",
   "readme": "README.md",

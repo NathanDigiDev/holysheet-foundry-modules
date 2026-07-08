@@ -88,12 +88,21 @@ Pour cela, son manifest (`module.json` ou `system.json`) doit contenir :
 
 ```json
 "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
-"manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/<dossier>/module.json",
-"download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<asset>.zip"
+"manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>-module.json",
+"download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>.zip"
 ```
 
-Pour le systeme HolySheet, utiliser `system.json` dans l'URL `manifest` et
-`holysheet.zip` comme asset `download`.
+**Ne jamais utiliser** `raw.githubusercontent.com/.../main/...` pour le champ
+`manifest` d'un package publie : cela peut annoncer une version qui n'a pas
+encore de zip correspondant. Le manifest public doit etre un asset de la
+GitHub Release, publie par `.github/workflows/release-packages.yml`.
+
+Pour le systeme HolySheet, utiliser :
+
+```json
+"manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-system.json",
+"download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet.zip"
+```
 
 Quand un module change, augmenter uniquement le `version` du module concerne.
 Les modules inchanges gardent leur version. La release peut regenerer tous les
@@ -118,8 +127,11 @@ ses champs `url`/`manifest`/`download`, puis ajouter son entree dans
 `.github/workflows/release-packages.yml` sous la forme :
 
 ```bash
-"holysheet-mon-module:holysheet-mon-module.zip"
+"holysheet-mon-module:holysheet-mon-module.zip:holysheet-mon-module-module.json"
 ```
+
+Le troisieme segment est le nom de l'asset `module.json` copie dans la release.
+Il doit correspondre exactement a l'URL `manifest` du `module.json`.
 
 Ne pas placer un module autonome sous le dossier d'un autre module ou du
 systeme. Un module installable Foundry doit vivre dans son propre dossier

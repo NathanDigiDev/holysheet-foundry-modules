@@ -31,7 +31,7 @@
   ],
   "socket": false,
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-custom-calendar/module.json",
+  "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-custom-calendar-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-custom-calendar.zip",
   "license": "MIT",
   "readme": "README.md",

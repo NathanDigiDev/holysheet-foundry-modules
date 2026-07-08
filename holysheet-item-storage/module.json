@@ -33,7 +33,7 @@
   ],
   "socket": true,
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
-  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-item-storage/module.json",
+  "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-item-storage-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-item-storage.zip",
   "license": "MIT",
   "readme": "README.md"
