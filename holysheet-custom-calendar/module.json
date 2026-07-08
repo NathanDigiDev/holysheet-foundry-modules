@@ -2,7 +2,7 @@
   "id": "holysheet-custom-calendar",
   "title": "Holysheet Custom Calendar",
   "description": "A lightweight, system-agnostic custom calendar module with an always-visible day/night widget.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14",

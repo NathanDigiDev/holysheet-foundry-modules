@@ -2,7 +2,7 @@
   "id": "holysheet-quest-system",
   "title": "Quest System",
   "description": "A system-agnostic quest manager for Foundry VTT v14: GM quest editor, player quest log, objectives (manual / kill / timed), automated item rewards, and immersive animated notifications.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": "13",
     "verified": "14",

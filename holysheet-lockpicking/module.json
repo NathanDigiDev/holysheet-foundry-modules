@@ -2,7 +2,7 @@
   "id": "holysheet-lockpicking",
   "title": "Holysheet Lockpicking",
   "description": "Mini-jeux de verrouillage (crochetage façon Skyrim + cadenas à code à logos) gérés depuis un onglet « Mini-Jeux » dans la sidebar, avec dossiers, puis soumis aux joueurs connectés de votre choix.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     {
       "name": "Holysheet Lockpicking",

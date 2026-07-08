@@ -2,7 +2,7 @@
   "id": "holysheet-gm-stories",
   "title": "HolySheet GM Stories",
   "description": "A GM-only Obsidian-inspired note workspace for Foundry VTT v14 with markdown files, nested folders, optional linked documents, floating access, and scene shortcuts.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14",

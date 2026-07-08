@@ -2,7 +2,7 @@
   "id": "holysheet-item-storage",
   "title": "HolySheet Item Storage",
   "description": "System-agnostic containers for Foundry VTT v14, with HolySheet-aware item creation, live shared inventories, canvas placement, and GM locking.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14.364",
