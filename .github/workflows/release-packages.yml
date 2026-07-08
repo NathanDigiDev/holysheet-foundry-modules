@@ -36,6 +36,19 @@ jobs:
             "holysheet-quest-system:holysheet-quest-system.zip:holysheet-quest-system-module.json"
           )
 
+          # Fichiers de dev a exclure des zips publics (specs internes, tests, tooling)
+          dev_files=(
+            "PROMPT_MASTER.md"
+            "MACROS.txt"
+            "package.json"
+            "package-lock.json"
+            "tests"
+            ".gitignore"
+            ".DS_Store"
+          )
+
+          staging_root="$RUNNER_TEMP/staging"
+
           for package in "${packages[@]}"; do
             IFS=":" read -r source_dir archive_name manifest_asset <<< "$package"
 
@@ -53,14 +66,35 @@ jobs:
               exit 1
             fi
 
-            echo "Building dist/$archive_name from $source_dir"
+            # Copie de travail : on ne modifie jamais les sources du depot
+            staging_dir="$staging_root/$source_dir"
+            rm -rf "$staging_dir"
+            mkdir -p "$staging_dir"
+            cp -R "$source_dir/." "$staging_dir/"
+
+            for dev_file in "${dev_files[@]}"; do
+              rm -rf "$staging_dir/$dev_file"
+            done
+
+            # Le champ "download" du manifest publie doit pointer vers le zip de
+            # CETTE version (regle Foundry) : "manifest" reste sur latest, mais
+            # chaque version enregistree sur foundryvtt.com doit rester
+            # installable avec son propre zip.
+            if [[ "$GITHUB_EVENT_NAME" == "release" ]]; then
+              versioned_download="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/${archive_name}"
+              jq --arg url "$versioned_download" '.download = $url' \
+                "$staging_dir/$manifest_file" > "$staging_dir/$manifest_file.tmp"
+              mv "$staging_dir/$manifest_file.tmp" "$staging_dir/$manifest_file"
+            fi
+
+            echo "Building dist/$archive_name from $staging_dir"
             (
-              cd "$source_dir"
+              cd "$staging_dir"
               zip -r "$GITHUB_WORKSPACE/dist/$archive_name" .
             )
 
-            echo "Copying $source_dir/$manifest_file to dist/$manifest_asset"
-            cp "$source_dir/$manifest_file" "dist/$manifest_asset"
+            echo "Copying $staging_dir/$manifest_file to dist/$manifest_asset"
+            cp "$staging_dir/$manifest_file" "dist/$manifest_asset"
           done
 
       - name: Upload workflow artifact
