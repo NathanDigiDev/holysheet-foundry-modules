@@ -1,4 +1,4 @@
-import { FLAGS, MODULE_ID, format, localize, log } from "./config.mjs";
+import { MODULE_ID, format, localize, log } from "./config.mjs";
 import { ItemStorageAPI } from "./container-api.mjs";
 import { ItemStorageSocket } from "./socket.mjs";
 import { ContainerApp } from "./apps/container-app.mjs";
@@ -65,6 +65,38 @@ Hooks.on("getItemSheetHeaderButtons", (sheet, buttons) => {
     icon: "fas fa-box",
     onclick: async () => ItemStorageAPI.convertItem(item)
   });
+});
+
+// Les fiches d'Item ApplicationV2 (coeur v13+) n'emettent pas
+// getItemSheetHeaderButtons, et les controles d'en-tete v2 exigent une action
+// enregistree par l'application elle-meme. On injecte donc le bouton
+// directement dans l'en-tete de fenetre au rendu.
+Hooks.on("renderItemSheetV2", (sheet, element) => {
+  const item = sheet.item ?? sheet.document;
+  if (!item?.isOwner) return;
+
+  const header = element.querySelector(".window-header");
+  if (!header || header.querySelector("[data-his-header]")) return;
+
+  const isContainer = isContainerItem(item);
+  if (!isContainer && !game.user.isGM) return;
+
+  const label = localize(isContainer ? "HIS.Open" : "HIS.Convert");
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = `header-control icon fa-solid ${isContainer ? "fa-box-open" : "fa-box"}`;
+  button.dataset.hisHeader = "true";
+  button.dataset.tooltip = label;
+  button.setAttribute("aria-label", label);
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (isContainer) new ContainerApp(item.uuid).render({ force: true });
+    else ItemStorageAPI.convertItem(item);
+  });
+
+  const close = header.querySelector("[data-action='close']");
+  if (close) header.insertBefore(button, close);
+  else header.appendChild(button);
 });
 
 Hooks.on("renderItemDirectory", (_app, html) => {
