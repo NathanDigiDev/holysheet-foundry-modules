@@ -2,8 +2,8 @@
   "id": "holysheet-custom-calendar",
   "type": "module",
   "title": "Holysheet Custom Calendar",
-  "description": "A lightweight, system-agnostic custom calendar module with an always-visible day/night widget.",
-  "version": "0.1.1",
+  "description": "A lightweight, system-agnostic custom calendar module with an always-visible day/night widget, month view, notes and reminders. Fully localized UI in English and French.",
+  "version": "0.1.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14",
@@ -25,6 +25,11 @@
     "styles/holysheet-custom-calendar.css"
   ],
   "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
     {
       "lang": "fr",
       "name": "Français",

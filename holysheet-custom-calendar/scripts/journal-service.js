@@ -21,12 +21,12 @@ export async function createCalendarNote({ calendar, date, phaseId, title, conte
   const folder = await ensureJournalFolder(visibility === NOTE_VISIBILITY.PRIVATE ? game.user : null);
   const ownership = buildOwnership(visibility, game.user.id);
   const entry = await JournalEntry.create({
-    name: title || "Rappel",
+    name: title || game.i18n.localize("HCC.DefaultNoteTitle"),
     folder: folder?.id,
     ownership,
     pages: [
       {
-        name: title || "Rappel",
+        name: title || game.i18n.localize("HCC.DefaultNoteTitle"),
         type: "text",
         text: {
           format: CONST.JOURNAL_ENTRY_PAGE_FORMATS.HTML,

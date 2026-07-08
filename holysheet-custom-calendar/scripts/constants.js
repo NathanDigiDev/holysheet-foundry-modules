@@ -20,6 +20,9 @@ export const NOTE_VISIBILITY = {
   GM: "gm"
 };
 
+// Les labels ci-dessous sont des valeurs de repli stockées dans les données de
+// monde ; à l'affichage, `localizePhaseLabel()` (calendar-engine.js) les
+// remplace par la traduction i18n correspondant à l'id de phase.
 export const DEFAULT_PHASES = [
   { id: "night", label: "Nuit", at: 0, color: "#10172a" },
   { id: "dawn", label: "Aube", at: 18, color: "#d18a5b" },

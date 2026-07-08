@@ -10,6 +10,7 @@ import {
   getPhase,
   getSeason,
   getWeekdayName,
+  localizePhaseLabel,
   normalizeCalendar
 } from "../calendar-engine.js";
 import { createCalendarNote, getNotesForDate, notifyDueNotes } from "../journal-service.js";
@@ -116,7 +117,7 @@ export class HolysheetCalendarApp extends HandlebarsApplicationMixin(Application
         name: note.name,
         visible: note.visible
       })),
-      phases: zone?.phases ?? [],
+      phases: (zone?.phases ?? []).map((phase) => ({ ...phase, label: localizePhaseLabel(phase) })),
       visibilities: [
         { id: NOTE_VISIBILITY.PUBLIC, label: game.i18n.localize("HCC.VisibilityPublic") },
         { id: NOTE_VISIBILITY.PRIVATE, label: game.i18n.localize("HCC.VisibilityPrivate") },
@@ -229,8 +230,9 @@ export class HolysheetCalendarApp extends HandlebarsApplicationMixin(Application
     const form = new FormData(event.currentTarget);
     const days = Math.max(0, Number(form.get("days") ?? 0));
     const phaseId = String(form.get("phaseId") ?? "");
-    const confirmed = await Dialog.confirm({
-      title: game.i18n.localize("HCC.AdvanceTime"),
+    // DialogV2 remplace l'ancien Dialog (déprécié en v13, retiré en v14).
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("HCC.AdvanceTime") },
       content: `<p>${game.i18n.localize("HCC.ConfirmAdvance")}</p>`
     });
     if (!confirmed) return;
@@ -248,7 +250,7 @@ export class HolysheetCalendarApp extends HandlebarsApplicationMixin(Application
       speaker: ChatMessage.getSpeaker({ alias: "Holysheet Calendar" }),
       content: `<p>${game.i18n.format("HCC.TimeAdvanced", {
         date: formatDate(nextCalendar, nextCalendar.currentDate),
-        phase: getPhase(nextCalendar, nextCalendar.currentDate.phaseId)?.label ?? nextCalendar.currentDate.phaseId
+        phase: localizePhaseLabel(getPhase(nextCalendar, nextCalendar.currentDate.phaseId)) || nextCalendar.currentDate.phaseId
       })}</p>`
     });
     await notifyDueNotes(nextCalendar);
@@ -315,7 +317,7 @@ export class HolysheetCalendarApp extends HandlebarsApplicationMixin(Application
     if (!source) return;
     const duplicate = foundry.utils.deepClone(source);
     duplicate.id = foundry.utils.randomID();
-    duplicate.name = `${source.name} - copie`;
+    duplicate.name = game.i18n.format("HCC.DuplicateName", { name: source.name });
     duplicate.zones = duplicate.zones.map((zone) => ({ ...zone, id: foundry.utils.randomID() }));
     state.calendars.push(duplicate);
     await setState(state);
@@ -327,7 +329,7 @@ export class HolysheetCalendarApp extends HandlebarsApplicationMixin(Application
     if (!game.user.isGM) return;
     const state = getState();
     const calendar = createGregorianCalendar();
-    calendar.name = `Nouveau calendrier ${state.calendars.length + 1}`;
+    calendar.name = game.i18n.format("HCC.NewCalendarName", { number: state.calendars.length + 1 });
     state.calendars.push(calendar);
     await setState(state);
     refreshSidebarTab();

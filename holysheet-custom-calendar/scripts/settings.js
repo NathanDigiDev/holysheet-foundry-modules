@@ -3,8 +3,8 @@ import { createDefaultState } from "./presets.js";
 
 export function registerSettings() {
   game.settings.register(MODULE_ID, SETTINGS.STATE, {
-    name: "Holysheet Custom Calendar",
-    hint: "Données mondiales des calendriers Holysheet.",
+    name: "HCC.Settings.StateName",
+    hint: "HCC.Settings.StateHint",
     scope: "world",
     config: false,
     type: Object,
@@ -12,8 +12,8 @@ export function registerSettings() {
   });
 
   game.settings.register(MODULE_ID, SETTINGS.WIDGET, {
-    name: "Holysheet Custom Calendar - Widget",
-    hint: "Préférences locales du widget calendrier.",
+    name: "HCC.Settings.WidgetName",
+    hint: "HCC.Settings.WidgetHint",
     scope: "client",
     config: false,
     type: Object,

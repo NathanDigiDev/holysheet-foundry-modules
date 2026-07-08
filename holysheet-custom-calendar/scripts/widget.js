@@ -5,6 +5,7 @@ import {
   getActiveCalendar,
   getActiveZone,
   getPhaseForMinute,
+  localizePhaseLabel,
   setMinuteOfDay
 } from "./calendar-engine.js";
 import { getState, getWidgetSettings, setState, setWidgetSettings } from "./settings.js";
@@ -48,7 +49,7 @@ export function renderWidget() {
           <div class="hcc-widget-tools">
             <button type="button" data-action="toggle-lock" data-tooltip="${settings.locked ? game.i18n.localize("HCC.UnlockGauge") : game.i18n.localize("HCC.LockGauge")}"><i class="fa-solid ${settings.locked ? "fa-lock" : "fa-lock-open"}"></i></button>
             <button type="button" data-action="open-time" data-tooltip="${game.i18n.localize("HCC.AdvanceTime")}"><i class="fa-solid fa-gear"></i></button>
-            <button type="button" data-action="toggle-hidden" data-tooltip="Masquer"><i class="fa-solid fa-eye-slash"></i></button>
+            <button type="button" data-action="toggle-hidden" data-tooltip="${game.i18n.localize("HCC.HideWidget")}"><i class="fa-solid fa-eye-slash"></i></button>
           </div>
         ` : ""}
       </div>
@@ -140,7 +141,7 @@ function getTimeVisual(calendar, zone) {
   return {
     className,
     isDay,
-    label: phase?.label ?? (isDay ? "Jour" : "Nuit"),
+    label: localizePhaseLabel(phase) || game.i18n.localize(isDay ? "HCC.Day" : "HCC.Night"),
     x: Math.round(percent),
     y: Math.round(y)
   };

@@ -175,7 +175,7 @@ export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2
       const state = getState();
       const calendar = state.calendars.find((candidate) => candidate.id === this.calendarId) ?? getActiveCalendar(state);
       calendar.months.push({
-        name: `Mois ${calendar.months.length + 1}`,
+        name: game.i18n.format("HCC.DefaultMonthName", { number: calendar.months.length + 1 }),
         days: 30,
         startsOnWeekday: 0
       });
@@ -199,7 +199,7 @@ export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2
       for (const zone of calendar.zones) zone.active = false;
       calendar.zones.push({
         id: foundry.utils.randomID(),
-        name: `Zone ${calendar.zones.length + 1}`,
+        name: game.i18n.format("HCC.DefaultZoneName", { number: calendar.zones.length + 1 }),
         dayPercentage: 50,
         active: true,
         phases: DEFAULT_PHASES.map((phase) => ({ ...phase })),
@@ -216,7 +216,7 @@ export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2
       const calendar = state.calendars.find((candidate) => candidate.id === this.calendarId) ?? getActiveCalendar(state);
       const zone = getActiveZone(calendar);
       zone.seasons.push({
-        name: `Saison ${zone.seasons.length + 1}`,
+        name: game.i18n.format("HCC.DefaultSeasonName", { number: zone.seasons.length + 1 }),
         from: { month: 1, day: 1 },
         to: { month: 1, day: 30 }
       });
@@ -239,7 +239,7 @@ export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2
       const state = getState();
       const calendar = state.calendars.find((candidate) => candidate.id === this.calendarId) ?? getActiveCalendar(state);
       calendar.events ??= [];
-      calendar.events.push({ name: "Nouvel événement", month: 1, day: 1, description: "" });
+      calendar.events.push({ name: game.i18n.localize("HCC.DefaultEventName"), month: 1, day: 1, description: "" });
       await setState(state);
       refreshSidebarTab();
       this.render();
@@ -283,16 +283,17 @@ export class HolysheetConfigApp extends HandlebarsApplicationMixin(ApplicationV2
   async #deleteCalendar() {
     const state = getState();
     if (state.calendars.length <= 1) {
-      ui.notifications.warn("Impossible de supprimer le dernier calendrier.");
+      ui.notifications.warn(game.i18n.localize("HCC.CannotDeleteLastCalendar"));
       return;
     }
 
     const calendar = state.calendars.find((candidate) => candidate.id === this.calendarId);
     if (!calendar) return;
 
-    const confirmed = await Dialog.confirm({
-      title: "Supprimer le calendrier",
-      content: `<p>Supprimer définitivement <strong>${calendar.name}</strong> ?</p>`
+    // DialogV2 remplace l'ancien Dialog (déprécié en v13, retiré en v14).
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("HCC.DeleteCalendarTitle") },
+      content: `<p>${game.i18n.format("HCC.DeleteCalendarContent", { name: calendar.name })}</p>`
     });
     if (!confirmed) return;
 

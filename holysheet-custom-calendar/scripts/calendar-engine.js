@@ -1,3 +1,26 @@
+// Correspondance id de phase -> clé i18n. Les labels stockés dans les données
+// de monde (zones) servent de repli pour les phases personnalisées.
+const PHASE_I18N_KEYS = {
+  night: "HCC.Phase.Night",
+  dawn: "HCC.Phase.Dawn",
+  morning: "HCC.Phase.Morning",
+  noon: "HCC.Phase.Noon",
+  afternoon: "HCC.Phase.Afternoon",
+  dusk: "HCC.Phase.Dusk",
+  evening: "HCC.Phase.Evening"
+};
+
+/**
+ * Retourne le label affichable d'une phase : traduit via i18n pour les phases
+ * par défaut, sinon retombe sur le label stocké dans les données de monde.
+ */
+export function localizePhaseLabel(phase) {
+  if (!phase) return "";
+  const key = PHASE_I18N_KEYS[phase.id];
+  if (key && game.i18n.has(key)) return game.i18n.localize(key);
+  return phase.label ?? phase.id;
+}
+
 export function getActiveCalendar(state) {
   return state.calendars.find((calendar) => calendar.id === state.activeCalendarId) ?? state.calendars[0];
 }
@@ -39,12 +62,25 @@ export function formatDate(calendar, date) {
 export function formatNarrativeDate(calendar, date) {
   const weekday = getWeekdayName(calendar, date);
   const month = getMonth(calendar, date.month);
-  return `${weekday}, ${toFrenchOrdinal(date.day)} jour, ${month.name}, ${date.year}`;
+  return game.i18n.format("HCC.NarrativeDate", {
+    weekday,
+    day: toOrdinal(date.day),
+    month: month.name,
+    year: date.year
+  });
 }
 
-function toFrenchOrdinal(value) {
+// Ordinal adapté à la langue courante (le français et l'anglais n'ont pas les
+// mêmes suffixes, on branche donc sur game.i18n.lang).
+function toOrdinal(value) {
   const number = Number(value);
-  return number === 1 ? "1er" : `${number}ème`;
+  if (game.i18n.lang === "fr") return number === 1 ? "1er" : `${number}ème`;
+  const mod10 = number % 10;
+  const mod100 = number % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${number}st`;
+  if (mod10 === 2 && mod100 !== 12) return `${number}nd`;
+  if (mod10 === 3 && mod100 !== 13) return `${number}rd`;
+  return `${number}th`;
 }
 
 export function getWeekdayName(calendar, date) {

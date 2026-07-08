@@ -3,8 +3,8 @@
   {{#if isListMode}}
     <header class="hcc-header">
       <div>
-        <h2>Calendriers</h2>
-        <p>Sélectionnez le calendrier actif ou ouvrez un calendrier pour consulter ses notes.</p>
+        <h2>{{localize "HCC.CalendarsTitle"}}</h2>
+        <p>{{localize "HCC.CalendarsHint"}}</p>
       </div>
       <div class="hcc-header-actions">
         <button type="button" data-action="show-widget"><i class="fa-solid fa-eye"></i></button>
@@ -19,7 +19,7 @@
         <article class="hcc-calendar-card {{#if active}}active{{/if}}">
           <label class="hcc-active-choice">
             <input type="checkbox" data-action="activate-calendar" data-value="{{id}}" {{#if active}}checked{{/if}} {{#unless ../isGM}}disabled{{/unless}}>
-            <span>Actif</span>
+            <span>{{localize "HCC.Active"}}</span>
           </label>
           <button type="button" class="hcc-calendar-card-main" data-action="summary-calendar" data-value="{{id}}">
             <strong>{{name}}</strong>
@@ -28,8 +28,8 @@
           </button>
           {{#if ../isGM}}
             <div class="hcc-calendar-card-actions">
-              <button type="button" data-action="configure-calendar" data-value="{{id}}" data-tooltip="Modifier"><i class="fa-solid fa-gear"></i></button>
-              <button type="button" data-action="duplicate-calendar" data-value="{{id}}" data-tooltip="Dupliquer"><i class="fa-solid fa-copy"></i></button>
+              <button type="button" data-action="configure-calendar" data-value="{{id}}" data-tooltip="{{localize 'HCC.Edit'}}"><i class="fa-solid fa-gear"></i></button>
+              <button type="button" data-action="duplicate-calendar" data-value="{{id}}" data-tooltip="{{localize 'HCC.Duplicate'}}"><i class="fa-solid fa-copy"></i></button>
             </div>
           {{/if}}
         </article>
@@ -46,7 +46,7 @@
       </div>
       <div class="hcc-header-actions">
         <button type="button" data-action="show-list"><i class="fa-solid fa-list"></i></button>
-        <button type="button" data-action="view-calendar" data-value="{{calendar.id}}"><i class="fa-solid fa-calendar-days"></i> Vue mois</button>
+        <button type="button" data-action="view-calendar" data-value="{{calendar.id}}"><i class="fa-solid fa-calendar-days"></i> {{localize "HCC.MonthView"}}</button>
         {{#if isGM}}
           <button type="button" data-action="configure"><i class="fa-solid fa-gears"></i></button>
         {{/if}}
@@ -55,23 +55,23 @@
 
     <section class="hcc-summary-grid">
       <article>
-        <h3>Date actuelle</h3>
+        <h3>{{localize "HCC.CurrentDate"}}</h3>
         <strong>{{currentDateLabel}}</strong>
         {{#if season}}<span>{{season}} - {{zone.name}}</span>{{else}}<span>{{zone.name}}</span>{{/if}}
       </article>
       <article>
-        <h3>Structure</h3>
-        <span>{{monthsCount}} mois</span>
-        <span>{{weekdaysCount}} jours par semaine</span>
+        <h3>{{localize "HCC.Structure"}}</h3>
+        <span>{{localize "HCC.MonthsCount" count=monthsCount}}</span>
+        <span>{{localize "HCC.WeekdaysCount" count=weekdaysCount}}</span>
       </article>
       <article>
-        <h3>Événements</h3>
-        <span>{{eventsCount}} événement(s) fixe(s)</span>
+        <h3>{{localize "HCC.Events"}}</h3>
+        <span>{{localize "HCC.FixedEventsCount" count=eventsCount}}</span>
       </article>
     </section>
 
     <section class="hcc-section">
-      <h3>Événements fixes</h3>
+      <h3>{{localize "HCC.FixedEvents"}}</h3>
       <div class="hcc-summary-events">
         {{#if events.length}}
           {{#each events}}
@@ -82,7 +82,7 @@
             </div>
           {{/each}}
         {{else}}
-          <p>Aucun événement fixe.</p>
+          <p>{{localize "HCC.NoFixedEvents"}}</p>
         {{/if}}
       </div>
     </section>
@@ -92,7 +92,7 @@
     <header class="hcc-header">
       <div>
         <h2>{{calendar.name}}</h2>
-        <p>{{localize "HCC.CurrentDate"}} : {{currentDateLabel}}</p>
+        <p>{{localize "HCC.CurrentDate"}}: {{currentDateLabel}}</p>
         {{#if season}}<p>{{season}} - {{zone.name}}</p>{{/if}}
       </div>
       <div class="hcc-header-actions">
@@ -141,7 +141,7 @@
           <span>{{day}}</span>
           <small>{{weekday}}</small>
           {{#if events.length}}
-            <i class="fa-solid fa-star hcc-event-marker" data-tooltip="{{events.length}} événement(s)"></i>
+            <i class="fa-solid fa-star hcc-event-marker" data-tooltip="{{localize 'HCC.EventsTooltip' count=events.length}}"></i>
           {{/if}}
           {{#if hasNote}}<span class="hcc-note-dot"></span>{{/if}}
         </button>
