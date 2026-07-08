@@ -2,8 +2,8 @@
   "id": "holysheet-foundry-friendly-interface",
   "type": "module",
   "title": "Holysheet Foundry Friendly Interface",
-  "description": "Raccourcis d'aide joueur Holysheet pour Foundry VTT v14 : personnage et notes sans modifier l'interface native.",
-  "version": "0.1.1",
+  "description": "Player helper shortcuts for Foundry VTT v14: quick access to character sheet, chat and notes without altering the native interface. English and French included.",
+  "version": "0.1.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14",
