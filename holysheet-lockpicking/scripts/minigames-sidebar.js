@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Entrée sidebar « Mini-Jeux ».
+ * HolySheet Lockpicking — Entrée sidebar « Mini-Jeux ».
  *
  * On ajoute un bouton dans la sidebar de droite (MJ uniquement) qui OUVRE une
  * FENÊTRE-répertoire (plutôt qu'un panneau inline). C'est plus simple, plus
@@ -42,8 +42,8 @@ function injectTab(root) {
 
   const button = model.cloneNode(true);
   button.setAttribute("data-tab", TAB);
-  button.setAttribute("data-tooltip", game.i18n.localize("SKYRIM_LP.MG.Tab"));
-  button.setAttribute("aria-label", game.i18n.localize("SKYRIM_LP.MG.Tab"));
+  button.setAttribute("data-tooltip", game.i18n.localize("HSLP.MG.Tab"));
+  button.setAttribute("aria-label", game.i18n.localize("HSLP.MG.Tab"));
   button.removeAttribute("data-action");                           // pas de navigation native
   button.classList.remove("active");
 
@@ -79,14 +79,14 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 class MinigamesWindow extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
-    id: "skyrim-minigames-window",
-    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-minigames-window"],
+    id: "hslp-minigames-window",
+    classes: ["holysheet", "hs-theme-lueur", "hslp-lockpicking-window", "hslp-minigames-window"],
     position: { width: 380, height: 580 },
-    window: { title: "SKYRIM_LP.MG.Tab", icon: "fa-solid fa-gamepad", resizable: true }
+    window: { title: "HSLP.MG.Tab", icon: "fa-solid fa-gamepad", resizable: true }
   };
   static PARTS = { main: { template: `modules/${MODULE_ID}/templates/minigames-window.hbs` } };
 
-  get title() { return game.i18n.localize("SKYRIM_LP.MG.Tab"); }
+  get title() { return game.i18n.localize("HSLP.MG.Tab"); }
 
   _onRender(context, options) {
     super._onRender?.(context, options);

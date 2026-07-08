@@ -1,7 +1,7 @@
-/* Skyrim Lockpicking — Cadenas à code (anneaux à logos), habillage HolySheet.
+/* HolySheet Lockpicking — Cadenas à code (anneaux à logos), habillage HolySheet.
    Mécanique en laiton (var(--hs-brass*)), action = émeraude. Zéro hex en dur. */
 
-.skyrim-combo-lock-window .window-content { padding: 0; }
+.hslp-combo-lock-window .window-content { padding: 0; }
 
 .combo-lock {
   display: flex;

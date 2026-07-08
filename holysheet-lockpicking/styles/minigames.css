@@ -1,4 +1,4 @@
-/* Skyrim Lockpicking — Onglet / répertoire « Mini-Jeux », habillage HolySheet. */
+/* HolySheet Lockpicking — Onglet / répertoire « Mini-Jeux », habillage HolySheet. */
 
 .mg {
   display: flex;
@@ -89,8 +89,8 @@
   color: var(--hs-muted);
 }
 
-/* Fenêtre de secours (le fond/cadre vient du chrome partagé .skyrim-lockpicking-window) */
-.skyrim-minigames-window .window-content { padding: 0; }
+/* Fenêtre de secours (le fond/cadre vient du chrome partagé .hslp-lockpicking-window) */
+.hslp-minigames-window .window-content { padding: 0; }
 .mg-host { height: 100%; }
 
 /* Dialogue de soumission aux joueurs */

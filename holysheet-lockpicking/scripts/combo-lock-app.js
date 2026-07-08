@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Cadenas à code (mini-jeu d'anneaux à logos).
+ * HolySheet Lockpicking — Cadenas à code (mini-jeu d'anneaux à logos).
  *
  * Second mini-jeu du module : un cadenas à combinaison façon « roues à
  * symboles ». Le joueur fait tourner chaque anneau pour aligner le bon logo
@@ -41,7 +41,7 @@ export const DEFAULT_COMBO_SYMBOLS = [
   { icon: "fa-solid fa-crown" }
 ];
 
-export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2) {
+export class HolySheetComboLockApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /**
    * @param {object}   config
@@ -59,7 +59,7 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
     this.config = config;
 
     // --- Symboles (les « chiffres » du cadenas) ------------------------------
-    this.symbols = SkyrimComboLockApp._normalizeSymbols(config.symbols);
+    this.symbols = HolySheetComboLockApp._normalizeSymbols(config.symbols);
     const symCount = this.symbols.length;
 
     // --- Anneaux -------------------------------------------------------------
@@ -123,18 +123,18 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
 
   /** @inheritDoc */
   static DEFAULT_OPTIONS = {
-    id: "skyrim-combo-lock-app",
-    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-combo-lock-window"],
+    id: "hslp-combo-lock-app",
+    classes: ["holysheet", "hs-theme-lueur", "hslp-lockpicking-window", "hslp-combo-lock-window"],
     position: { width: "auto", height: "auto" },
     window: {
-      title: "SKYRIM_LP.Combo.Title",
+      title: "HSLP.Combo.Title",
       icon: "fa-solid fa-lock",
       resizable: false
     },
     // Système d'actions natif de l'ApplicationV2 : câble les clics data-action.
     actions: {
-      rotate: SkyrimComboLockApp.#onRotate,
-      attempt: SkyrimComboLockApp.#onAttempt
+      rotate: HolySheetComboLockApp.#onRotate,
+      attempt: HolySheetComboLockApp.#onAttempt
     }
   };
 
@@ -145,7 +145,7 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
 
   /** Titre dynamique. */
   get title() {
-    return this.config.title ?? game.i18n.localize("SKYRIM_LP.Combo.Title");
+    return this.config.title ?? game.i18n.localize("HSLP.Combo.Title");
   }
 
   /* -------------------------------------------- */
@@ -157,7 +157,7 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
     const context = await super._prepareContext(options);
     // Liste des anneaux pour la boucle Handlebars (le contenu est rempli en JS).
     context.ringList = Array.from({ length: this.rings }, (_, i) => ({ index: i }));
-    context.statusText = game.i18n.localize("SKYRIM_LP.Combo.Status.Idle");
+    context.statusText = game.i18n.localize("HSLP.Combo.Status.Idle");
     context.attemptsLabel = this._attemptsLabel();
     return context;
   }
@@ -222,9 +222,9 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
     const next = (cur + 1) % n;
     const ringEl = this.element.querySelector(`[data-ring="${i}"]`);
     if (!ringEl) return;
-    ringEl.querySelector("[data-slot='prev']").innerHTML = SkyrimComboLockApp.symbolHtml(this.symbols[prev]);
-    ringEl.querySelector("[data-slot='cur']").innerHTML = SkyrimComboLockApp.symbolHtml(this.symbols[cur]);
-    ringEl.querySelector("[data-slot='next']").innerHTML = SkyrimComboLockApp.symbolHtml(this.symbols[next]);
+    ringEl.querySelector("[data-slot='prev']").innerHTML = HolySheetComboLockApp.symbolHtml(this.symbols[prev]);
+    ringEl.querySelector("[data-slot='cur']").innerHTML = HolySheetComboLockApp.symbolHtml(this.symbols[cur]);
+    ringEl.querySelector("[data-slot='next']").innerHTML = HolySheetComboLockApp.symbolHtml(this.symbols[next]);
   }
 
   _highlightActive() {
@@ -272,9 +272,9 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
 
     if (this.showHints) {
       const ok = this._correctCount();
-      this._setStatusText(game.i18n.format("SKYRIM_LP.Combo.Status.Hint", { ok, total: this.rings }));
+      this._setStatusText(game.i18n.format("HSLP.Combo.Status.Hint", { ok, total: this.rings }));
     } else {
-      this._setStatusText(game.i18n.localize("SKYRIM_LP.Combo.Status.Wrong"));
+      this._setStatusText(game.i18n.localize("HSLP.Combo.Status.Wrong"));
     }
 
     if (this.attemptsEl) this.attemptsEl.textContent = this._attemptsLabel();
@@ -286,8 +286,8 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
     if (this.finished) return;
     this.finished = true;
     this.element.querySelector(".combo-lock")?.classList.add("combo-lock--open");
-    this._setStatusText(game.i18n.localize("SKYRIM_LP.Combo.Status.Success"));
-    ui.notifications?.info(game.i18n.localize("SKYRIM_LP.Combo.Notify.Success"));
+    this._setStatusText(game.i18n.localize("HSLP.Combo.Status.Success"));
+    ui.notifications?.info(game.i18n.localize("HSLP.Combo.Notify.Success"));
     try { this.config.onSuccess?.(); } catch (e) { console.error(`${COMBO_MODULE_ID} | onSuccess`, e); }
     setTimeout(() => this.close(), 1100);
   }
@@ -295,8 +295,8 @@ export class SkyrimComboLockApp extends HandlebarsApplicationMixin(ApplicationV2
   _fail() {
     if (this.finished) return;
     this.finished = true;
-    this._setStatusText(game.i18n.localize("SKYRIM_LP.Combo.Status.OutOfAttempts"));
-    ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.Combo.Notify.Failure"));
+    this._setStatusText(game.i18n.localize("HSLP.Combo.Status.OutOfAttempts"));
+    ui.notifications?.warn(game.i18n.localize("HSLP.Combo.Notify.Failure"));
     try { this.config.onFailure?.(); } catch (e) { console.error(`${COMBO_MODULE_ID} | onFailure`, e); }
     setTimeout(() => this.close(), 1100);
   }

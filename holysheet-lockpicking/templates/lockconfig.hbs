@@ -7,22 +7,22 @@
 
   {{!-- Nom du mini-jeu --}}
   <div class="lock-config__field">
-    <label class="lock-config__label" for="lc-name">{{localize "SKYRIM_LP.Config.Name"}}</label>
+    <label class="lock-config__label" for="lc-name">{{localize "HSLP.Config.Name"}}</label>
     <input id="lc-name" type="text" value="{{name}}" data-field="name"
-           placeholder="{{localize 'SKYRIM_LP.Config.NamePlaceholder'}}" />
+           placeholder="{{localize 'HSLP.Config.NamePlaceholder'}}" />
   </div>
 
   {{!-- Choix du type de verrou --}}
   <div class="lock-config__field">
-    <label class="lock-config__label">{{localize "SKYRIM_LP.Config.LockType"}}</label>
+    <label class="lock-config__label">{{localize "HSLP.Config.LockType"}}</label>
     <div class="lock-config__types">
       <button type="button" class="lock-config__type" data-act="type" data-type="pick">
         <i class="fa-solid fa-screwdriver-wrench"></i>
-        <span>{{localize "SKYRIM_LP.LockType.pick"}}</span>
+        <span>{{localize "HSLP.LockType.pick"}}</span>
       </button>
       <button type="button" class="lock-config__type" data-act="type" data-type="combo">
         <i class="fa-solid fa-lock"></i>
-        <span>{{localize "SKYRIM_LP.LockType.combo"}}</span>
+        <span>{{localize "HSLP.LockType.combo"}}</span>
       </button>
     </div>
   </div>
@@ -30,7 +30,7 @@
   {{!-- ====================== CROCHETAGE ====================== --}}
   <section class="lock-config__section" data-section="pick">
     <div class="lock-config__field">
-      <label class="lock-config__label" for="lc-difficulty">{{localize "SKYRIM_LP.Settings.Difficulty.Name"}}</label>
+      <label class="lock-config__label" for="lc-difficulty">{{localize "HSLP.Settings.Difficulty.Name"}}</label>
       <select id="lc-difficulty" data-field="difficulty">
         {{#each difficulties}}
         <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
@@ -38,9 +38,9 @@
       </select>
     </div>
     <div class="lock-config__field">
-      <label class="lock-config__label" for="lc-picks">{{localize "SKYRIM_LP.Picks"}}</label>
+      <label class="lock-config__label" for="lc-picks">{{localize "HSLP.Picks"}}</label>
       <input id="lc-picks" type="number" min="0" max="20" value="{{picks}}" data-field="picks" />
-      <p class="lock-config__hint">{{localize "SKYRIM_LP.Config.PicksHint"}}</p>
+      <p class="lock-config__hint">{{localize "HSLP.Config.PicksHint"}}</p>
     </div>
   </section>
 
@@ -49,7 +49,7 @@
 
     {{!-- Nombre d'anneaux --}}
     <div class="lock-config__field">
-      <label class="lock-config__label">{{localize "SKYRIM_LP.Config.Rings"}}</label>
+      <label class="lock-config__label">{{localize "HSLP.Config.Rings"}}</label>
       <div class="lock-config__stepper">
         <button type="button" data-act="rings-dec"><i class="fa-solid fa-minus"></i></button>
         <span data-ring-count>{{rings}}</span>
@@ -59,18 +59,18 @@
 
     {{!-- Palette de logos cliquable --}}
     <div class="lock-config__field">
-      <label class="lock-config__label">{{localize "SKYRIM_LP.Config.Palette"}}</label>
-      <p class="lock-config__hint">{{localize "SKYRIM_LP.Config.PaletteHint"}}</p>
+      <label class="lock-config__label">{{localize "HSLP.Config.Palette"}}</label>
+      <p class="lock-config__hint">{{localize "HSLP.Config.PaletteHint"}}</p>
       <div class="lock-config__palette" data-palette></div>
       <button type="button" class="lock-config__add" data-act="add-custom">
-        <i class="fa-solid fa-plus"></i> {{localize "SKYRIM_LP.Config.AddCustom"}}
+        <i class="fa-solid fa-plus"></i> {{localize "HSLP.Config.AddCustom"}}
       </button>
     </div>
 
     {{!-- Combinaison gagnante : un clic sur un anneau fait défiler les logos --}}
     <div class="lock-config__field">
-      <label class="lock-config__label">{{localize "SKYRIM_LP.Config.Combination"}}</label>
-      <p class="lock-config__hint">{{localize "SKYRIM_LP.Config.CombinationHint"}}</p>
+      <label class="lock-config__label">{{localize "HSLP.Config.Combination"}}</label>
+      <p class="lock-config__hint">{{localize "HSLP.Config.CombinationHint"}}</p>
       <div class="lock-config__combo" data-combo></div>
     </div>
 
@@ -78,26 +78,26 @@
     <div class="lock-config__field lock-config__field--row">
       <label class="lock-config__check">
         <input type="checkbox" data-field="showHints" {{#if showHints}}checked{{/if}} />
-        {{localize "SKYRIM_LP.Config.ShowHints"}}
+        {{localize "HSLP.Config.ShowHints"}}
       </label>
     </div>
     <div class="lock-config__field">
-      <label class="lock-config__label" for="lc-attempts">{{localize "SKYRIM_LP.Config.MaxAttempts"}}</label>
+      <label class="lock-config__label" for="lc-attempts">{{localize "HSLP.Config.MaxAttempts"}}</label>
       <input id="lc-attempts" type="number" min="0" max="20" value="{{maxAttempts}}" data-field="maxAttempts" />
-      <p class="lock-config__hint">{{localize "SKYRIM_LP.Config.MaxAttemptsHint"}}</p>
+      <p class="lock-config__hint">{{localize "HSLP.Config.MaxAttemptsHint"}}</p>
     </div>
   </section>
 
   {{!-- Actions --}}
   <footer class="lock-config__footer">
     <button type="button" class="lock-config__btn lock-config__btn--ghost" data-act="cancel">
-      <i class="fa-solid fa-xmark"></i> {{localize "SKYRIM_LP.Config.Cancel"}}
+      <i class="fa-solid fa-xmark"></i> {{localize "HSLP.Config.Cancel"}}
     </button>
     <button type="button" class="lock-config__btn lock-config__btn--ghost" data-act="test">
-      <i class="fa-solid fa-play"></i> {{localize "SKYRIM_LP.Config.Test"}}
+      <i class="fa-solid fa-play"></i> {{localize "HSLP.Config.Test"}}
     </button>
     <button type="button" class="lock-config__btn lock-config__btn--primary" data-act="save">
-      <i class="fa-solid fa-floppy-disk"></i> {{localize "SKYRIM_LP.Config.Save"}}
+      <i class="fa-solid fa-floppy-disk"></i> {{localize "HSLP.Config.Save"}}
     </button>
   </footer>
 </div>

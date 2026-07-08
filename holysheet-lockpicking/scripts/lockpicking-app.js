@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Fenêtre du mini-jeu.
+ * HolySheet Lockpicking — Fenêtre du mini-jeu.
  *
  * Choix d'architecture (API Foundry VTT v14) :
  *  - On étend `ApplicationV2` via `HandlebarsApplicationMixin`, importés depuis
@@ -29,7 +29,7 @@ export const DIFFICULTY = {
   master:     { sweet: 3 }
 };
 
-export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(ApplicationV2) {
+export class HolySheetLockpickingApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /**
    * @param {object} config
@@ -64,11 +64,11 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
 
   /** @inheritDoc */
   static DEFAULT_OPTIONS = {
-    id: "skyrim-lockpicking-app",
-    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window"],
+    id: "hslp-lockpicking-app",
+    classes: ["holysheet", "hs-theme-lueur", "hslp-lockpicking-window"],
     position: { width: 460, height: "auto" },
     window: {
-      title: "SKYRIM_LP.Title",
+      title: "HSLP.Title",
       icon: "fa-solid fa-lock",
       resizable: false
     }
@@ -81,7 +81,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
 
   /** Titre dynamique (permet de passer un titre custom via la config). */
   get title() {
-    return this.config.title ?? game.i18n.localize("SKYRIM_LP.Title");
+    return this.config.title ?? game.i18n.localize("HSLP.Title");
   }
 
   /* -------------------------------------------- */
@@ -92,7 +92,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.picks = this.picksRemaining;
-    context.statusText = game.i18n.localize("SKYRIM_LP.Status.Idle");
+    context.statusText = game.i18n.localize("HSLP.Status.Idle");
     return context;
   }
 
@@ -104,7 +104,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
   _onRender(context, options) {
     super._onRender?.(context, options);
 
-    this.canvas = this.element.querySelector(".skyrim-lp__canvas");
+    this.canvas = this.element.querySelector(".hslp-lp__canvas");
     this.ctx = this.canvas.getContext("2d");
     this.statusEl = this.element.querySelector("[data-status]");
     this.pickCountEl = this.element.querySelector("[data-pick-count]");
@@ -151,7 +151,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
   /**
    * Calcule l'angle du crochet à partir de la souris : on prend l'angle
    * géométrique entre le centre du barillet et le curseur, borné à [0, 180]
-   * (demi-cercle supérieur), comme dans Skyrim.
+   * (demi-cercle supérieur), à la manière des mini-jeux de crochetage classiques.
    */
   _updatePickAngle(ev) {
     const rect = this.canvas.getBoundingClientRect();
@@ -225,10 +225,10 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
     await this._consumePick();
 
     if (this.picksRemaining <= 0) {
-      this._setStatus("SKYRIM_LP.Status.OutOfPicks");
+      this._setStatus("HSLP.Status.OutOfPicks");
       return this._fail();
     }
-    this._setStatus("SKYRIM_LP.Status.PickBroke");
+    this._setStatus("HSLP.Status.PickBroke");
     this._randomizeSweetSpot();            // Nouveau verrou à « sentir ».
     if (this.pickCountEl) this.pickCountEl.textContent = this.picksRemaining;
   }
@@ -237,8 +237,8 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
     if (this.finished) return;
     this.finished = true;
     this.cylinder = 90;
-    this._setStatus("SKYRIM_LP.Status.Success");
-    ui.notifications?.info(game.i18n.localize("SKYRIM_LP.Notify.Success"));
+    this._setStatus("HSLP.Status.Success");
+    ui.notifications?.info(game.i18n.localize("HSLP.Notify.Success"));
     try { this.config.onSuccess?.(); } catch (e) { console.error(`${MODULE_ID} | onSuccess`, e); }
     setTimeout(() => this.close(), 900);   // Laisse voir le barillet ouvert.
   }
@@ -246,7 +246,7 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
   _fail() {
     if (this.finished) return;
     this.finished = true;
-    ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.Notify.Failure"));
+    ui.notifications?.warn(game.i18n.localize("HSLP.Notify.Failure"));
     try { this.config.onFailure?.(); } catch (e) { console.error(`${MODULE_ID} | onFailure`, e); }
     setTimeout(() => this.close(), 900);
   }
@@ -289,10 +289,10 @@ export class SkyrimLockpickingApp extends HandlebarsApplicationMixin(Application
 
     // Statut « en train de forcer » (sans écraser succès/casse).
     if (!this.finished && this.statusEl) {
-      const txt = this.forcing ? "SKYRIM_LP.Status.Forcing" : "SKYRIM_LP.Status.Idle";
+      const txt = this.forcing ? "HSLP.Status.Forcing" : "HSLP.Status.Idle";
       const localized = game.i18n.localize(txt);
       if (this.statusEl.textContent !== localized
-          && ![game.i18n.localize("SKYRIM_LP.Status.PickBroke")].includes(this.statusEl.textContent)) {
+          && ![game.i18n.localize("HSLP.Status.PickBroke")].includes(this.statusEl.textContent)) {
         this.statusEl.textContent = localized;
       }
     }

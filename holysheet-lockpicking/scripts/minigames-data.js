@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Couche de données des mini-jeux.
+ * HolySheet Lockpicking — Couche de données des mini-jeux.
  *
  * Les mini-jeux et leurs dossiers ne sont PAS des Documents Foundry : on les
  * stocke dans un réglage de monde (`minigames`) sous forme d'arbre JSON simple.

@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Point d'entrée ES Module.
+ * HolySheet Lockpicking — Point d'entrée ES Module.
  *
  * Nouvelle architecture : les mini-jeux ne sont plus liés aux portes. Le MJ les
  * gère depuis un onglet « Mini-Jeux » dans la sidebar (collection + dossiers),
@@ -11,9 +11,9 @@
  *  - Hook `ready`  : onglet sidebar + relais socket (soumission / résultat).
  */
 
-import { SkyrimLockpickingApp, MODULE_ID, DIFFICULTY } from "./lockpicking-app.js";
-import { SkyrimComboLockApp } from "./combo-lock-app.js";
-import { SkyrimMinigameEditor } from "./minigame-editor.js";
+import { HolySheetLockpickingApp, MODULE_ID, DIFFICULTY } from "./lockpicking-app.js";
+import { HolySheetComboLockApp } from "./combo-lock-app.js";
+import { HolySheetMinigameEditor } from "./minigame-editor.js";
 import { MinigamesData, SETTING_KEY } from "./minigames-data.js";
 import { setupMinigamesSidebar, openMinigamesWindow } from "./minigames-sidebar.js";
 
@@ -24,16 +24,16 @@ const SOCKET = `module.${MODULE_ID}`;
 /* -------------------------------------------- */
 
 const api = {
-  App: SkyrimLockpickingApp,
-  ComboApp: SkyrimComboLockApp,
-  Editor: SkyrimMinigameEditor,
+  App: HolySheetLockpickingApp,
+  ComboApp: HolySheetComboLockApp,
+  Editor: HolySheetMinigameEditor,
   data: MinigamesData,
 
   /** Lance le crochetage localement. */
   start(config = {}) {
     if (!config.actor) config.actor = canvas.tokens?.controlled?.[0]?.actor ?? game.user?.character ?? null;
     if (config.picks == null) config.picks = resolvePickCount(config.actor);
-    const app = new SkyrimLockpickingApp(config);
+    const app = new HolySheetLockpickingApp(config);
     app.render(true);
     return app;
   },
@@ -42,7 +42,7 @@ const api = {
   startCombo(config = {}) {
     if (config.rings == null) config.rings = game.settings.get(MODULE_ID, "comboRings");
     if (config.symbols == null) config.symbols = resolveComboSymbols();
-    const app = new SkyrimComboLockApp(config);
+    const app = new HolySheetComboLockApp(config);
     app.render(true);
     return app;
   },
@@ -79,7 +79,7 @@ const api = {
         // Le MJ teste sans personnage doté de crochets : on prévisualise quand même.
         return this.start({ difficulty: cfg.difficulty, picks: game.settings.get(MODULE_ID, "defaultPicks"), title: record.name, onSuccess, onFailure });
       }
-      ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.MG.NoPicksPlayer"));
+      ui.notifications?.warn(game.i18n.localize("HSLP.MG.NoPicksPlayer"));
       onAbort?.();
       return null;
     }
@@ -100,7 +100,7 @@ const api = {
       game: { name: record.name, type: record.type, config: record.config }
     });
     const names = userIds.map((id) => game.users.get(id)?.name ?? "?").join(", ");
-    ui.notifications?.info(game.i18n.format("SKYRIM_LP.MG.Sent", { name: record.name, players: names }));
+    ui.notifications?.info(game.i18n.format("HSLP.MG.Sent", { name: record.name, players: names }));
   }
 };
 
@@ -155,41 +155,44 @@ Hooks.once("init", () => {
 
   // Réglages utilisés comme valeurs PAR DÉFAUT dans l'éditeur / le crochetage.
   game.settings.register(MODULE_ID, "difficulty", {
-    name: "SKYRIM_LP.Settings.Difficulty.Name",
-    hint: "SKYRIM_LP.Settings.Difficulty.Hint",
+    name: "HSLP.Settings.Difficulty.Name",
+    hint: "HSLP.Settings.Difficulty.Hint",
     scope: "world", config: true, type: String,
-    choices: Object.keys(DIFFICULTY).reduce((acc, k) => { acc[k] = `SKYRIM_LP.Difficulty.${k}`; return acc; }, {}),
+    choices: Object.keys(DIFFICULTY).reduce((acc, k) => { acc[k] = `HSLP.Difficulty.${k}`; return acc; }, {}),
     default: "adept"
   });
 
   game.settings.register(MODULE_ID, "defaultPicks", {
-    name: "SKYRIM_LP.Settings.DefaultPicks.Name",
-    hint: "SKYRIM_LP.Settings.DefaultPicks.Hint",
+    name: "HSLP.Settings.DefaultPicks.Name",
+    hint: "HSLP.Settings.DefaultPicks.Hint",
     scope: "world", config: true, type: Number, default: 5
   });
 
   game.settings.register(MODULE_ID, "pickItemName", {
-    name: "SKYRIM_LP.Settings.PickItemName.Name",
-    hint: "SKYRIM_LP.Settings.PickItemName.Hint",
+    name: "HSLP.Settings.PickItemName.Name",
+    hint: "HSLP.Settings.PickItemName.Hint",
     scope: "world", config: true, type: String, default: "crochet"
   });
 
   game.settings.register(MODULE_ID, "comboRings", {
-    name: "SKYRIM_LP.Settings.ComboRings.Name",
-    hint: "SKYRIM_LP.Settings.ComboRings.Hint",
+    name: "HSLP.Settings.ComboRings.Name",
+    hint: "HSLP.Settings.ComboRings.Hint",
     scope: "world", config: true, type: Number, default: 3
   });
 
   game.settings.register(MODULE_ID, "comboSymbols", {
-    name: "SKYRIM_LP.Settings.ComboSymbols.Name",
-    hint: "SKYRIM_LP.Settings.ComboSymbols.Hint",
+    name: "HSLP.Settings.ComboSymbols.Name",
+    hint: "HSLP.Settings.ComboSymbols.Hint",
     scope: "world", config: true, type: String,
     default: "fa-solid fa-skull, fa-solid fa-heart, fa-solid fa-star, fa-solid fa-moon, fa-solid fa-bolt, fa-solid fa-leaf, fa-solid fa-gem, fa-solid fa-crown"
   });
 
   const mod = game.modules.get(MODULE_ID);
   if (mod) mod.api = api;
-  globalThis.SkyrimLockpicking = api;
+  globalThis.HolySheetLockpicking = api;
+  // Déprécié : ancien nom conservé pour compatibilité avec les macros existantes.
+  // À supprimer dans une version future — utiliser globalThis.HolySheetLockpicking.
+  globalThis.SkyrimLockpicking = globalThis.HolySheetLockpicking;
 });
 
 /* -------------------------------------------- */
@@ -200,15 +203,25 @@ Hooks.once("ready", () => {
   setupMinigamesSidebar();
 
   game.socket.on(SOCKET, (data) => {
-    if (data?.action === "play") return onReceivePlay(data);
-    if (data?.action === "result") return onReceiveResult(data);
+    // Durcissement : on ignore d'emblée tout message malformé (le canal
+    // `module.<id>` est ouvert à tous les clients connectés).
+    if (!data || typeof data !== "object") return;
+    if (data.action === "play") return onReceivePlay(data);
+    if (data.action === "result") return onReceiveResult(data);
   });
 });
 
 /** Côté joueur ciblé : lance le mini-jeu reçu et renvoie le résultat au MJ. */
 function onReceivePlay(data) {
   if (!Array.isArray(data.targets) || !data.targets.includes(game.user.id)) return;
+  // Seul un MJ peut soumettre un mini-jeu : on vérifie que l'expéditeur déclaré
+  // est bien un MJ connu du monde avant d'afficher quoi que ce soit au joueur.
+  if (typeof data.fromId !== "string" || !game.users.get(data.fromId)?.isGM) return;
   const record = data.game;
+  // Enregistrement bien formé attendu : { name: string, type: string, config?: object }.
+  if (!record || typeof record !== "object") return;
+  if (typeof record.name !== "string" || typeof record.type !== "string") return;
+  if (record.config != null && typeof record.config !== "object") return;
   const report = (success, reason = null) => game.socket.emit(SOCKET, {
     action: "result", toId: data.fromId, userId: game.user.id,
     gameName: record.name, success, reason
@@ -222,11 +235,20 @@ function onReceivePlay(data) {
 
 /** Côté MJ demandeur : notifie le résultat d'un joueur (succès / échec / impossible). */
 function onReceiveResult(data) {
-  if (data.toId !== game.user.id) return;
-  const who = game.users?.get(data.userId)?.name ?? "?";
+  if (typeof data.toId !== "string" || data.toId !== game.user.id) return;
+  // Durcissement : champs attendus présents et types cohérents, sinon on ignore.
+  if (typeof data.userId !== "string" || typeof data.gameName !== "string") return;
+  if (typeof data.success !== "boolean") return;
+  if (data.reason != null && typeof data.reason !== "string") return;
+  // L'expéditeur déclaré doit correspondre à un utilisateur réel du monde
+  // (on ne peut pas vérifier l'origine socket côté client, mais on refuse au
+  // moins les identifiants inventés).
+  const sender = game.users?.get(data.userId);
+  if (!sender) return;
+  const who = sender.name ?? "?";
   const key = data.reason === "no-picks"
-    ? "SKYRIM_LP.MG.ResultNoPicks"
-    : (data.success ? "SKYRIM_LP.MG.ResultSuccess" : "SKYRIM_LP.MG.ResultFail");
+    ? "HSLP.MG.ResultNoPicks"
+    : (data.success ? "HSLP.MG.ResultSuccess" : "HSLP.MG.ResultFail");
   const msg = game.i18n.format(key, { name: who, game: data.gameName });
   ui.notifications?.[data.success ? "info" : "warn"](msg);
   ChatMessage.create({

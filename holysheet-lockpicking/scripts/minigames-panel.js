@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Panneau « Mini-Jeux » (répertoire réutilisable).
+ * HolySheet Lockpicking — Panneau « Mini-Jeux » (répertoire réutilisable).
  *
  * Rend l'arborescence dossiers + mini-jeux dans un élément racine fourni, et
  * gère toutes les interactions (ajouter/éditer/supprimer/jouer, dossiers,
@@ -10,7 +10,7 @@
  */
 
 import { MinigamesData, MODULE_ID } from "./minigames-data.js";
-import { SkyrimMinigameEditor } from "./minigame-editor.js";
+import { HolySheetMinigameEditor } from "./minigame-editor.js";
 
 const esc = (s) => foundry.utils.escapeHTML(String(s ?? ""));
 
@@ -50,16 +50,16 @@ export class MinigamesPanel {
       <div class="mg">
         <header class="mg__toolbar">
           <button type="button" class="mg__btn" data-act="add-game">
-            <i class="fa-solid fa-plus"></i> ${game.i18n.localize("SKYRIM_LP.MG.AddGame")}
+            <i class="fa-solid fa-plus"></i> ${game.i18n.localize("HSLP.MG.AddGame")}
           </button>
           <button type="button" class="mg__btn mg__btn--ghost" data-act="add-folder">
-            <i class="fa-solid fa-folder-plus"></i> ${game.i18n.localize("SKYRIM_LP.MG.AddFolder")}
+            <i class="fa-solid fa-folder-plus"></i> ${game.i18n.localize("HSLP.MG.AddFolder")}
           </button>
         </header>
         <ol class="mg__tree">
           ${this._renderLevel(store, null)}
           ${store.folders.length === 0 && store.games.length === 0
-            ? `<li class="mg__empty">${game.i18n.localize("SKYRIM_LP.MG.Empty")}</li>` : ""}
+            ? `<li class="mg__empty">${game.i18n.localize("HSLP.MG.Empty")}</li>` : ""}
         </ol>
       </div>`;
   }
@@ -82,9 +82,9 @@ export class MinigamesPanel {
             <i class="mg__icon fa-solid ${open ? "fa-folder-open" : "fa-folder"}"></i>
             <span class="mg__name">${esc(f.name)}</span>
             <span class="mg__actions">
-              <a data-act="folder-add" data-id="${f.id}" title="${game.i18n.localize("SKYRIM_LP.MG.AddHere")}"><i class="fa-solid fa-plus"></i></a>
-              <a data-act="folder-rename" data-id="${f.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Rename")}"><i class="fa-solid fa-pen"></i></a>
-              <a data-act="folder-delete" data-id="${f.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Delete")}"><i class="fa-solid fa-trash"></i></a>
+              <a data-act="folder-add" data-id="${f.id}" title="${game.i18n.localize("HSLP.MG.AddHere")}"><i class="fa-solid fa-plus"></i></a>
+              <a data-act="folder-rename" data-id="${f.id}" title="${game.i18n.localize("HSLP.MG.Rename")}"><i class="fa-solid fa-pen"></i></a>
+              <a data-act="folder-delete" data-id="${f.id}" title="${game.i18n.localize("HSLP.MG.Delete")}"><i class="fa-solid fa-trash"></i></a>
             </span>
           </div>
           ${open ? `<ol class="mg__children">${this._renderLevel(store, f.id)}</ol>` : ""}
@@ -93,16 +93,16 @@ export class MinigamesPanel {
 
     const gameHtml = games.map((g) => {
       const icon = g.type === "combo" ? "fa-lock" : "fa-screwdriver-wrench";
-      const typeLabel = game.i18n.localize(`SKYRIM_LP.LockType.${g.type}`);
+      const typeLabel = game.i18n.localize(`HSLP.LockType.${g.type}`);
       return `
         <li class="mg__game" data-game="${g.id}">
           <div class="mg__row" draggable="true">
             <i class="mg__icon fa-solid ${icon}" title="${typeLabel}"></i>
-            <span class="mg__name" data-act="game-play" data-id="${g.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Submit")}">${esc(g.name)}</span>
+            <span class="mg__name" data-act="game-play" data-id="${g.id}" title="${game.i18n.localize("HSLP.MG.Submit")}">${esc(g.name)}</span>
             <span class="mg__actions">
-              <a data-act="game-play" data-id="${g.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Submit")}"><i class="fa-solid fa-paper-plane"></i></a>
-              <a data-act="game-edit" data-id="${g.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Edit")}"><i class="fa-solid fa-pen"></i></a>
-              <a data-act="game-delete" data-id="${g.id}" title="${game.i18n.localize("SKYRIM_LP.MG.Delete")}"><i class="fa-solid fa-trash"></i></a>
+              <a data-act="game-play" data-id="${g.id}" title="${game.i18n.localize("HSLP.MG.Submit")}"><i class="fa-solid fa-paper-plane"></i></a>
+              <a data-act="game-edit" data-id="${g.id}" title="${game.i18n.localize("HSLP.MG.Edit")}"><i class="fa-solid fa-pen"></i></a>
+              <a data-act="game-delete" data-id="${g.id}" title="${game.i18n.localize("HSLP.MG.Delete")}"><i class="fa-solid fa-trash"></i></a>
             </span>
           </div>
         </li>`;
@@ -211,9 +211,9 @@ export class MinigamesPanel {
   /* ------------------------------ Dossiers --------------------------- */
 
   async _createFolder(parentId) {
-    const name = await this._promptText(game.i18n.localize("SKYRIM_LP.MG.NewFolder"), "");
+    const name = await this._promptText(game.i18n.localize("HSLP.MG.NewFolder"), "");
     if (name == null) return;
-    await MinigamesData.upsertFolder({ name: name || game.i18n.localize("SKYRIM_LP.MG.Folder"), parent: parentId ?? null });
+    await MinigamesData.upsertFolder({ name: name || game.i18n.localize("HSLP.MG.Folder"), parent: parentId ?? null });
     this.render();
   }
 
@@ -221,14 +221,14 @@ export class MinigamesPanel {
     const store = MinigamesData.read();
     const f = store.folders.find((x) => x.id === id);
     if (!f) return;
-    const name = await this._promptText(game.i18n.localize("SKYRIM_LP.MG.Rename"), f.name);
+    const name = await this._promptText(game.i18n.localize("HSLP.MG.Rename"), f.name);
     if (name == null) return;
     await MinigamesData.upsertFolder({ ...f, name: name || f.name });
     this.render();
   }
 
   async _deleteFolder(id) {
-    const ok = await this._confirm(game.i18n.localize("SKYRIM_LP.MG.DeleteFolderConfirm"));
+    const ok = await this._confirm(game.i18n.localize("HSLP.MG.DeleteFolderConfirm"));
     if (!ok) return;
     await MinigamesData.deleteFolder(id);
     this.render();
@@ -237,7 +237,7 @@ export class MinigamesPanel {
   /* ----------------------------- Mini-jeux --------------------------- */
 
   _editGame(record, folder) {
-    new SkyrimMinigameEditor({
+    new HolySheetMinigameEditor({
       record: record ?? undefined,
       folder: record?.folder ?? folder ?? null,
       onSave: async (rec) => { await MinigamesData.upsertGame(rec); this.render(); }
@@ -245,7 +245,7 @@ export class MinigamesPanel {
   }
 
   async _deleteGame(id) {
-    const ok = await this._confirm(game.i18n.localize("SKYRIM_LP.MG.DeleteGameConfirm"));
+    const ok = await this._confirm(game.i18n.localize("HSLP.MG.DeleteGameConfirm"));
     if (!ok) return;
     await MinigamesData.deleteGame(id);
     this.render();
@@ -256,7 +256,7 @@ export class MinigamesPanel {
     if (!record) return;
     const players = game.users.filter((u) => u.active && !u.isGM);
     if (players.length === 0) {
-      return ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.MG.NoPlayers"));
+      return ui.notifications?.warn(game.i18n.localize("HSLP.MG.NoPlayers"));
     }
 
     const { DialogV2 } = foundry.applications.api;
@@ -270,15 +270,15 @@ export class MinigamesPanel {
     let chosen = null;
     await DialogV2.wait({
       classes: ["holysheet", "hs-theme-lueur"],
-      window: { title: game.i18n.format("SKYRIM_LP.MG.SubmitTitle", { name: record.name }), icon: "fa-solid fa-paper-plane" },
+      window: { title: game.i18n.format("HSLP.MG.SubmitTitle", { name: record.name }), icon: "fa-solid fa-paper-plane" },
       content: `<div class="mg-submit">
-                  <p class="mg-submit__hint">${game.i18n.localize("SKYRIM_LP.MG.SubmitHint")}</p>
+                  <p class="mg-submit__hint">${game.i18n.localize("HSLP.MG.SubmitHint")}</p>
                   ${rows}
                 </div>`,
       rejectClose: false,
       buttons: [
         {
-          action: "send", label: game.i18n.localize("SKYRIM_LP.MG.Send"), default: true,
+          action: "send", label: game.i18n.localize("HSLP.MG.Send"), default: true,
           callback: (event, button, dialog) => {
             chosen = Array.from(dialog.element.querySelectorAll("input[name='user']:checked")).map((i) => i.value);
           }
@@ -319,7 +319,7 @@ export class MinigamesPanel {
     const { DialogV2 } = foundry.applications.api;
     return DialogV2.confirm({
       classes: ["holysheet", "hs-theme-lueur"],
-      window: { title: game.i18n.localize("SKYRIM_LP.MG.ConfirmTitle") },
+      window: { title: game.i18n.localize("HSLP.MG.ConfirmTitle") },
       content: `<p>${esc(message)}</p>`
     }).catch(() => false);
   }

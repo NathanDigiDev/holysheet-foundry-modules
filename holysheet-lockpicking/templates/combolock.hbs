@@ -19,7 +19,7 @@
       <div class="combo-lock__ring" data-ring="{{this.index}}">
         <button type="button" class="combo-lock__arrow combo-lock__arrow--up"
                 data-action="rotate" data-ring="{{this.index}}" data-dir="-1"
-                aria-label="{{localize 'SKYRIM_LP.Combo.Up'}}">
+                aria-label="{{localize 'HSLP.Combo.Up'}}">
           <i class="fa-solid fa-chevron-up"></i>
         </button>
 
@@ -31,7 +31,7 @@
 
         <button type="button" class="combo-lock__arrow combo-lock__arrow--down"
                 data-action="rotate" data-ring="{{this.index}}" data-dir="1"
-                aria-label="{{localize 'SKYRIM_LP.Combo.Down'}}">
+                aria-label="{{localize 'HSLP.Combo.Down'}}">
           <i class="fa-solid fa-chevron-down"></i>
         </button>
       </div>
@@ -42,7 +42,7 @@
   {{!-- HUD : statut + essais restants --}}
   <div class="combo-lock__hud">
     <div class="combo-lock__status" data-status>{{statusText}}</div>
-    <div class="combo-lock__attempts" title="{{localize 'SKYRIM_LP.Combo.Attempts'}}">
+    <div class="combo-lock__attempts" title="{{localize 'HSLP.Combo.Attempts'}}">
       <i class="fa-solid fa-rotate-right"></i>
       <span data-attempts>{{attemptsLabel}}</span>
     </div>
@@ -51,8 +51,8 @@
   {{!-- Bouton d'ouverture --}}
   <button type="button" class="combo-lock__open" data-action="attempt">
     <i class="fa-solid fa-unlock-keyhole"></i>
-    {{localize "SKYRIM_LP.Combo.Open"}}
+    {{localize "HSLP.Combo.Open"}}
   </button>
 
-  <p class="combo-lock__help">{{localize "SKYRIM_LP.Combo.Help"}}</p>
+  <p class="combo-lock__help">{{localize "HSLP.Combo.Help"}}</p>
 </div>

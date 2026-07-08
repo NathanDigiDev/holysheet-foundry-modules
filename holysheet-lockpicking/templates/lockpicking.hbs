@@ -3,20 +3,20 @@
   Le rendu du verrou lui-même est fait en Canvas 2D (élément <canvas>),
   le reste (HUD) est du HTML statique alimenté par _prepareContext().
 --}}
-<div class="skyrim-lp">
+<div class="hslp-lp">
 
   {{!-- Surface de jeu : tout le dessin (barillet, crochet, clé de tension) y est peint en JS --}}
-  <canvas class="skyrim-lp__canvas" width="420" height="420"></canvas>
+  <canvas class="hslp-lp__canvas" width="420" height="420"></canvas>
 
   {{!-- Tête haute : crochets restants + statut courant --}}
-  <div class="skyrim-lp__hud">
-    <div class="skyrim-lp__picks" title="{{localize 'SKYRIM_LP.Picks'}}">
+  <div class="hslp-lp__hud">
+    <div class="hslp-lp__picks" title="{{localize 'HSLP.Picks'}}">
       <i class="fa-solid fa-screwdriver-wrench"></i>
-      <span class="skyrim-lp__pick-count" data-pick-count>{{picks}}</span>
+      <span class="hslp-lp__pick-count" data-pick-count>{{picks}}</span>
     </div>
-    <div class="skyrim-lp__status" data-status>{{statusText}}</div>
+    <div class="hslp-lp__status" data-status>{{statusText}}</div>
   </div>
 
   {{!-- Aide contextuelle --}}
-  <p class="skyrim-lp__help">{{localize "SKYRIM_LP.Help"}}</p>
+  <p class="hslp-lp__help">{{localize "HSLP.Help"}}</p>
 </div>

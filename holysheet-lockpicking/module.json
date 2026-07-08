@@ -3,7 +3,7 @@
   "type": "module",
   "title": "Holysheet Lockpicking",
   "description": "Mini-jeux de verrouillage pour Foundry VTT v14 : crochetage, cadenas a code, gestion MJ depuis la sidebar et envoi aux joueurs connectes.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authors": [
     {
       "name": "HolySheet"

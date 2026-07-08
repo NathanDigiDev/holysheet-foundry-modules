@@ -1,5 +1,5 @@
 /**
- * Skyrim Lockpicking — Éditeur de mini-jeu (création / modification).
+ * HolySheet Lockpicking — Éditeur de mini-jeu (création / modification).
  *
  * Même fenêtre de configuration qu'avant, mais découplée des portes : elle
  * édite un enregistrement de mini-jeu (nom + type + réglages) puis le renvoie
@@ -29,7 +29,7 @@ export const ICON_PALETTE = [
   "fa-solid fa-tree", "fa-solid fa-mountain", "fa-solid fa-bell", "fa-solid fa-compass"
 ];
 
-export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(ApplicationV2) {
+export class HolySheetMinigameEditor extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /**
    * @param {object}   config
@@ -82,10 +82,10 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
   /* -------------------------------------------- */
 
   static DEFAULT_OPTIONS = {
-    id: "skyrim-minigame-editor",
-    classes: ["holysheet", "hs-theme-lueur", "skyrim-lockpicking-window", "skyrim-lock-config-window"],
+    id: "hslp-minigame-editor",
+    classes: ["holysheet", "hs-theme-lueur", "hslp-lockpicking-window", "hslp-lock-config-window"],
     position: { width: 480, height: "auto" },
-    window: { title: "SKYRIM_LP.Config.Title", icon: "fa-solid fa-gear", resizable: false }
+    window: { title: "HSLP.Config.Title", icon: "fa-solid fa-gear", resizable: false }
   };
 
   static PARTS = {
@@ -94,8 +94,8 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
 
   get title() {
     return this.recordId
-      ? game.i18n.localize("SKYRIM_LP.Config.TitleEdit")
-      : game.i18n.localize("SKYRIM_LP.Config.TitleNew");
+      ? game.i18n.localize("HSLP.Config.TitleEdit")
+      : game.i18n.localize("HSLP.Config.TitleNew");
   }
 
   /* -------------------------------------------- */
@@ -107,7 +107,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     context.name = this.name;
     context.difficulties = DIFFICULTIES.map((k) => ({
       key: k,
-      label: game.i18n.localize(`SKYRIM_LP.Difficulty.${k}`),
+      label: game.i18n.localize(`HSLP.Difficulty.${k}`),
       selected: k === this.difficulty
     }));
     context.lockType = this.lockType;
@@ -186,7 +186,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     const i = this.pool.indexOf(icon);
     if (i >= 0) {
       if (this.pool.length <= 2) {
-        ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.Config.MinIcons"));
+        ui.notifications?.warn(game.i18n.localize("HSLP.Config.MinIcons"));
         return;
       }
       this.pool.splice(i, 1);
@@ -204,10 +204,10 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
 
     const content = `
       <div class="lock-config__custom">
-        <p class="lock-config__hint">${game.i18n.localize("SKYRIM_LP.Config.CustomHint")}</p>
-        <label class="lock-config__label">${game.i18n.localize("SKYRIM_LP.Config.CustomGlyph")}</label>
+        <p class="lock-config__hint">${game.i18n.localize("HSLP.Config.CustomHint")}</p>
+        <label class="lock-config__label">${game.i18n.localize("HSLP.Config.CustomGlyph")}</label>
         <input type="text" name="glyph" placeholder="fa-solid fa-dog   •   🔥   •   A" />
-        <label class="lock-config__label">${game.i18n.localize("SKYRIM_LP.Config.CustomImage")}</label>
+        <label class="lock-config__label">${game.i18n.localize("HSLP.Config.CustomImage")}</label>
         <div class="lock-config__custom-img">
           <input type="text" name="img" placeholder="modules/.../logo.png" />
           <button type="button" data-pick><i class="fa-solid fa-folder-open"></i></button>
@@ -217,7 +217,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     let result = null;
     await DialogV2.wait({
       classes: ["holysheet", "hs-theme-lueur"],
-      window: { title: game.i18n.localize("SKYRIM_LP.Config.AddCustom"), icon: "fa-solid fa-plus" },
+      window: { title: game.i18n.localize("HSLP.Config.AddCustom"), icon: "fa-solid fa-plus" },
       content,
       rejectClose: false,
       render: (event, dialog) => {
@@ -227,7 +227,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
       },
       buttons: [
         {
-          action: "ok", label: game.i18n.localize("SKYRIM_LP.Config.Add"), default: true,
+          action: "ok", label: game.i18n.localize("HSLP.Config.Add"), default: true,
           callback: (event, button, dialog) => {
             result = {
               glyph: dialog.element.querySelector("[name='glyph']")?.value.trim() ?? "",
@@ -255,7 +255,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     grid.innerHTML = this.palette.map((ic) => {
       const on = this.pool.includes(ic);
       return `<button type="button" class="lock-config__chip ${on ? "is-on" : ""}"
-                data-act="pool" data-icon="${ic}">${SkyrimMinigameEditor.glyphHtml(ic)}</button>`;
+                data-act="pool" data-icon="${ic}">${HolySheetMinigameEditor.glyphHtml(ic)}</button>`;
     }).join("");
   }
 
@@ -272,8 +272,8 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     row.innerHTML = this.combination.map((idx, i) => {
       const ic = this.pool[idx] ?? this.pool[0];
       return `<button type="button" class="lock-config__dial" data-act="cycle" data-ring="${i}"
-                title="${game.i18n.localize("SKYRIM_LP.Config.CycleHint")}">
-                ${SkyrimMinigameEditor.glyphHtml(ic)}
+                title="${game.i18n.localize("HSLP.Config.CycleHint")}">
+                ${HolySheetMinigameEditor.glyphHtml(ic)}
                 <span class="lock-config__dial-no">${i + 1}</span>
               </button>`;
     }).join("");
@@ -308,7 +308,7 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
 
     return {
       id: this.recordId ?? undefined,
-      name: this.name || game.i18n.localize(`SKYRIM_LP.LockType.${this.lockType}`),
+      name: this.name || game.i18n.localize(`HSLP.LockType.${this.lockType}`),
       type: this.lockType,
       folder: this.folder ?? null,
       config
@@ -322,18 +322,18 @@ export class SkyrimMinigameEditor extends HandlebarsApplicationMixin(Application
     const record = this._buildRecord();
     game.modules.get(MODULE_ID)?.api?.play(record, {
       preview: true,   // le MJ peut prévisualiser même sans crochet en inventaire
-      onSuccess: () => ui.notifications?.info(game.i18n.localize("SKYRIM_LP.Config.TestSuccess"))
+      onSuccess: () => ui.notifications?.info(game.i18n.localize("HSLP.Config.TestSuccess"))
     });
   }
 
   async _save() {
     this._readForm();
     if (this.lockType === "combo" && this.pool.length < 2) {
-      return ui.notifications?.warn(game.i18n.localize("SKYRIM_LP.Config.MinIcons"));
+      return ui.notifications?.warn(game.i18n.localize("HSLP.Config.MinIcons"));
     }
     const record = this._buildRecord();
     try { await this.onSave?.(record); } catch (e) { console.error(`${MODULE_ID} | onSave`, e); }
-    ui.notifications?.info(game.i18n.localize("SKYRIM_LP.Config.Saved"));
+    ui.notifications?.info(game.i18n.localize("HSLP.Config.Saved"));
     this.close();
   }
 }

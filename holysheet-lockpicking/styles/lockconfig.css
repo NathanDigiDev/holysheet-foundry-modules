@@ -1,6 +1,6 @@
-/* Skyrim Lockpicking — Fenêtre de configuration du verrou (MJ), habillage HolySheet. */
+/* HolySheet Lockpicking — Fenêtre de configuration du verrou (MJ), habillage HolySheet. */
 
-.skyrim-lock-config-window .window-content { padding: 0; }
+.hslp-lock-config-window .window-content { padding: 0; }
 
 .lock-config {
   display: flex;
