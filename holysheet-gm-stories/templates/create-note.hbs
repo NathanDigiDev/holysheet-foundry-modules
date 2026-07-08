@@ -1,0 +1,93 @@
+<section class="hsgm-create-form">
+  <label class="hsgm-field">
+    <span>{{localize "HSGM.TitleField"}}</span>
+    <input type="text" name="title" value="" autofocus />
+  </label>
+
+  <label class="hsgm-field">
+    <span>{{localize "HSGM.Type"}}</span>
+    <select name="type">
+      {{#each types}}
+        <option value="{{key}}" {{#if (hsgmEq key ../defaultType)}}selected{{/if}}>{{label}}</option>
+      {{/each}}
+    </select>
+  </label>
+
+  <section class="hsgm-link-create" data-link-settings hidden>
+    <label class="hsgm-field">
+      <span>{{localize "HSGM.LinkMode"}}</span>
+      <select name="linkMode">
+        <option value="none">{{localize "HSGM.LinkNone"}}</option>
+        <option value="existing">{{localize "HSGM.LinkExisting"}}</option>
+        <option value="new">{{localize "HSGM.LinkNew"}}</option>
+      </select>
+    </label>
+
+    <div class="hsgm-field" data-existing-link-field hidden>
+      <span>{{localize "HSGM.LinkedDocument"}}</span>
+      <label class="hsgm-search hsgm-document-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" data-document-search placeholder="{{localize "HSGM.Search"}}" autocomplete="off" />
+      </label>
+      <input type="hidden" name="linkedUuid" value="" />
+      <input type="hidden" name="linkedName" value="" />
+      <div class="hsgm-document-results" data-document-group="actor" hidden>
+        {{#each actorDocuments}}
+          <button type="button" data-document-option data-note-type="actor" data-uuid="{{uuid}}" data-name="{{name}}" data-search="{{search}}">
+            <i class="fa-solid fa-user"></i><span>{{name}}</span>
+          </button>
+        {{/each}}
+      </div>
+      <div class="hsgm-document-results" data-document-group="item" hidden>
+        {{#each itemDocuments}}
+          <button type="button" data-document-option data-note-type="item" data-uuid="{{uuid}}" data-name="{{name}}" data-search="{{search}}">
+            <i class="fa-solid fa-gem"></i><span>{{name}}</span>
+          </button>
+        {{/each}}
+      </div>
+      <div class="hsgm-document-results" data-document-group="scene" hidden>
+        {{#each sceneDocuments}}
+          <button type="button" data-document-option data-note-type="scene" data-uuid="{{uuid}}" data-name="{{name}}" data-search="{{search}}">
+            <i class="fa-solid fa-map"></i><span>{{name}}</span>
+          </button>
+        {{/each}}
+      </div>
+    </div>
+  </section>
+
+  <label class="hsgm-field" data-actor-type-field hidden>
+    <span>{{localize "HSGM.ActorType"}}</span>
+    <select name="actorType">
+      {{#each actorTypes}}
+        <option value="{{key}}">{{label}}</option>
+      {{/each}}
+    </select>
+  </label>
+
+  <label class="hsgm-field" data-item-type-field hidden>
+    <span>{{localize "HSGM.ItemType"}}</span>
+    <select name="itemType">
+      {{#each itemTypes}}
+        <option value="{{key}}">{{label}}</option>
+      {{/each}}
+    </select>
+  </label>
+
+  <label class="hsgm-field">
+    <span>{{localize "HSGM.Folder"}}</span>
+    <select name="folder">
+      {{#each folders}}
+        <option value="{{key}}">{{label}}</option>
+      {{/each}}
+    </select>
+  </label>
+
+  <footer class="hsgm-dialog-actions">
+    <button type="button" data-action="cancel">
+      <i class="fa-solid fa-xmark"></i>{{localize "HSGM.Cancel"}}
+    </button>
+    <button type="submit" class="hsgm-primary">
+      <i class="fa-solid fa-plus"></i>{{localize "HSGM.Create"}}
+    </button>
+  </footer>
+</section>

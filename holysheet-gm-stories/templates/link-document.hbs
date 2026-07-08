@@ -1,0 +1,76 @@
+{{#if canLink}}
+  <section class="hsgm-create-form">
+    <p class="hsgm-link-note">
+      <strong>{{note.title}}</strong>
+      <span>{{typeLabel}}</span>
+    </p>
+
+    <label class="hsgm-field">
+      <span>{{localize "HSGM.LinkMode"}}</span>
+      <select name="linkMode">
+        <option value="none">{{localize "HSGM.LinkNone"}}</option>
+        <option value="existing" selected>{{localize "HSGM.LinkExisting"}}</option>
+        <option value="new">{{localize "HSGM.LinkNew"}}</option>
+      </select>
+    </label>
+
+    <div class="hsgm-field" data-existing-link-field>
+      <span>{{localize "HSGM.LinkedDocument"}}</span>
+      <label class="hsgm-search hsgm-document-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="search" data-document-search placeholder="{{localize "HSGM.Search"}}" autocomplete="off" />
+      </label>
+      <input type="hidden" name="linkedUuid" value="" />
+      <input type="hidden" name="linkedName" value="" />
+      <div class="hsgm-document-results">
+        {{#each documents}}
+          <button type="button" data-document-option data-uuid="{{uuid}}" data-name="{{name}}" data-search="{{search}}">
+            <i class="fa-solid fa-link"></i><span>{{name}}</span>
+          </button>
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="hsgm-new-link-fields" data-new-link-field hidden>
+      {{#if showActorType}}
+        <label class="hsgm-field">
+          <span>{{localize "HSGM.ActorType"}}</span>
+          <select name="actorType">
+            {{#each actorTypes}}
+              <option value="{{key}}">{{label}}</option>
+            {{/each}}
+          </select>
+        </label>
+      {{/if}}
+
+      {{#if showItemType}}
+        <label class="hsgm-field">
+          <span>{{localize "HSGM.ItemType"}}</span>
+          <select name="itemType">
+            {{#each itemTypes}}
+              <option value="{{key}}">{{label}}</option>
+            {{/each}}
+          </select>
+        </label>
+      {{/if}}
+    </div>
+
+    <footer class="hsgm-dialog-actions">
+      <button type="button" data-action="cancel">
+        <i class="fa-solid fa-xmark"></i>{{localize "HSGM.Cancel"}}
+      </button>
+      <button type="submit" class="hsgm-primary">
+        <i class="fa-solid fa-check"></i>{{localize "HSGM.Validate"}}
+      </button>
+    </footer>
+  </section>
+{{else}}
+  <section class="hsgm-create-form">
+    <p class="hsgm-empty">{{localize "HSGM.NoLinkForGeneral"}}</p>
+    <footer class="hsgm-dialog-actions">
+      <button type="button" data-action="cancel">
+        <i class="fa-solid fa-xmark"></i>{{localize "HSGM.Cancel"}}
+      </button>
+    </footer>
+  </section>
+{{/if}}

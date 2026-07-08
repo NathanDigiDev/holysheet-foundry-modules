@@ -1,0 +1,44 @@
+{
+  "id": "holysheet-gm-stories",
+  "title": "HolySheet GM Stories",
+  "description": "A GM-only Obsidian-inspired note workspace for Foundry VTT v14 with markdown files, nested folders, optional linked documents, floating access, and scene shortcuts.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "HolySheet"
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/holysheet.css",
+    "styles/gm-stories.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "socket": false,
+  "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
+  "manifest": "https://raw.githubusercontent.com/NathanDigiDev/holysheet-foundry-modules/main/holysheet-gm-stories/module.json",
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-gm-stories.zip",
+  "license": "MIT",
+  "readme": "README.md",
+  "flags": {
+    "holysheet-gm-stories": {}
+  }
+}

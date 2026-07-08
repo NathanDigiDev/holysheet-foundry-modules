@@ -1,0 +1,100 @@
+<section class="hsgm-workspace-grid">
+  <aside class="hsgm-list">
+    <header class="hsgm-list-header">
+      <h2>{{localize "HSGM.Notes"}}</h2>
+      <div class="hsgm-create-popover {{#if createMenuOpen}}is-open{{/if}}">
+        <button type="button" class="hsgm-icon-button" data-hsgm-create-toggle aria-label="{{localize "HSGM.Create"}}">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        {{#if createMenuOpen}}
+          <div class="hsgm-create-menu">
+            <button type="button" data-hsgm-new-note>
+              <i class="fa-solid fa-feather-pointed"></i>{{localize "HSGM.NewNote"}}
+            </button>
+            <button type="button" data-hsgm-new-folder>
+              <i class="fa-solid fa-folder-plus"></i>{{localize "HSGM.NewFolder"}}
+            </button>
+          </div>
+        {{/if}}
+      </div>
+    </header>
+
+    <label class="hsgm-search hsgm-tree-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" data-search value="{{search}}" placeholder="{{localize "HSGM.Search"}}" />
+    </label>
+
+    {{#if hasTree}}
+      <ol class="hsgm-tree" data-root-drop>
+        {{#each treeRows}}
+          {{#if (hsgmEq kind "folder")}}
+            <li class="hsgm-tree-item hsgm-tree-folder" style="--hsgm-depth: {{depth}};" data-folder-drop="{{id}}">
+              <button type="button" draggable="true" data-folder-drag data-folder-id="{{id}}" data-action="toggleFolder">
+                <i class="fa-solid {{#if expanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}} hsgm-folder-chevron"></i>
+                <i class="fa-solid {{#if expanded}}fa-folder-open{{else}}fa-folder{{/if}}"></i>
+                <span>{{name}}</span>
+              </button>
+            </li>
+          {{else}}
+            <li class="hsgm-tree-item hsgm-tree-note" style="--hsgm-depth: {{depth}};">
+              <button type="button" draggable="true" data-note-drag data-note-id="{{id}}" data-action="selectNote" class="{{#if selected}}is-selected{{/if}}">
+                <i class="{{typeIcon}}" title="{{typeLabel}}"></i>
+                <span>{{title}}</span>
+              </button>
+            </li>
+          {{/if}}
+        {{/each}}
+      </ol>
+    {{else}}
+      <p class="hsgm-empty">{{localize "HSGM.Empty"}}</p>
+    {{/if}}
+  </aside>
+
+  <main class="hsgm-detail">
+    {{#if selected}}
+      <header class="hsgm-detail-toolbar">
+        <div class="hsgm-note-heading">
+          {{#if isEditing}}
+            <input type="text" name="note.title" value="{{selected.title}}" aria-label="{{localize "HSGM.TitleField"}}" />
+          {{else}}
+            <h2>{{selected.title}}</h2>
+          {{/if}}
+          <div class="hsgm-linked-group">
+            <button type="button" class="hsgm-linked hsgm-linked-inline" data-link-button data-action="openLinked" {{#unless selectedTypeMeta.documentName}}disabled{{/unless}}>
+              <span>{{selectedTypeMeta.label}}</span>
+              <strong>{{#if selected.linkedName}}{{selected.linkedName}}{{else}}{{localize "HSGM.NoLinkedDocument"}}{{/if}}</strong>
+            </button>
+            <button type="button" class="hsgm-icon-button hsgm-show-image" data-action="showLinkedImage" title="{{localize "HSGM.ShowLinkedImage"}}" {{#unless selected.linkedUuid}}disabled{{/unless}}>
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        {{#if isEditing}}
+          <button type="submit" class="hsgm-primary">
+            <i class="fa-solid fa-check"></i>{{localize "HSGM.Validate"}}
+          </button>
+        {{else}}
+          <button type="button" data-action="editNote">
+            <i class="fa-solid fa-pen"></i>{{localize "HSGM.Edit"}}
+          </button>
+        {{/if}}
+        <button type="button" data-action="deleteNote" class="hsgm-danger">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </header>
+
+      <section class="hsgm-main-editor">
+        {{#if isEditing}}
+          <label class="hsgm-field hsgm-content-field">
+            <span>{{localize "HSGM.Content"}}</span>
+            <textarea name="content" data-note-content>{{content}}</textarea>
+          </label>
+        {{else}}
+          <article class="hsgm-rendered hsgm-markdown">{{{renderedContent}}}</article>
+        {{/if}}
+      </section>
+    {{else}}
+      <p class="hsgm-empty">{{localize "HSGM.Empty"}}</p>
+    {{/if}}
+  </main>
+</section>

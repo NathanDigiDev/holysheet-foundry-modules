@@ -1,0 +1,203 @@
+/* =========================================================================
+   HolySheet — socle thématisable "med-fan sombre & moderne"
+   Jetons (--hs-*) + styles de base des champs + 3 thèmes.
+   DROP-IN : copier dans styles/holysheet.css du module, charger AVANT le CSS
+   d'habillage spécifique du module. Voir HOLYSHEET-DESIGN.md (racine du repo).
+   ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+
+.holysheet {
+  color-scheme: dark;
+
+  /* Typo */
+  --hs-title: "Cinzel", "Bookman Old Style", Georgia, serif;
+  --hs-body: "Spectral", "Palatino Linotype", Georgia, serif;
+
+  /* Encres */
+  --hs-ink: #ece1cd;
+  --hs-ink-strong: #fff6e6;
+  --hs-muted: #a3957c;
+
+  /* Fonds */
+  --hs-bg-0: #110e0a;
+  --hs-bg-1: #1a1610;
+  --hs-bg-2: #221d16;
+
+  /* Verre dépoli */
+  --hs-glass: rgba(244, 234, 211, 0.055);
+  --hs-glass-2: rgba(244, 234, 211, 0.09);
+  --hs-glass-line: rgba(244, 234, 211, 0.16);
+  --hs-glass-line-soft: rgba(244, 234, 211, 0.1);
+
+  /* Accent émeraude (action / vivant) */
+  --hs-accent: #34c98a;
+  --hs-accent-bright: #4ee0a2;
+  --hs-accent-deep: #126b4b;
+  --hs-accent-soft: rgba(52, 201, 138, 0.16);
+  --hs-accent-line: rgba(78, 224, 162, 0.42);
+  --hs-accent-glow: rgba(52, 201, 138, 0.42);
+
+  /* Laiton (structure / valeur) */
+  --hs-brass: #c9a24e;
+  --hs-brass-bright: #eccd80;
+  --hs-brass-soft: rgba(201, 162, 78, 0.22);
+
+  /* Radius + ombres */
+  --hs-r: 14px;
+  --hs-r-sm: 9px;
+  --hs-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --hs-shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.35);
+
+  background: var(--hs-bg-0);
+  color: var(--hs-ink);
+  font-family: var(--hs-body);
+}
+
+/* ---- Champs : verre dépoli ----------------------------------------------- */
+.holysheet input,
+.holysheet textarea,
+.holysheet select {
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+  color: var(--hs-ink-strong);
+  font-family: inherit;
+  -webkit-backdrop-filter: blur(7px) saturate(1.1);
+  backdrop-filter: blur(7px) saturate(1.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 130ms ease, box-shadow 130ms ease, background 130ms ease;
+}
+.holysheet input::placeholder,
+.holysheet textarea::placeholder {
+  color: rgba(232, 221, 198, 0.4);
+}
+.holysheet input:focus,
+.holysheet textarea:focus,
+.holysheet select:focus {
+  outline: none;
+  border-color: var(--hs-accent-line);
+  background: var(--hs-glass-2);
+  box-shadow:
+    0 0 0 3px var(--hs-accent-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.holysheet select option {
+  background: #1c1812;
+  color: var(--hs-ink-strong);
+}
+
+.holysheet button {
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: var(--hs-glass);
+  color: var(--hs-ink);
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: border-color 130ms ease, color 130ms ease, background 130ms ease, box-shadow 130ms ease;
+}
+.holysheet button:hover {
+  border-color: var(--hs-accent-line);
+  color: var(--hs-ink-strong);
+  box-shadow: 0 0 14px var(--hs-accent-soft);
+}
+
+.holysheet input[type="number"] {
+  width: 48px;
+  max-width: 48px;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.holysheet input[type="number"]::-webkit-outer-spin-button,
+.holysheet input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Range générique */
+.holysheet input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(244, 234, 211, 0.14);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.holysheet input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #0c0a07;
+  border-radius: 50%;
+  background: var(--hs-accent-bright);
+  box-shadow: 0 0 10px var(--hs-accent-glow);
+  cursor: pointer;
+}
+
+/* scrollbar */
+.holysheet ::-webkit-scrollbar { width: 11px; height: 11px; }
+.holysheet ::-webkit-scrollbar-thumb {
+  border-radius: 99px;
+  background: rgba(244, 234, 211, 0.16);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Respect des préférences d'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .holysheet *,
+  .holysheet *::before,
+  .holysheet *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =========================================================================
+   THÈME : SOBRE — hairlines, peu de glow
+   ========================================================================= */
+.hs-theme-sobre {
+  --hs-accent: #43b489;
+  --hs-accent-bright: #5cc79b;
+  --hs-accent-line: rgba(92, 199, 155, 0.34);
+  --hs-accent-glow: rgba(67, 180, 137, 0.22);
+  --hs-accent-soft: rgba(67, 180, 137, 0.1);
+  --hs-glass-line: rgba(244, 234, 211, 0.13);
+  --hs-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  --hs-shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.3);
+  --hs-r: 10px;
+  --hs-r-sm: 7px;
+}
+
+/* =========================================================================
+   THÈME : LUEUR — = base, halo accentué (rendu par défaut conseillé)
+   ========================================================================= */
+.hs-theme-lueur {
+  --hs-accent: #2fd398;
+  --hs-accent-bright: #56f0b6;
+  --hs-accent-glow: rgba(47, 211, 152, 0.55);
+  --hs-accent-soft: rgba(47, 211, 152, 0.2);
+  --hs-accent-line: rgba(86, 240, 182, 0.5);
+}
+
+/* =========================================================================
+   THÈME : CUIR & LAITON — chaud, laiton, cadres marqués
+   ========================================================================= */
+.hs-theme-cuir {
+  --hs-ink: #ede0c4;
+  --hs-ink-strong: #fff3d8;
+  --hs-bg-0: #14100a;
+  --hs-bg-1: #211a10;
+  --hs-accent: #3bbf86;
+  --hs-accent-bright: #54d79e;
+  --hs-accent-line: rgba(201, 162, 78, 0.5);   /* bordures laiton */
+  --hs-accent-soft: rgba(201, 162, 78, 0.16);
+  --hs-glass: rgba(247, 230, 196, 0.06);
+  --hs-glass-2: rgba(247, 230, 196, 0.1);
+  --hs-glass-line: rgba(201, 162, 78, 0.34);
+  --hs-glass-line-soft: rgba(201, 162, 78, 0.2);
+}

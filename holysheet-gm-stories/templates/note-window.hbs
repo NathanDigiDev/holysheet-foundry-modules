@@ -1,0 +1,47 @@
+{{#if note}}
+  <section class="hsgm-note-shell">
+    <header class="hsgm-note-toolbar">
+      <div class="hsgm-note-heading">
+        {{#if isEditing}}
+          <input type="text" name="note.title" value="{{note.title}}" aria-label="{{localize "HSGM.TitleField"}}" />
+        {{else}}
+          <h2>{{note.title}}</h2>
+        {{/if}}
+        <div class="hsgm-linked-group">
+          <button type="button" class="hsgm-linked hsgm-linked-inline" data-link-button data-action="openLinked" {{#unless typeMeta.documentName}}disabled{{/unless}}>
+            <span>{{typeMeta.label}}</span>
+            <strong>{{#if note.linkedName}}{{note.linkedName}}{{else}}{{localize "HSGM.NoLinkedDocument"}}{{/if}}</strong>
+          </button>
+          <button type="button" class="hsgm-icon-button hsgm-show-image" data-action="showLinkedImage" title="{{localize "HSGM.ShowLinkedImage"}}" {{#unless note.linkedUuid}}disabled{{/unless}}>
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+      {{#if isEditing}}
+        <button type="submit" class="hsgm-primary">
+          <i class="fa-solid fa-check"></i>{{localize "HSGM.Validate"}}
+        </button>
+      {{else}}
+        <button type="button" data-action="editNote">
+          <i class="fa-solid fa-pen"></i>{{localize "HSGM.Edit"}}
+        </button>
+      {{/if}}
+      <button type="button" data-action="deleteNote" class="hsgm-danger">
+        <i class="fa-solid fa-trash"></i>{{localize "HSGM.Delete"}}
+      </button>
+    </header>
+
+    <main class="hsgm-note-body">
+      {{#if isEditing}}
+        <label class="hsgm-field hsgm-content-field">
+          <span>{{localize "HSGM.Content"}}</span>
+          <textarea name="content" data-note-content>{{content}}</textarea>
+        </label>
+      {{else}}
+        <article class="hsgm-rendered hsgm-markdown">{{{renderedContent}}}</article>
+      {{/if}}
+    </main>
+  </section>
+{{else}}
+  <p class="hsgm-empty">{{localize "HSGM.Empty"}}</p>
+{{/if}}
