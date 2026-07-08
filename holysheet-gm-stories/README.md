@@ -9,6 +9,7 @@ GM-only note workspace for Foundry VTT v14.
 - Optional links to existing Actors, Items, or Scenes, with a "new document" creation option.
 - Right-click the linked document field to change or remove a link.
 - Share linked document artwork with players from the note toolbar.
+- Export and import GM Stories archives as portable JSON files.
 - Markdown editing with `[[wiki links]]`, basic Markdown and native Foundry `@UUID[...]` links.
 - Notes are written as `.md` files under the current world data path when Foundry storage allows it, with a Foundry setting index as fallback/cache.
 - Movable GM-only floating button.

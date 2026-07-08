@@ -108,6 +108,90 @@ export class NoteStore {
     return this.linkDocument(id, document);
   }
 
+  static async exportArchive() {
+    const notes = [];
+    for (const note of this.all()) {
+      notes.push({
+        note,
+        content: await this.content(note.id)
+      });
+    }
+
+    return {
+      format: `${MODULE_ID}.export`,
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      world: {
+        id: game.world?.id ?? "",
+        title: game.world?.title ?? ""
+      },
+      folders: this.folders(),
+      notes
+    };
+  }
+
+  static async importArchive(archive) {
+    if (archive?.format !== `${MODULE_ID}.export` || archive.version !== 1) {
+      throw new Error("Invalid GM Stories export");
+    }
+
+    const importedFolders = normalizeFolders(archive.folders ?? []);
+    const existingFolders = this.folders();
+    const allFolders = [...existingFolders];
+    const folderIdMap = new Map();
+
+    for (const folder of importedFolders) {
+      const id = existingFolders.some((entry) => entry.id === folder.id)
+        ? uniqueFolderId(folder.name, allFolders)
+        : folder.id;
+      folderIdMap.set(folder.id, id);
+      allFolders.push({
+        ...folder,
+        id,
+        parent: "",
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
+
+    for (const folder of allFolders.slice(existingFolders.length)) {
+      const imported = importedFolders.find((entry) => folderIdMap.get(entry.id) === folder.id);
+      folder.parent = folderIdMap.get(imported?.parent) ?? (existingFolders.some((entry) => entry.id === imported?.parent) ? imported.parent : "");
+    }
+
+    const raw = this.#raw();
+    const usedTitles = new Map(Object.values(raw).map((note) => [note.title, 1]));
+    let importedNotes = 0;
+
+    for (const entry of archive.notes ?? []) {
+      const source = normalizeNote(entry.note ?? {});
+      const id = raw[source.id] ? foundry.utils.randomID(16) : source.id;
+      const title = uniqueNoteTitle(source.title, usedTitles);
+      const folder = folderIdMap.get(source.folder) ?? (this.folder(source.folder) ? source.folder : "");
+      const note = normalizeNote({
+        ...source,
+        id,
+        title,
+        folder,
+        filePath: "",
+        contentCache: String(entry.content ?? source.contentCache ?? ""),
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+      const write = await FileStorage.write(note, note.contentCache);
+      if (write.ok) note.filePath = write.filePath;
+      raw[note.id] = note;
+      importedNotes++;
+    }
+
+    await this.#persist(raw);
+    await this.#persistFolders(allFolders);
+    return {
+      notes: importedNotes,
+      folders: importedFolders.length
+    };
+  }
+
   static folders() {
     return normalizeFolders(game.settings.get(MODULE_ID, SETTINGS.FOLDERS) ?? []);
   }
@@ -170,6 +254,28 @@ export class NoteStore {
     folder.updatedAt = Date.now();
     await this.#persistFolders(folders);
     return folder;
+  }
+
+  static async deleteFolder(id) {
+    const folders = this.folders();
+    const folder = folders.find((entry) => entry.id === id);
+    if (!folder) return false;
+
+    const parent = folder.parent ?? "";
+    const remainingFolders = folders
+      .filter((entry) => entry.id !== id)
+      .map((entry) => entry.parent === id ? { ...entry, parent, updatedAt: Date.now() } : entry);
+
+    const raw = this.#raw();
+    for (const note of Object.values(raw)) {
+      if (note.folder !== id) continue;
+      note.folder = parent;
+      note.updatedAt = Date.now();
+    }
+
+    await this.#persist(raw);
+    await this.#persistFolders(remainingFolders);
+    return true;
   }
 
   static async moveNoteToFolder(id, folderId = "") {
@@ -328,6 +434,24 @@ function uniqueFolderId(name, folders) {
   let id = slugify(name);
   while (used.has(id)) id = `${slugify(name)}-${foundry.utils.randomID(4)}`;
   return id;
+}
+
+function uniqueNoteTitle(title, usedTitles) {
+  const base = String(title ?? game.i18n.localize("HSGM.NewNote")).trim() || game.i18n.localize("HSGM.NewNote");
+  if (!usedTitles.has(base)) {
+    usedTitles.set(base, 1);
+    return base;
+  }
+
+  let index = usedTitles.get(base) + 1;
+  let candidate = `${base} (${index})`;
+  while (usedTitles.has(candidate)) {
+    index++;
+    candidate = `${base} (${index})`;
+  }
+  usedTitles.set(base, index);
+  usedTitles.set(candidate, 1);
+  return candidate;
 }
 
 function descendantsOf(folderId, folders) {

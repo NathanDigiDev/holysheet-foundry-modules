@@ -28,6 +28,8 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.isEditing = false;
     this.expandedFolders = new Set();
     this.createMenuOpen = false;
+    this.toolsMenuOpen = false;
+    this.folderContextMenu = null;
     this.searchTimeout = null;
     registerApp(this);
   }
@@ -97,6 +99,8 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
       treeRows,
       search: this.filter.search,
       createMenuOpen: this.createMenuOpen,
+      toolsMenuOpen: this.toolsMenuOpen,
+      folderContextMenu: this.folderContextMenu,
       hasTree: treeRows.length > 0
     };
   }
@@ -127,6 +131,16 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
       event.preventDefault();
       event.stopPropagation();
       this.createMenuOpen = !this.createMenuOpen;
+      this.toolsMenuOpen = false;
+      this.folderContextMenu = null;
+      this.render({ force: false });
+    });
+    this.element.querySelector("[data-hsgm-tools-toggle]")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.toolsMenuOpen = !this.toolsMenuOpen;
+      this.createMenuOpen = false;
+      this.folderContextMenu = null;
       this.render({ force: false });
     });
     this.element.querySelector("[data-hsgm-new-note]")?.addEventListener("click", (event) => {
@@ -140,6 +154,39 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
       event.stopPropagation();
       this.createMenuOpen = false;
       new CreateFolderDialog().render({ force: true });
+    });
+    this.element.querySelector("[data-hsgm-export]")?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.toolsMenuOpen = false;
+      await this.#exportStories();
+    });
+    this.element.querySelector("[data-hsgm-import]")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      this.toolsMenuOpen = false;
+      this.element.querySelector("[data-hsgm-import-file]")?.click();
+    });
+    this.element.querySelector("[data-folder-context-delete]")?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const folderId = event.currentTarget.dataset.folderId;
+      this.folderContextMenu = null;
+      await this.#deleteFolder(folderId);
+    });
+    this.element.querySelector("[data-folder-context-close]")?.addEventListener("click", (event) => {
+      event.preventDefault();
+      this.folderContextMenu = null;
+      this.render({ force: false });
+    });
+    this.element.addEventListener("click", (event) => {
+      if (!this.folderContextMenu || event.target.closest(".hsgm-context-menu")) return;
+      this.folderContextMenu = null;
+      this.render({ force: false });
+    });
+    this.element.querySelector("[data-hsgm-import-file]")?.addEventListener("change", async (event) => {
+      await this.#importStories(event.currentTarget.files?.[0]);
+      event.currentTarget.value = "";
     });
     this.element.querySelectorAll("[data-wiki]").forEach((link) => {
       link.addEventListener("click", (event) => {
@@ -171,6 +218,19 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
           kind: "folder",
           id: node.dataset.folderId
         }));
+      });
+      node.addEventListener("contextmenu", async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        this.createMenuOpen = false;
+        this.toolsMenuOpen = false;
+        this.folderContextMenu = {
+          id: node.dataset.folderId,
+          name: node.dataset.folderName ?? "",
+          x: event.clientX,
+          y: event.clientY
+        };
+        this.render({ force: false });
       });
     });
     this.element.querySelectorAll("[data-folder-drop], [data-root-drop]").forEach((node) => {
@@ -314,8 +374,50 @@ export class GMStoriesApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.render({ force: false });
   }
 
+  async #deleteFolder(folderId) {
+    if (!folderId) return;
+    const ok = await confirmDialog(localize("HSGM.DeleteFolderConfirm"));
+    if (!ok) return;
+    await NoteStore.deleteFolder(folderId);
+    this.expandedFolders.delete(folderId);
+    this.folderContextMenu = null;
+    refreshOpenApps();
+  }
+
+  async #exportStories() {
+    const archive = await NoteStore.exportArchive();
+    const fileName = `gm-stories-${game.world?.id ?? "world"}-${new Date().toISOString().slice(0, 10)}.json`;
+    const blob = new Blob([JSON.stringify(archive, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
+    ui.notifications?.info(localize("HSGM.ExportReady"));
+    this.render({ force: false });
+  }
+
+  async #importStories(file) {
+    if (!file) return;
+    const ok = await confirmDialog(localize("HSGM.ImportConfirm"));
+    if (!ok) return;
+
+    try {
+      const archive = JSON.parse(await file.text());
+      const result = await NoteStore.importArchive(archive);
+      ui.notifications?.info(game.i18n.format("HSGM.ImportComplete", result));
+      refreshOpenApps();
+    } catch (error) {
+      console.error(error);
+      ui.notifications?.error(localize("HSGM.ImportFailed"));
+    }
+  }
+
   static #toggleCreateMenu() {
     this.createMenuOpen = !this.createMenuOpen;
+    this.toolsMenuOpen = false;
+    this.folderContextMenu = null;
     this.render({ force: false });
   }
 

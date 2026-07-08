@@ -45,22 +45,6 @@
   overflow-x: hidden;
 }
 
-.application.hsgm .window-header button,
-.application.hsgm .window-header a {
-  min-height: unset;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: 0;
-  text-transform: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
 .hsgm .window-content button {
   display: inline-flex;
   align-items: center;
@@ -322,6 +306,24 @@
 .hsgm-tree-note > button.is-selected {
   border-color: var(--hs-accent-line);
   background: var(--hs-accent-soft);
+}
+
+.hsgm-context-menu {
+  position: fixed;
+  z-index: 100001;
+  display: grid;
+  gap: 0.25rem;
+  min-width: 136px;
+  padding: 0.35rem;
+  border: 1px solid var(--hs-glass-line);
+  border-radius: var(--hs-r-sm);
+  background: linear-gradient(160deg, var(--hs-bg-2), var(--hs-bg-0));
+  box-shadow: var(--hs-shadow-sm);
+}
+
+.hsgm-context-menu button {
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .hsgm-detail,

@@ -87,7 +87,7 @@
   color: var(--hs-ink-strong);
 }
 
-.holysheet button {
+.holysheet .window-content button {
   border: 1px solid var(--hs-glass-line);
   border-radius: var(--hs-r-sm);
   background: var(--hs-glass);
@@ -98,7 +98,7 @@
   backdrop-filter: blur(6px);
   transition: border-color 130ms ease, color 130ms ease, background 130ms ease, box-shadow 130ms ease;
 }
-.holysheet button:hover {
+.holysheet .window-content button:hover {
   border-color: var(--hs-accent-line);
   color: var(--hs-ink-strong);
   box-shadow: 0 0 14px var(--hs-accent-soft);

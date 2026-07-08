@@ -2,6 +2,21 @@
   <aside class="hsgm-list">
     <header class="hsgm-list-header">
       <h2>{{localize "HSGM.Notes"}}</h2>
+      <div class="hsgm-create-popover {{#if toolsMenuOpen}}is-open{{/if}}">
+        <button type="button" class="hsgm-icon-button" data-hsgm-tools-toggle title="{{localize "HSGM.Options"}}" aria-label="{{localize "HSGM.Options"}}">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        {{#if toolsMenuOpen}}
+          <div class="hsgm-create-menu">
+            <button type="button" data-hsgm-export>
+              <i class="fa-solid fa-file-export"></i>{{localize "HSGM.ExportStories"}}
+            </button>
+            <button type="button" data-hsgm-import>
+              <i class="fa-solid fa-file-import"></i>{{localize "HSGM.ImportStories"}}
+            </button>
+          </div>
+        {{/if}}
+      </div>
       <div class="hsgm-create-popover {{#if createMenuOpen}}is-open{{/if}}">
         <button type="button" class="hsgm-icon-button" data-hsgm-create-toggle aria-label="{{localize "HSGM.Create"}}">
           <i class="fa-solid fa-plus"></i>
@@ -17,6 +32,7 @@
           </div>
         {{/if}}
       </div>
+      <input type="file" data-hsgm-import-file accept="application/json,.json" hidden />
     </header>
 
     <label class="hsgm-search hsgm-tree-search">
@@ -29,7 +45,7 @@
         {{#each treeRows}}
           {{#if (hsgmEq kind "folder")}}
             <li class="hsgm-tree-item hsgm-tree-folder" style="--hsgm-depth: {{depth}};" data-folder-drop="{{id}}">
-              <button type="button" draggable="true" data-folder-drag data-folder-id="{{id}}" data-action="toggleFolder">
+              <button type="button" draggable="true" data-folder-drag data-folder-id="{{id}}" data-folder-name="{{name}}" data-action="toggleFolder">
                 <i class="fa-solid {{#if expanded}}fa-chevron-down{{else}}fa-chevron-right{{/if}} hsgm-folder-chevron"></i>
                 <i class="fa-solid {{#if expanded}}fa-folder-open{{else}}fa-folder{{/if}}"></i>
                 <span>{{name}}</span>
@@ -97,4 +113,15 @@
       <p class="hsgm-empty">{{localize "HSGM.Empty"}}</p>
     {{/if}}
   </main>
+
+  {{#if folderContextMenu}}
+    <aside class="hsgm-context-menu" style="left: {{folderContextMenu.x}}px; top: {{folderContextMenu.y}}px;">
+      <button type="button" class="hsgm-danger" data-folder-context-delete data-folder-id="{{folderContextMenu.id}}">
+        <i class="fa-solid fa-trash"></i>{{localize "HSGM.Delete"}}
+      </button>
+      <button type="button" data-folder-context-close>
+        <i class="fa-solid fa-xmark"></i>{{localize "HSGM.Cancel"}}
+      </button>
+    </aside>
+  {{/if}}
 </section>
