@@ -2,8 +2,8 @@
   "id": "holysheet-immersive-books",
   "type": "module",
   "title": "Holysheet Immersive Books",
-  "description": "Transforme les journaux Foundry en livres feuilletables avec couvertures, signets et notes personnelles.",
-  "version": "1.0.9",
+  "description": "Turns Foundry journals into immersive page-turning books with covers, bookmarks, personal notes and a GM layout workshop.",
+  "version": "1.0.10",
   "authors": [
     {
       "name": "Hal"

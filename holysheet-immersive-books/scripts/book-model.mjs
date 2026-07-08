@@ -32,10 +32,20 @@ async function safeUnsetFlag(document, scope, key) {
   }
 }
 
+// Localisation sûre : ce module est aussi importé par les tests Node,
+// où l'objet global `game` de Foundry n'existe pas. On retombe alors sur
+// le libellé de repli fourni.
+function localize(key, fallback = key) {
+  return globalThis.game?.i18n?.localize?.(key) ?? fallback;
+}
+
+// Les `label` de FORMATS et DECORATIONS sont des CLÉS i18n : ces constantes
+// sont évaluées à l'import du module, avant que les traductions soient
+// chargées. La traduction se fait au rendu (voir designer-app.mjs).
 export const FORMATS = Object.freeze({
-  portrait: { id: "portrait", label: "Portrait", width: 700, height: 980 },
-  square: { id: "square", label: "Carré", width: 820, height: 820 },
-  landscape: { id: "landscape", label: "Paysage", width: 980, height: 700 }
+  portrait: { id: "portrait", label: "IMMERSIVE_BOOKS.Formats.Portrait", width: 700, height: 980 },
+  square: { id: "square", label: "IMMERSIVE_BOOKS.Formats.Square", width: 820, height: 820 },
+  landscape: { id: "landscape", label: "IMMERSIVE_BOOKS.Formats.Landscape", width: 980, height: 700 }
 });
 
 export const DEFAULT_THEME = Object.freeze({
@@ -50,12 +60,12 @@ export const DEFAULT_THEME = Object.freeze({
 });
 
 export const DECORATIONS = Object.freeze([
-  { id: "divider-flourish", label: "Arabesque", icon: "fa-wand-sparkles" },
-  { id: "divider-diamond", label: "Diamants", icon: "fa-diamond" },
-  { id: "corner-vine", label: "Coins végétaux", icon: "fa-seedling" },
-  { id: "frame-classic", label: "Cadre classique", icon: "fa-border-all" },
-  { id: "ink-stain", label: "Tache d’encre", icon: "fa-droplet" },
-  { id: "wax-seal", label: "Sceau", icon: "fa-certificate" }
+  { id: "divider-flourish", label: "IMMERSIVE_BOOKS.Decorations.DividerFlourish", icon: "fa-wand-sparkles" },
+  { id: "divider-diamond", label: "IMMERSIVE_BOOKS.Decorations.DividerDiamond", icon: "fa-diamond" },
+  { id: "corner-vine", label: "IMMERSIVE_BOOKS.Decorations.CornerVine", icon: "fa-seedling" },
+  { id: "frame-classic", label: "IMMERSIVE_BOOKS.Decorations.FrameClassic", icon: "fa-border-all" },
+  { id: "ink-stain", label: "IMMERSIVE_BOOKS.Decorations.InkStain", icon: "fa-droplet" },
+  { id: "wax-seal", label: "IMMERSIVE_BOOKS.Decorations.WaxSeal", icon: "fa-certificate" }
 ]);
 
 export function clone(value) {
@@ -80,9 +90,12 @@ export function createBlock(type = "text", overrides = {}) {
     locked: false,
     z: 1
   };
+  // Les contenus par défaut deviennent des données persistées : on les
+  // traduit à la création pour que les nouveaux blocs suivent la langue
+  // de l'utilisateur.
   const defaults = {
     text: {
-      html: "<h2>Un nouveau titre</h2><p>Commencez à écrire…</p>",
+      html: `<h2>${localize("IMMERSIVE_BOOKS.Defaults.TextHeading", "Un nouveau titre")}</h2><p>${localize("IMMERSIVE_BOOKS.Defaults.TextBody", "Commencez à écrire…")}</p>`,
       color: "",
       fontSize: 20,
       lineHeight: 1.45,
@@ -99,8 +112,8 @@ export function createBlock(type = "text", overrides = {}) {
       radius: 0
     },
     callout: {
-      title: "Encadré",
-      html: "<p>Ajoutez un passage important.</p>",
+      title: localize("IMMERSIVE_BOOKS.Designer.BlockCallout", "Encadré"),
+      html: `<p>${localize("IMMERSIVE_BOOKS.Defaults.CalloutBody", "Ajoutez un passage important.")}</p>`,
       background: "#dfc995",
       borderColor: "#8b6740",
       color: "",
@@ -132,7 +145,9 @@ export function createPage(kind = "composed", overrides = {}) {
   return {
     id: uid("page"),
     documentId: null,
-    name: isImage ? "Page image" : "Page composée",
+    name: isImage
+      ? localize("IMMERSIVE_BOOKS.Defaults.ImagePageName", "Page image")
+      : localize("IMMERSIVE_BOOKS.Designer.KindComposed", "Page composée"),
     kind,
     role: "normal",
     chapter: "",
@@ -151,16 +166,16 @@ export function createPage(kind = "composed", overrides = {}) {
   };
 }
 
-export function createBookData(name = "Nouveau livre") {
-  const cover = createPage("image", { name: "Couverture", role: "cover" });
+export function createBookData(name = localize("IMMERSIVE_BOOKS.NewBook.Title", "Nouveau livre")) {
+  const cover = createPage("image", { name: localize("IMMERSIVE_BOOKS.Designer.RoleCover", "Couverture"), role: "cover" });
   const firstPage = createPage("composed", {
-    name: "Première page",
+    name: localize("IMMERSIVE_BOOKS.Defaults.FirstPageName", "Première page"),
     blocks: [createBlock("text", {
       x: 12,
       y: 14,
       width: 76,
       height: 48,
-      html: `<h1>${escapeHtml(name)}</h1><p>Il était une fois…</p>`,
+      html: `<h1>${escapeHtml(name)}</h1><p>${localize("IMMERSIVE_BOOKS.Defaults.FirstPageIntro", "Il était une fois…")}</p>`,
       align: "center",
       fontSize: 22,
       dropCap: true
@@ -171,8 +186,8 @@ export function createBookData(name = "Nouveau livre") {
     theme: clone(DEFAULT_THEME),
     numbering: { start: 1, style: "arabic" },
     lockedPage: {
-      title: "Pages scellées",
-      message: "Ces pages ne peuvent pas encore être consultées.",
+      title: localize("IMMERSIVE_BOOKS.Defaults.LockedPageTitle", "Pages scellées"),
+      message: localize("IMMERSIVE_BOOKS.Defaults.LockedPageMessage", "Ces pages ne peuvent pas encore être consultées."),
       image: "",
       decoration: "wax-seal"
     },
@@ -190,7 +205,7 @@ export function createBookData(name = "Nouveau livre") {
   };
 }
 
-export function ensureBookData(raw, name = "Livre") {
+export function ensureBookData(raw, name = undefined) {
   if (!raw || raw.version !== DATA_VERSION || !raw.draft || !raw.published) return createBookData(name);
   const data = clone(raw);
   data.settings = mergeDeep(createBookData(name).settings, data.settings ?? {});
@@ -204,32 +219,34 @@ export function ensureBookData(raw, name = "Livre") {
 
 export function pageTemplate(template, name) {
   const base = { name: name || templateLabel(template), blocks: [] };
+  // Contenus d'exemple persistés dans le brouillon : traduits à la création.
   if (template === "chapter") {
     base.blocks = [
       createBlock("decoration", { x: 30, y: 19, width: 40, height: 7, variant: "divider-flourish" }),
-      createBlock("text", { x: 12, y: 31, width: 76, height: 37, html: "<h1>Nouveau chapitre</h1><p>Une introduction mémorable…</p>", align: "center", fontSize: 22 })
+      createBlock("text", { x: 12, y: 31, width: 76, height: 37, html: `<h1>${localize("IMMERSIVE_BOOKS.Templates.ChapterHeading", "Nouveau chapitre")}</h1><p>${localize("IMMERSIVE_BOOKS.Templates.ChapterIntro", "Une introduction mémorable…")}</p>`, align: "center", fontSize: 22 })
     ];
   } else if (template === "illustration") {
     base.blocks = [
       createBlock("image", { x: 8, y: 8, width: 84, height: 68 }),
-      createBlock("text", { x: 14, y: 79, width: 72, height: 13, html: "<p><em>Légende de l’illustration</em></p>", align: "center", fontSize: 16 })
+      createBlock("text", { x: 14, y: 79, width: 72, height: 13, html: `<p><em>${localize("IMMERSIVE_BOOKS.Templates.IllustrationCaption", "Légende de l’illustration")}</em></p>`, align: "center", fontSize: 16 })
     ];
   } else if (template === "columns") {
+    const columnBody = localize("IMMERSIVE_BOOKS.Templates.ColumnsBody", "Votre texte…");
     base.blocks = [
-      createBlock("text", { x: 8, y: 9, width: 39, height: 82, html: "<h2>Première colonne</h2><p>Votre texte…</p>", fontSize: 17 }),
-      createBlock("text", { x: 53, y: 9, width: 39, height: 82, html: "<h2>Deuxième colonne</h2><p>Votre texte…</p>", fontSize: 17 })
+      createBlock("text", { x: 8, y: 9, width: 39, height: 82, html: `<h2>${localize("IMMERSIVE_BOOKS.Templates.ColumnsFirst", "Première colonne")}</h2><p>${columnBody}</p>`, fontSize: 17 }),
+      createBlock("text", { x: 53, y: 9, width: 39, height: 82, html: `<h2>${localize("IMMERSIVE_BOOKS.Templates.ColumnsSecond", "Deuxième colonne")}</h2><p>${columnBody}</p>`, fontSize: 17 })
     ];
   } else if (template === "letter") {
     base.blocks = [
-      createBlock("text", { x: 12, y: 10, width: 76, height: 76, html: "<p><em>À mon très cher ami,</em></p><p>Je vous écris aujourd’hui…</p><p style=\"text-align:right\">Votre dévoué serviteur</p>", fontSize: 19, lineHeight: 1.7 }),
+      createBlock("text", { x: 12, y: 10, width: 76, height: 76, html: `<p><em>${localize("IMMERSIVE_BOOKS.Templates.LetterGreeting", "À mon très cher ami,")}</em></p><p>${localize("IMMERSIVE_BOOKS.Templates.LetterBody", "Je vous écris aujourd’hui…")}</p><p style="text-align:right">${localize("IMMERSIVE_BOOKS.Templates.LetterSignature", "Votre dévoué serviteur")}</p>`, fontSize: 19, lineHeight: 1.7 }),
       createBlock("decoration", { x: 69, y: 77, width: 15, height: 12, variant: "wax-seal", rotation: -8 })
     ];
   } else if (template === "bestiary") {
     base.blocks = [
-      createBlock("text", { x: 8, y: 7, width: 84, height: 15, html: "<h1>Créature</h1>", align: "center" }),
+      createBlock("text", { x: 8, y: 7, width: 84, height: 15, html: `<h1>${localize("IMMERSIVE_BOOKS.Templates.BestiaryHeading", "Créature")}</h1>`, align: "center" }),
       createBlock("image", { x: 8, y: 24, width: 45, height: 45 }),
-      createBlock("callout", { x: 57, y: 24, width: 35, height: 45, title: "Observations", html: "<p>Habitat, habitudes et signes distinctifs…</p>" }),
-      createBlock("text", { x: 8, y: 73, width: 84, height: 18, html: "<p>Description détaillée de la créature…</p>", fontSize: 17 })
+      createBlock("callout", { x: 57, y: 24, width: 35, height: 45, title: localize("IMMERSIVE_BOOKS.Templates.BestiaryObservations", "Observations"), html: `<p>${localize("IMMERSIVE_BOOKS.Templates.BestiaryObservationsBody", "Habitat, habitudes et signes distinctifs…")}</p>` }),
+      createBlock("text", { x: 8, y: 73, width: 84, height: 18, html: `<p>${localize("IMMERSIVE_BOOKS.Templates.BestiaryDescription", "Description détaillée de la créature…")}</p>`, fontSize: 17 })
     ];
   } else {
     base.blocks = [createBlock("text")];
@@ -322,8 +339,15 @@ export function mergeDeep(base, override) {
   return result;
 }
 
+// Nom affiché (et persisté) de la page créée depuis un modèle intégré.
 function templateLabel(template) {
-  return ({ chapter: "Ouverture de chapitre", illustration: "Illustration légendée", columns: "Deux colonnes", letter: "Lettre", bestiary: "Bestiaire" })[template] ?? "Page composée";
+  return ({
+    chapter: localize("IMMERSIVE_BOOKS.Templates.ChapterName", "Ouverture de chapitre"),
+    illustration: localize("IMMERSIVE_BOOKS.Templates.IllustrationName", "Illustration légendée"),
+    columns: localize("IMMERSIVE_BOOKS.Designer.TemplateColumns", "Deux colonnes"),
+    letter: localize("IMMERSIVE_BOOKS.Designer.TemplateLetter", "Lettre"),
+    bestiary: localize("IMMERSIVE_BOOKS.Designer.TemplateBestiary", "Bestiaire")
+  })[template] ?? localize("IMMERSIVE_BOOKS.Designer.KindComposed", "Page composée");
 }
 
 function escapeHtml(value) {

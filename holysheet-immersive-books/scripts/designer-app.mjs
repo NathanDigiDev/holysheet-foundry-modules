@@ -66,21 +66,24 @@ export class BookDesignerApp extends HandlebarsApplicationMixin(ApplicationV2) {
       block,
       multiSelection: selectedBlocks.length > 1,
       selectedCount: selectedBlocks.length,
-      formats: Object.values(FORMATS),
-      pageKinds: [{ value: "composed", label: "Page composée" }, { value: "image", label: "Image plein cadre" }],
-      pageRoles: [{ value: "normal", label: "Page normale" }, { value: "cover", label: "Couverture" }, { value: "back", label: "Quatrième de couverture" }],
-      visibilityOptions: [{ value: "visible", label: "Visible" }, { value: "gm", label: "Réservée au MJ" }, { value: "locked", label: "Verrouillée" }],
-      fitOptions: [{ value: "cover", label: "Remplir et recadrer" }, { value: "contain", label: "Contenir entièrement" }, { value: "fill", label: "Étirer" }],
-      numberingStyles: [{ value: "arabic", label: "Arabes" }, { value: "roman", label: "Romains" }],
-      alignOptions: [{ value: "left", label: "Gauche" }, { value: "center", label: "Centre" }, { value: "right", label: "Droite" }, { value: "justify", label: "Justifié" }],
-      shapeOptions: [{ value: "rectangle", label: "Rectangle" }, { value: "ellipse", label: "Ellipse" }],
+      // Les constantes du modèle portent des clés i18n : on les traduit au rendu,
+      // car elles sont évaluées à l'import du module, avant que i18n soit prêt.
+      formats: Object.values(FORMATS).map(format => ({ ...format, label: game.i18n.localize(format.label) })),
+      pageKinds: localizedOptions([["composed", "KindComposed"], ["image", "KindImage"]]),
+      pageRoles: localizedOptions([["normal", "RoleNormal"], ["cover", "RoleCover"], ["back", "RoleBack"]]),
+      visibilityOptions: localizedOptions([["visible", "VisibilityVisible"], ["gm", "VisibilityGM"], ["locked", "VisibilityLocked"]]),
+      fitOptions: localizedOptions([["cover", "FitCover"], ["contain", "FitContain"], ["fill", "FitFill"]]),
+      numberingStyles: localizedOptions([["arabic", "NumberingArabic"], ["roman", "NumberingRoman"]]),
+      alignOptions: localizedOptions([["left", "AlignLeft"], ["center", "AlignCenter"], ["right", "AlignRight"], ["justify", "AlignJustify"]]),
+      shapeOptions: localizedOptions([["rectangle", "ShapeRectangle"], ["ellipse", "ShapeEllipse"]]),
+      // Les noms de polices sont des noms propres : rien à traduire.
       fontOptions: [
         { value: "Georgia, serif", label: "Georgia" },
         { value: "Garamond, Georgia, serif", label: "Garamond" },
         { value: "Palatino Linotype, Palatino, serif", label: "Palatino" },
         { value: "Book Antiqua, Georgia, serif", label: "Book Antiqua" }
       ],
-      decorations: DECORATIONS,
+      decorations: DECORATIONS.map(decoration => ({ ...decoration, label: game.i18n.localize(decoration.label) })),
       customTemplates,
       histories: this.book.history,
       canUndo: this.undoStack.length > 0,
@@ -253,7 +256,7 @@ export class BookDesignerApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.#checkpoint();
     const page = clone(source);
     page.id = foundry.utils.randomID();
-    page.name = `${source.name} — copie`;
+    page.name = game.i18n.format("IMMERSIVE_BOOKS.Designer.CopyName", { name: source.name });
     page.blocks = page.blocks.map(block => ({ ...block, id: foundry.utils.randomID() }));
     const [documentPage] = await this.document.createEmbeddedDocuments("JournalEntryPage", [nativePageData(page)]);
     page.documentId = documentPage.id;
@@ -398,13 +401,14 @@ export class BookDesignerApp extends HandlebarsApplicationMixin(ApplicationV2) {
   #createTableOfContents() {
     const groups = [];
     for (const page of this.book.draft.pages.filter(item => item.role === "normal")) {
-      const chapter = page.chapter?.trim() || "Pages";
+      const chapter = page.chapter?.trim() || game.i18n.localize("IMMERSIVE_BOOKS.Designer.Pages");
       let group = groups.find(item => item.chapter === chapter);
       if (!group) groups.push(group = { chapter, pages: [] });
       group.pages.push(page.name);
     }
-    const html = `<h1>Sommaire</h1>${groups.map(group => `<h2>${escapeHtml(group.chapter)}</h2><ul>${group.pages.map(name => `<li>${escapeHtml(name)}</li>`).join("")}</ul>`).join("")}`;
-    return createPage("composed", { name: "Sommaire", blocks: [createBlock("text", { x: 10, y: 8, width: 80, height: 84, html, fontSize: 17, lineHeight: 1.5 })] });
+    const tocTitle = game.i18n.localize("IMMERSIVE_BOOKS.Designer.TemplateToc");
+    const html = `<h1>${escapeHtml(tocTitle)}</h1>${groups.map(group => `<h2>${escapeHtml(group.chapter)}</h2><ul>${group.pages.map(name => `<li>${escapeHtml(name)}</li>`).join("")}</ul>`).join("")}`;
+    return createPage("composed", { name: tocTitle, blocks: [createBlock("text", { x: 10, y: 8, width: 80, height: 84, html, fontSize: 17, lineHeight: 1.5 })] });
   }
 
   #undo() {
@@ -656,6 +660,12 @@ export async function acquireDesignerLock(journal, { force = false } = {}) {
     await setModuleFlag(journal, "book", book);
   }
   return { book, readOnly: locked && !force };
+}
+
+// Construit des paires valeur/libellé traduites au moment du rendu,
+// à partir du suffixe des clés IMMERSIVE_BOOKS.Designer.*.
+function localizedOptions(entries) {
+  return entries.map(([value, key]) => ({ value, label: game.i18n.localize(`IMMERSIVE_BOOKS.Designer.${key}`) }));
 }
 
 function isLockedByOther(book) {

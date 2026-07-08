@@ -1,38 +1,38 @@
 # Holysheet Immersive Books for Foundry VTT
 
-Module **system agnostic** pour Foundry VTT 13–14. Un livre reste un `JournalEntry`, mais dispose de deux expériences spécialisées : un lecteur immersif pour les joueurs et un atelier de composition pour le MJ.
+**System-agnostic** module for Foundry VTT 13–14. A book remains a regular `JournalEntry`, but gains two dedicated experiences: an immersive reader for players and a layout workshop for the GM.
 
-## Lecteur immersif
+## Immersive reader
 
-- Aucun cadre de fenêtre Foundry : uniquement le livre, sa croix de fermeture et la scène assombrie.
-- Couverture et quatrième de couverture seules ; pages intérieures en double page.
-- Mise en page fixe et identique chez tous les joueurs, avec page unique sur petit écran.
-- Pages images plein cadre ou pages composées de blocs.
-- Navigation par les coins, le clavier et les signets privés.
-- Post-it privé, déplaçable et attaché à chaque page.
-- Pages visibles, réservées au MJ ou verrouillées derrière un visuel personnalisable.
-- Action MJ « Montrer cette page à tous ».
+- No Foundry window frame: only the book, its close button and the darkened scene.
+- Standalone front and back covers; interior pages shown as two-page spreads.
+- Fixed layout, identical for every player, with single-page mode on small screens.
+- Full-frame image pages or pages composed of blocks.
+- Navigation through page corners, keyboard and private bookmarks.
+- Private, draggable sticky note attached to each page.
+- Pages can be visible, GM-only, or locked behind a customizable visual.
+- GM action "Show this page to everyone".
 
-## Atelier du livre
+## Book workshop
 
-- Miniatures et réorganisation des pages à gauche, canevas au centre, propriétés à droite.
-- Pages image avec recadrage et point focal.
-- Blocs texte, image, encadré, décoration, forme et numéro de page.
-- Déplacement, redimensionnement, rotation, opacité, calques, sélection multiple et alignement.
-- Grille et magnétisme désactivables.
-- Détection visuelle des textes qui dépassent.
-- Modèles intégrés : chapitre, illustration, deux colonnes, lettre et bestiaire.
-- Modèles personnels enregistrés dans les flags de l’utilisateur.
-- Brouillon autosauvegardé, publication explicite, annuler/rétablir et cinq versions publiées.
-- Corbeille récupérable jusqu’à publication.
-- Verrou d’édition mono-MJ.
+- Page thumbnails and reordering on the left, canvas in the center, properties on the right.
+- Image pages with cropping and focal point.
+- Text, image, callout, decoration, shape and page-number blocks.
+- Move, resize, rotate, opacity, layers, multi-selection and alignment.
+- Toggleable grid and snapping.
+- Visual detection of overflowing text.
+- Built-in templates: chapter, illustration, two columns, letter and bestiary.
+- Personal templates stored in the user's flags.
+- Auto-saved draft, explicit publishing, undo/redo and five published versions.
+- Recoverable trash until publication.
+- Single-GM editing lock.
 
-## Données
+## Data
 
-- Le Journal et ses `JournalEntryPage` restent les documents Foundry de référence.
-- Le modèle, le brouillon, la version publiée et l’historique sont stockés dans `flags.holysheet-immersive-books.book`.
-- Les signets, notes et modèles personnels sont stockés dans les flags du `User` concerné.
-- Aucune position de lecture n’est mémorisée : chaque ouverture commence à la couverture.
+- The Journal and its `JournalEntryPage` documents remain the Foundry documents of record.
+- The model, draft, published version and history are stored in `flags.holysheet-immersive-books.book`.
+- Bookmarks, notes and personal templates are stored in the flags of the relevant `User`.
+- No reading position is remembered: every opening starts at the cover.
 
 ## Installation
 
@@ -42,19 +42,19 @@ Install from the Foundry setup screen using this manifest URL:
 https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books-module.json
 ```
 
-## Installation de développement
+## Development installation
 
-Copier ce dossier dans `Data/modules/holysheet-immersive-books`, puis activer **Holysheet Immersive Books** dans le monde. Le manifeste est `module.json`.
+Copy this folder into `Data/modules/holysheet-immersive-books`, then enable **Holysheet Immersive Books** in the world. The manifest is `module.json`.
 
-## Utilisation
+## Usage
 
-1. Dans les Journaux, cliquer sur **Créer un livre**.
-2. Composer les pages dans l’atelier ; le brouillon est sauvegardé automatiquement.
-3. Utiliser **Prévisualiser** pour contrôler le brouillon.
-4. Cliquer sur **Publier** pour rendre la version visible aux joueurs.
-5. Donner au Journal au moins la permission **Observateur**.
+1. In the Journal sidebar, click **Create book**.
+2. Compose the pages in the workshop; the draft is saved automatically.
+3. Use **Preview** to review the draft.
+4. Click **Publish** to make the version visible to players.
+5. Give the Journal at least the **Observer** permission.
 
-Un double-clic sur un livre dans les Journaux ouvre directement le lecteur. Le menu contextuel permet aussi d’ouvrir l’atelier ou le Journal natif.
+Double-clicking a book in the Journal sidebar opens the reader directly. The context menu also lets you open the workshop or the native Journal.
 
 ```js
 game.immersiveBooks.open("JOURNAL_ID");
@@ -63,7 +63,7 @@ game.immersiveBooks.create();
 game.immersiveBooks.showToAll("JOURNAL_ID", "PAGE_LAYOUT_ID");
 ```
 
-## Vérification locale
+## Local verification
 
 ```powershell
 npm run check
@@ -82,4 +82,4 @@ https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
 
 MIT.
 
-Le projet reprend de [Xbozon/storyteller](https://github.com/Xbozon/storyteller) l’idée du Journal présenté comme un livre, mais utilise `ApplicationV2`, des brouillons publiables et un composeur natif sans `turn.js`.
+The project borrows from [Xbozon/storyteller](https://github.com/Xbozon/storyteller) the idea of presenting a Journal as a book, but uses `ApplicationV2`, publishable drafts and a native composer without `turn.js`.

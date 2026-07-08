@@ -258,7 +258,7 @@ export class ImmersiveBookApp extends HandlebarsApplicationMixin(ApplicationV2) 
     if (!pageId) return;
     const bookmark = {
       pageId,
-      label: panel.querySelector("[name='label']").value.trim() || "Page",
+      label: panel.querySelector("[name='label']").value.trim() || game.i18n.localize("IMMERSIVE_BOOKS.Bookmarks.DefaultLabel"),
       color: panel.querySelector("[name='color']").value
     };
     const index = this.bookmarks.findIndex(item => item.pageId === pageId);
