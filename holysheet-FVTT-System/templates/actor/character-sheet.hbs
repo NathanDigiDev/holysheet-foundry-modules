@@ -2,23 +2,23 @@
   <section class="hs-top-fixed">
     <header class="hs-banner">
       {{#if hs.isGM}}
-      <label class="hs-gm-mode-toggle" title="Mode edition GM">
+      <label class="hs-gm-mode-toggle" title="{{localize "HOLYSHEET.Config.GmEditMode"}}">
         <input type="checkbox" data-gm-config-mode {{checked hs.gmConfigMode}} />
         <span></span>
       </label>
       {{/if}}
 
       <section class="hs-banner-title">
-        <input class="hs-name hs-name-{{hs.nameSize}}" name="name" type="text" value="{{actor.name}}" placeholder="Nom du personnage" />
+        <input class="hs-name hs-name-{{hs.nameSize}}" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "HOLYSHEET.Placeholder.CharacterName"}}" />
       </section>
 
       <section class="hs-banner-meta {{#unless hs.modules.level}}hs-banner-meta-no-level{{/unless}}">
         <label>
-          <span>Archetype</span>
+          <span>{{localize "HOLYSHEET.Label.Archetype"}}</span>
           <input name="system.archetype" type="text" value="{{system.archetype}}" />
         </label>
         <label>
-          <span>Origine</span>
+          <span>{{localize "HOLYSHEET.Label.Origin"}}</span>
           <input name="system.origin" type="text" value="{{system.origin}}" />
         </label>
         {{#if hs.modules.level}}
@@ -31,7 +31,7 @@
     </header>
 
     {{#if hs.modules.aptitudes}}
-    <section class="hs-banner-aptitudes" aria-label="Aptitudes">
+    <section class="hs-banner-aptitudes" aria-label="{{localize "HOLYSHEET.Label.Aptitudes"}}">
       {{#each hs.aptitudes}}
       <article class="hs-aptitude-card" title="{{description}}">
         <input name="{{field}}" type="number" value="{{value}}" min="1" max="100" />
@@ -51,7 +51,7 @@
       </div>
 
       {{#if hs.canConfigure}}
-      <section class="hs-portrait-controls" aria-label="Cadrage du portrait">
+      <section class="hs-portrait-controls" aria-label="{{localize "HOLYSHEET.Sheet.PortraitFraming"}}">
         <label>
           X
           <input type="range" name="system.portrait.x" value="{{hs.portrait.x}}" min="0" max="100" step="1" data-portrait-control="x" />
@@ -84,9 +84,9 @@
       {{/if}}
 
       {{#if hs.modules.customStates}}
-      <section class="hs-custom-states" aria-label="Etats">
+      <section class="hs-custom-states" aria-label="{{localize "HOLYSHEET.Label.States"}}">
         {{#unless hs.customStates.length}}
-        <span class="hs-empty-state">Aucun etat configure</span>
+        <span class="hs-empty-state">{{localize "HOLYSHEET.Sheet.NoStateConfigured"}}</span>
         {{/unless}}
         {{#each hs.customStates}}
         {{#if isGauge}}
@@ -113,13 +113,13 @@
         <a class="item" data-tab="bio" title="{{localize "HOLYSHEET.Label.Bio"}}"><i class="fa-solid fa-feather-pointed"></i></a>
         {{/if}}
         {{#if hs.tabs.skills}}
-        <a class="item" data-tab="skills" title="Competences"><i class="fa-solid fa-list-check"></i></a>
+        <a class="item" data-tab="skills" title="{{localize "HOLYSHEET.Label.Skills"}}"><i class="fa-solid fa-list-check"></i></a>
         {{/if}}
         {{#if hs.tabs.inventory}}
         <a class="item" data-tab="inventory" title="{{localize "HOLYSHEET.Label.Inventory"}}"><i class="fa-solid fa-suitcase"></i></a>
         {{/if}}
         {{#if hs.tabs.config}}
-        <a class="item" data-tab="config" title="Configuration GM"><i class="fa-solid fa-gear"></i></a>
+        <a class="item" data-tab="config" title="{{localize "HOLYSHEET.Config.GmConfig"}}"><i class="fa-solid fa-gear"></i></a>
         {{/if}}
       </nav>
 
@@ -165,8 +165,8 @@
                 <input name="system.specialSkills.{{index}}.id" type="hidden" value="{{id}}" />
                 <input name="system.specialSkills.{{index}}.name" type="hidden" value="{{name}}" />
                 <textarea class="hs-hidden-field" name="system.specialSkills.{{index}}.description">{{description}}</textarea>
-                <button type="button" class="hs-icon-button" data-edit-special-skill="{{id}}" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" class="hs-icon-button" data-delete-special-skill="{{id}}" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="hs-icon-button" data-edit-special-skill="{{id}}" title="{{localize "HOLYSHEET.Action.Edit"}}"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="hs-icon-button" data-delete-special-skill="{{id}}" title="{{localize "HOLYSHEET.Action.Delete"}}"><i class="fa-solid fa-trash"></i></button>
               </div>
               {{/each}}
             </div>
@@ -182,10 +182,10 @@
             <h2>
               {{localize "HOLYSHEET.Label.Currencies"}}
               <span class="hs-panel-actions">
-                <button type="button" class="hs-icon-button" data-open-currency-adjustment title="Ajouter ou retirer de la monnaie">
+                <button type="button" class="hs-icon-button" data-open-currency-adjustment title="{{localize "HOLYSHEET.Action.AdjustCurrency"}}">
                   <i class="fa-solid fa-plus-minus"></i>
                 </button>
-                <button type="button" class="hs-icon-button" data-normalize-currencies title="Convertir la monnaie">
+                <button type="button" class="hs-icon-button" data-normalize-currencies title="{{localize "HOLYSHEET.Action.ConvertCurrency"}}">
                   <i class="fa-solid fa-scale-balanced"></i>
                 </button>
               </span>
@@ -215,23 +215,23 @@
                   {{#if img}}<img src="{{img}}" alt="" />{{/if}}
                 </span>
                 {{#if system.equipable}}
-                <input class="hs-equip-toggle" type="checkbox" data-toggle-equipment="{{id}}" {{checked system.equipped}} title="Equiper" />
+                <input class="hs-equip-toggle" type="checkbox" data-toggle-equipment="{{id}}" {{checked system.equipped}} title="{{localize "HOLYSHEET.Action.Equip"}}" />
                 {{else}}
                 <span class="hs-equip-placeholder"></span>
                 {{/if}}
                 <span class="hs-item-name">
                   {{name}}
                   {{#if system.armorValue}}
-                  <span class="hs-armor-badge" title="Armure"><i class="fa-solid fa-shield"></i> {{system.armorValue}}</span>
+                  <span class="hs-armor-badge" title="{{localize "HOLYSHEET.Label.Armor"}}"><i class="fa-solid fa-shield"></i> {{system.armorValue}}</span>
                   {{/if}}
                 </span>
                 <span class="hs-item-quantity">
-                  <button type="button" data-adjust-quantity="{{id}}" data-delta="-1" title="Retirer 1">-</button>
+                  <button type="button" data-adjust-quantity="{{id}}" data-delta="-1" title="{{localize "HOLYSHEET.Action.RemoveOne"}}">-</button>
                   <strong>{{system.quantity}}</strong>
-                  <button type="button" data-adjust-quantity="{{id}}" data-delta="1" title="Ajouter 1">+</button>
+                  <button type="button" data-adjust-quantity="{{id}}" data-delta="1" title="{{localize "HOLYSHEET.Action.AddOne"}}">+</button>
                 </span>
-                <button type="button" class="hs-icon-button" data-item-id="{{id}}" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" class="hs-icon-button" data-delete-equipment="{{id}}" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+                <button type="button" class="hs-icon-button" data-item-id="{{id}}" title="{{localize "HOLYSHEET.Action.Edit"}}"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button type="button" class="hs-icon-button" data-delete-equipment="{{id}}" title="{{localize "HOLYSHEET.Action.Delete"}}"><i class="fa-solid fa-trash"></i></button>
               </div>
               {{/each}}
             </section>
@@ -245,7 +245,7 @@
         <div class="tab" data-group="primary" data-tab="config">
           <section class="hs-config-layout">
             <details class="hs-panel hs-config-section" data-config-section="modules" {{#if hs.configSections.modules}}open{{/if}}>
-              <summary><span>Modules de fiche</span></summary>
+              <summary><span>{{localize "HOLYSHEET.Config.SheetModules"}}</span></summary>
               <div class="hs-config-toggles">
                 {{#each hs.moduleToggles}}
                 <label>
@@ -258,38 +258,38 @@
 
             <details class="hs-panel hs-config-section" data-config-section="aptitudes" {{#if hs.configSections.aptitudes}}open{{/if}}>
               <summary>
-                <span>Aptitudes globales</span>
+                <span>{{localize "HOLYSHEET.Config.GlobalAptitudes"}}</span>
                 <button type="button" data-add-config-entry="aptitudes">+</button>
               </summary>
               {{#each hs.config.aptitudes}}
               <div class="hs-config-entry">
-                <input type="text" value="{{label}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="label" placeholder="Nom" />
-                <input type="text" value="{{abbreviation}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="abbreviation" placeholder="Abrev." maxlength="4" />
+                <input type="text" value="{{label}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="label" placeholder="{{localize "HOLYSHEET.Placeholder.Name"}}" />
+                <input type="text" value="{{abbreviation}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="abbreviation" placeholder="{{localize "HOLYSHEET.Placeholder.Abbreviation"}}" maxlength="4" />
                 <input type="number" value="{{value}}" data-config-list="aptitudes" data-index="{{@index}}" data-field="value" min="1" max="100" />
                 <button type="button" data-delete-config-entry="aptitudes" data-index="{{@index}}">x</button>
-                <textarea rows="2" data-config-list="aptitudes" data-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+                <textarea rows="2" data-config-list="aptitudes" data-index="{{@index}}" data-field="description" placeholder="{{localize "HOLYSHEET.Label.Description"}}">{{description}}</textarea>
               </div>
               {{/each}}
             </details>
 
             <details class="hs-panel hs-config-section" data-config-section="commonSkills" {{#if hs.configSections.commonSkills}}open{{/if}}>
               <summary>
-                <span>Competences communes globales</span>
+                <span>{{localize "HOLYSHEET.Config.GlobalCommonSkills"}}</span>
                 <button type="button" data-add-config-entry="commonSkills">+</button>
               </summary>
               {{#each hs.config.commonSkills}}
               <div class="hs-config-entry hs-config-entry-skill">
-                <input type="text" value="{{label}}" data-config-list="commonSkills" data-index="{{@index}}" data-field="label" placeholder="Nom" />
+                <input type="text" value="{{label}}" data-config-list="commonSkills" data-index="{{@index}}" data-field="label" placeholder="{{localize "HOLYSHEET.Placeholder.Name"}}" />
                 <input type="number" value="{{value}}" data-config-list="commonSkills" data-index="{{@index}}" data-field="value" min="1" max="100" />
                 <button type="button" data-delete-config-entry="commonSkills" data-index="{{@index}}">x</button>
-                <textarea rows="2" data-config-list="commonSkills" data-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+                <textarea rows="2" data-config-list="commonSkills" data-index="{{@index}}" data-field="description" placeholder="{{localize "HOLYSHEET.Label.Description"}}">{{description}}</textarea>
               </div>
               {{/each}}
             </details>
 
             <details class="hs-panel hs-config-section" data-config-section="categories" {{#if hs.configSections.categories}}open{{/if}}>
               <summary>
-                <span>Categories d'inventaire</span>
+                <span>{{localize "HOLYSHEET.Config.InventoryCategories"}}</span>
                 <button type="button" data-add-category>+</button>
               </summary>
               {{#each hs.config.itemCategories}}
@@ -302,48 +302,48 @@
 
             <details class="hs-panel hs-config-section" data-config-section="states" {{#if hs.configSections.states}}open{{/if}}>
               <summary>
-                <span>Etats de la barre</span>
+                <span>{{localize "HOLYSHEET.Config.BarStates"}}</span>
                 <button type="button" data-add-state>+</button>
               </summary>
               {{#each hs.config.customStates}}
               <div class="hs-config-entry hs-config-entry-state">
-                <button type="button" class="hs-state-icon-picker" data-pick-state-icon="{{@index}}" title="Choisir une icone">
+                <button type="button" class="hs-state-icon-picker" data-pick-state-icon="{{@index}}" title="{{localize "HOLYSHEET.Action.PickIcon"}}">
                   {{#if icon}}<img src="{{icon}}" alt="" />{{else}}<i class="fa-solid fa-circle-dot"></i>{{/if}}
                 </button>
-                <input type="text" value="{{name}}" data-state-index="{{@index}}" data-field="name" placeholder="Nom" />
+                <input type="text" value="{{name}}" data-state-index="{{@index}}" data-field="name" placeholder="{{localize "HOLYSHEET.Placeholder.Name"}}" />
                 <select data-state-index="{{@index}}" data-field="type">
-                  <option value="gauge" {{#if isGauge}}selected{{/if}}>Jauge</option>
-                  <option value="checkbox" {{#if isCheckbox}}selected{{/if}}>Case</option>
+                  <option value="gauge" {{#if isGauge}}selected{{/if}}>{{localize "HOLYSHEET.Config.Gauge"}}</option>
+                  <option value="checkbox" {{#if isCheckbox}}selected{{/if}}>{{localize "HOLYSHEET.Config.Checkbox"}}</option>
                 </select>
-                <input type="number" value="{{value}}" data-state-index="{{@index}}" data-field="value" placeholder="Actuel" />
-                <input type="number" value="{{max}}" data-state-index="{{@index}}" data-field="max" placeholder="Max" />
-                <input type="color" value="{{color}}" data-state-index="{{@index}}" data-field="color" title="Couleur de jauge" />
+                <input type="number" value="{{value}}" data-state-index="{{@index}}" data-field="value" placeholder="{{localize "HOLYSHEET.Placeholder.Current"}}" />
+                <input type="number" value="{{max}}" data-state-index="{{@index}}" data-field="max" placeholder="{{localize "HOLYSHEET.Placeholder.Max"}}" />
+                <input type="color" value="{{color}}" data-state-index="{{@index}}" data-field="color" title="{{localize "HOLYSHEET.Config.GaugeColor"}}" />
                 <button type="button" data-delete-state="{{@index}}">x</button>
-                <textarea rows="2" data-state-index="{{@index}}" data-field="description" placeholder="Description">{{description}}</textarea>
+                <textarea rows="2" data-state-index="{{@index}}" data-field="description" placeholder="{{localize "HOLYSHEET.Label.Description"}}">{{description}}</textarea>
               </div>
               {{/each}}
             </details>
 
             <details class="hs-panel hs-config-section" data-config-section="currencies" {{#if hs.configSections.currencies}}open{{/if}}>
               <summary>
-                <span>Monnaies</span>
+                <span>{{localize "HOLYSHEET.Label.Currencies"}}</span>
                 <button type="button" data-add-currency>+</button>
               </summary>
             {{#each hs.config.currencies}}
             <div class="hs-config-entry hs-config-entry-currency">
-                <button type="button" class="hs-currency-icon-picker" data-pick-currency-icon="{{@index}}" title="Choisir une icone">
+                <button type="button" class="hs-currency-icon-picker" data-pick-currency-icon="{{@index}}" title="{{localize "HOLYSHEET.Action.PickIcon"}}">
                   {{#if icon}}<img src="{{icon}}" alt="" />{{else}}<i class="fa-solid fa-coins"></i>{{/if}}
                 </button>
-                <input type="text" value="{{label}}" data-currency-index="{{@index}}" data-field="label" placeholder="Nom" />
-                <input type="number" value="{{rate}}" data-currency-index="{{@index}}" data-field="rate" min="0" placeholder="Taux" title="Nombre de cette monnaie pour obtenir 1 monnaie liee" />
+                <input type="text" value="{{label}}" data-currency-index="{{@index}}" data-field="label" placeholder="{{localize "HOLYSHEET.Placeholder.Name"}}" />
+                <input type="number" value="{{rate}}" data-currency-index="{{@index}}" data-field="rate" min="0" placeholder="{{localize "HOLYSHEET.Placeholder.Rate"}}" title="{{localize "HOLYSHEET.Config.RateHint"}}" />
                 <select data-currency-index="{{@index}}" data-field="equivalentTo">
-                  <option value="">Sans lien</option>
+                  <option value="">{{localize "HOLYSHEET.Config.NoLink"}}</option>
                   {{#each relationChoices}}
                   <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
                   {{/each}}
                 </select>
                 <button type="button" data-delete-currency="{{@index}}">x</button>
-                <p>Exemple: taux 10 signifie que 10 {{label}} valent 1 monnaie liee.</p>
+                <p>{{localize "HOLYSHEET.Config.RateExample" label=label}}</p>
               </div>
               {{/each}}
             </details>

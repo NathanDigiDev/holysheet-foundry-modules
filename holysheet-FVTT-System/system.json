@@ -2,8 +2,8 @@
   "id": "holysheet",
   "type": "system",
   "title": "HolySheet",
-  "description": "Systeme D100 simple, generique et customisable pour Foundry Virtual Tabletop.",
-  "version": "0.2.7",
+  "description": "A simple, generic and customizable D100 system for Foundry Virtual Tabletop.",
+  "version": "0.2.8",
   "compatibility": {
     "minimum": "14",
     "verified": "14.364"
@@ -19,6 +19,11 @@
   "media": [],
   "languages": [
     {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
       "lang": "fr",
       "name": "Francais",
       "path": "lang/fr.json"
@@ -28,7 +33,7 @@
     "scripts/main.mjs"
   ],
   "styles": [
-    "styles/holysheet-0.2.4.css"
+    "styles/holysheet.css"
   ],
   "template": "template.json",
   "documentTypes": {

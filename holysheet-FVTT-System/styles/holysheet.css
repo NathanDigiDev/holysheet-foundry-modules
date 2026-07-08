@@ -1590,6 +1590,33 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
   text-align: center !important;
 }
+.application.sheet.holysheet.actor .hs-list-row > button[data-roll],
+.window-app.holysheet.actor .hs-list-row > button[data-roll],
+.app.holysheet.actor .hs-list-row > button[data-roll] {
+  min-width: 0 !important;
+  height: auto !important;
+  padding: 3px 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: var(--hs-ink) !important;
+  font-family: var(--hs-body) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  text-align: left !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.application.sheet.holysheet.actor .hs-list-row > button[data-roll]:hover,
+.window-app.holysheet.actor .hs-list-row > button[data-roll]:hover,
+.app.holysheet.actor .hs-list-row > button[data-roll]:hover {
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--hs-accent-bright) !important;
+  box-shadow: none !important;
+}
 .application.sheet.holysheet.actor input[type="checkbox"],
 .application.sheet.holysheet.item input[type="checkbox"],
 .window-app.holysheet.actor input[type="checkbox"],
@@ -1607,6 +1634,24 @@
   accent-color: var(--hs-accent) !important;
   -webkit-appearance: checkbox !important;
   appearance: auto !important;
+}
+.application.holysheet .window-header :is(button, a).header-control:is(.fa-solid, .fas, .fa-regular, .far),
+.application.holysheet .window-header :is(button, a).header-control > :is(.fa-solid, .fas, .fa-regular, .far),
+.window-app.holysheet .window-header :is(a, button).header-button > :is(.fa-solid, .fas, .fa-regular, .far),
+.app.holysheet .window-header :is(a, button).header-button > :is(.fa-solid, .fas, .fa-regular, .far) {
+  font-family: "Font Awesome 6 Free", "FontAwesome" !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+  font-variant: normal !important;
+  text-rendering: auto !important;
+  line-height: 1 !important;
+}
+.application.holysheet .window-header :is(button, a).header-control:is(.fa-regular, .far),
+.application.holysheet .window-header :is(button, a).header-control > :is(.fa-regular, .far),
+.window-app.holysheet .window-header :is(a, button).header-button > :is(.fa-regular, .far),
+.app.holysheet .window-header :is(a, button).header-button > :is(.fa-regular, .far) {
+  font-family: "Font Awesome 6 Free", "FontAwesome" !important;
+  font-weight: 400 !important;
 }
 
 /* =========================================================================

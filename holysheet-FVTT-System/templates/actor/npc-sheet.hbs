@@ -4,7 +4,7 @@
       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" style="{{hs.portrait.style}}" />
     </div>
     <div class="hs-npc-id">
-      <input class="hs-name hs-name-{{hs.nameSize}}" name="name" type="text" value="{{actor.name}}" placeholder="Nom du PNJ" />
+      <input class="hs-name hs-name-{{hs.nameSize}}" name="name" type="text" value="{{actor.name}}" placeholder="{{localize "HOLYSHEET.Placeholder.NpcName"}}" />
 
       {{#if hs.modules.resources}}
       <section class="hs-resource-orbs">
@@ -25,7 +25,7 @@
   </header>
 
   {{#if hs.modules.aptitudes}}
-  <section class="hs-banner-aptitudes" aria-label="Aptitudes">
+  <section class="hs-banner-aptitudes" aria-label="{{localize "HOLYSHEET.Label.Aptitudes"}}">
     {{#each hs.aptitudes}}
     <article class="hs-aptitude-card" title="{{description}}">
       <input name="{{field}}" type="number" value="{{value}}" min="1" max="100" />
@@ -39,7 +39,7 @@
 
   {{#if hs.modules.customStates}}
   {{#if hs.customStates.length}}
-  <section class="hs-custom-states" aria-label="Etats">
+  <section class="hs-custom-states" aria-label="{{localize "HOLYSHEET.Label.States"}}">
     {{#each hs.customStates}}
     {{#if isGauge}}
     <label class="hs-state-gauge" title="{{description}}" style="--hs-state-color: {{color}}; --hs-state-fill: {{percent}}%;">
@@ -79,23 +79,23 @@
           {{#if img}}<img src="{{img}}" alt="" />{{/if}}
         </span>
         {{#if system.equipable}}
-        <input class="hs-equip-toggle" type="checkbox" data-toggle-equipment="{{id}}" {{checked system.equipped}} title="Equiper" />
+        <input class="hs-equip-toggle" type="checkbox" data-toggle-equipment="{{id}}" {{checked system.equipped}} title="{{localize "HOLYSHEET.Action.Equip"}}" />
         {{else}}
         <span class="hs-equip-placeholder"></span>
         {{/if}}
         <span class="hs-item-name">
           {{name}}
           {{#if system.armorValue}}
-          <span class="hs-armor-badge" title="Armure"><i class="fa-solid fa-shield"></i> {{system.armorValue}}</span>
+          <span class="hs-armor-badge" title="{{localize "HOLYSHEET.Label.Armor"}}"><i class="fa-solid fa-shield"></i> {{system.armorValue}}</span>
           {{/if}}
         </span>
         <span class="hs-item-quantity">
-          <button type="button" data-adjust-quantity="{{id}}" data-delta="-1" title="Retirer 1">-</button>
+          <button type="button" data-adjust-quantity="{{id}}" data-delta="-1" title="{{localize "HOLYSHEET.Action.RemoveOne"}}">-</button>
           <strong>{{system.quantity}}</strong>
-          <button type="button" data-adjust-quantity="{{id}}" data-delta="1" title="Ajouter 1">+</button>
+          <button type="button" data-adjust-quantity="{{id}}" data-delta="1" title="{{localize "HOLYSHEET.Action.AddOne"}}">+</button>
         </span>
-        <button type="button" class="hs-icon-button" data-item-id="{{id}}" title="Modifier"><i class="fa-solid fa-pen-to-square"></i></button>
-        <button type="button" class="hs-icon-button" data-delete-equipment="{{id}}" title="Supprimer"><i class="fa-solid fa-trash"></i></button>
+        <button type="button" class="hs-icon-button" data-item-id="{{id}}" title="{{localize "HOLYSHEET.Action.Edit"}}"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button type="button" class="hs-icon-button" data-delete-equipment="{{id}}" title="{{localize "HOLYSHEET.Action.Delete"}}"><i class="fa-solid fa-trash"></i></button>
       </div>
       {{/each}}
     </section>
