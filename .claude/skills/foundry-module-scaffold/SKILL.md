@@ -42,6 +42,7 @@ Demander (ou déduire) :
 ```json
 {
   "id": "<id>",
+  "type": "module",
   "title": "<Titre lisible>",
   "description": "<Description courte>",
   "version": "0.1.0",
@@ -51,6 +52,7 @@ Demander (ou déduire) :
     "maximum": "14"
   },
   "authors": [{ "name": "HolySheet" }],
+  "media": [],
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/holysheet.css", "styles/<id>.css"],
   "languages": [
@@ -61,7 +63,10 @@ Demander (ou déduire) :
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>.zip",
-  "license": "MIT",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/<id>/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues",
   "flags": { "<id>": {} }
 }
 ```
@@ -150,6 +155,8 @@ collisions avec le core ou d'autres modules.
 ## Checklist finale
 
 - [ ] `module.json` valide (JSON parsable), `id` + `compatibility` v14.
+- [ ] `module.json` contient `type: "module"`, `media: []`, `readme`,
+      `changelog`, `bugs` et `license` en URLs publiques.
 - [ ] `esmodules` pointe vers un fichier existant.
 - [ ] `lang/en.json` et `lang/fr.json` présents, mêmes clés.
 - [ ] UI en `ApplicationV2` (pas l'ancien `Application`).

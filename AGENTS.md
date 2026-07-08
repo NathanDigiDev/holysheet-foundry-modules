@@ -60,6 +60,9 @@ Lire le `SKILL.md` correspondant avant d'agir sur l'un de ces sujets.
 
 - Chaque module/systeme publie doit contenir `url`, `manifest` et `download`
   dans son `module.json` ou `system.json`.
+- Pour une soumission publique, chaque manifest doit aussi contenir `readme`,
+  `changelog`, `bugs`, `license` et `media`. Les modules doivent declarer
+  `type: "module"`.
 - **NEVER** pointer `manifest` vers `raw.githubusercontent.com/.../main/...`.
   Le manifest public doit etre un asset de GitHub Release stable :
   `https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>-module.json`

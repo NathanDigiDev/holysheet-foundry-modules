@@ -1,5 +1,6 @@
 {
   "id": "holysheet-item-storage",
+  "type": "module",
   "title": "HolySheet Item Storage",
   "description": "System-agnostic containers for Foundry VTT v14, with HolySheet-aware item creation, live shared inventories, canvas placement, and GM locking.",
   "version": "0.1.1",
@@ -13,6 +14,7 @@
       "name": "HolySheet"
     }
   ],
+  "media": [],
   "esmodules": [
     "scripts/main.mjs"
   ],
@@ -35,6 +37,8 @@
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-item-storage-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-item-storage.zip",
-  "license": "MIT",
-  "readme": "README.md"
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-item-storage/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues"
 }

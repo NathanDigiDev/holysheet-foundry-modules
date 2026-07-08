@@ -1,5 +1,6 @@
 {
   "id": "holysheet-custom-calendar",
+  "type": "module",
   "title": "Holysheet Custom Calendar",
   "description": "A lightweight, system-agnostic custom calendar module with an always-visible day/night widget.",
   "version": "0.1.1",
@@ -14,6 +15,7 @@
       "flags": {}
     }
   ],
+  "media": [],
   "esmodules": [
     "scripts/main.js"
   ],
@@ -33,8 +35,10 @@
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-custom-calendar-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-custom-calendar.zip",
-  "license": "MIT",
-  "readme": "README.md",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-custom-calendar/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues",
   "flags": {
     "holysheet-custom-calendar": {}
   }

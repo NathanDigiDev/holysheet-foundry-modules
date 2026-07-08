@@ -92,6 +92,15 @@ Pour cela, son manifest (`module.json` ou `system.json`) doit contenir :
 "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/<id>.zip"
 ```
 
+Pour une soumission publique Foundry, le manifest doit aussi exposer :
+
+- `readme` : URL web vers le README du package.
+- `changelog` : URL web vers les notes de versions.
+- `bugs` : URL web vers le suivi de bugs.
+- `license` : URL web ou chemin vers la licence.
+- `media` : tableau, au minimum `[]`.
+- `type: "module"` pour les modules.
+
 **Ne jamais utiliser** `raw.githubusercontent.com/.../main/...` pour le champ
 `manifest` d'un package publie : cela peut annoncer une version qui n'a pas
 encore de zip correspondant. Le manifest public doit etre un asset de la
@@ -152,7 +161,7 @@ Regles :
 - `Fix` pour une correction de bug, de manifest, de packaging ou de compatibilite.
 - `Update` pour une evolution, une maintenance ou une mise a jour de version.
 - `{Nom du module ou systeme}` doit etre le dossier ou l'ID Foundry concerne,
-  par exemple `holysheet-lockpicking`, `holysheet-dnd-compendiums` ou
+  par exemple `holysheet-lockpicking`, `holysheet-item-storage` ou
   `holysheet`.
 - Le commentaire doit etre en francais et resumer ce qui a ete fait.
 - `{utilisateur}` doit identifier la personne ou l'agent qui a fait le

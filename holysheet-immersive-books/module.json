@@ -1,5 +1,6 @@
 {
   "id": "holysheet-immersive-books",
+  "type": "module",
   "title": "Holysheet Immersive Books",
   "description": "Transforme les journaux Foundry en livres feuilletables avec couvertures, signets et notes personnelles.",
   "version": "1.0.9",
@@ -8,6 +9,7 @@
       "name": "Hal"
     }
   ],
+  "media": [],
   "compatibility": {
     "minimum": "13",
     "verified": "14"
@@ -33,5 +35,9 @@
   "socket": true,
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books-module.json",
-  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books.zip"
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books.zip",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-immersive-books/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues"
 }

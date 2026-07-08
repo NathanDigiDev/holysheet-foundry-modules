@@ -1,5 +1,6 @@
 {
   "id": "holysheet-quest-system",
+  "type": "module",
   "title": "Quest System",
   "description": "A system-agnostic quest manager for Foundry VTT v14: GM quest editor, player quest log, objectives (manual / kill / timed), automated item rewards, and immersive animated notifications.",
   "version": "1.0.1",
@@ -14,6 +15,7 @@
       "flags": {}
     }
   ],
+  "media": [],
   "esmodules": ["scripts/quest-system.mjs"],
   "styles": ["styles/quest-system.css"],
   "languages": [
@@ -32,8 +34,10 @@
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-quest-system-module.json",
   "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-quest-system.zip",
-  "license": "MIT",
-  "readme": "README.md",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-quest-system/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues",
   "flags": {
     "holysheet-quest-system": {
       "needsResetSettings": false

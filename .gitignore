@@ -3,6 +3,10 @@
 
 # Artefacts de build / archives
 *.zip
+archives/
+
+# Contenu DnD non publiable
+holysheet-FVTT-System/tools/generate-holysheet-dnd-module.mjs
 
 # Dossiers locaux d'outils
 nimbalyst-local/

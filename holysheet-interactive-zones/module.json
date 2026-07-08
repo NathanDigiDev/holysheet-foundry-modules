@@ -1,5 +1,6 @@
 {
   "id": "holysheet-interactive-zones",
+  "type": "module",
   "title": "Holysheet Interactive Zones",
   "description": "Create scene-stored interactive zones that can highlight, vote, open content, play sounds, run macros, chat, and change scenes.",
   "version": "0.1.1",
@@ -14,6 +15,7 @@
       "name": "Holysheet"
     }
   ],
+  "media": [],
   "esmodules": [
     "scripts/main.js"
   ],
@@ -34,5 +36,9 @@
   ],
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-interactive-zones-module.json",
-  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-interactive-zones.zip"
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-interactive-zones.zip",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-interactive-zones/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues"
 }

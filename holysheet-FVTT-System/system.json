@@ -51,5 +51,9 @@
   },
   "url": "https://github.com/NathanDigiDev/holysheet-foundry-modules",
   "manifest": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-system.json",
-  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet.zip"
+  "download": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet.zip",
+  "license": "https://opensource.org/licenses/MIT",
+  "readme": "https://github.com/NathanDigiDev/holysheet-foundry-modules/blob/main/holysheet-FVTT-System/README.md",
+  "changelog": "https://github.com/NathanDigiDev/holysheet-foundry-modules/releases",
+  "bugs": "https://github.com/NathanDigiDev/holysheet-foundry-modules/issues"
 }

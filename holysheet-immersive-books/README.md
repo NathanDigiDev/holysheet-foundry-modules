@@ -34,6 +34,14 @@ Module **system agnostic** pour Foundry VTT 13–14. Un livre reste un `JournalE
 - Les signets, notes et modèles personnels sont stockés dans les flags du `User` concerné.
 - Aucune position de lecture n’est mémorisée : chaque ouverture commence à la couverture.
 
+## Installation
+
+Install from the Foundry setup screen using this manifest URL:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-immersive-books-module.json
+```
+
 ## Installation de développement
 
 Copier ce dossier dans `Data/modules/holysheet-immersive-books`, puis activer **Holysheet Immersive Books** dans le monde. Le manifeste est `module.json`.
@@ -61,5 +69,17 @@ game.immersiveBooks.showToAll("JOURNAL_ID", "PAGE_LAYOUT_ID");
 npm run check
 npm test
 ```
+
+## Bugs
+
+Please report issues on GitHub:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
+```
+
+## License
+
+MIT.
 
 Le projet reprend de [Xbozon/storyteller](https://github.com/Xbozon/storyteller) l’idée du Journal présenté comme un livre, mais utilise `ApplicationV2`, des brouillons publiables et un composeur natif sans `turn.js`.

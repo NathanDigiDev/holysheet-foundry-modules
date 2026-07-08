@@ -19,6 +19,14 @@ GM-only note workspace for Foundry VTT v14.
 
 Foundry VTT v14+.
 
+## Installation
+
+Install from the Foundry setup screen using this manifest URL:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-gm-stories-module.json
+```
+
 ## Local install
 
 Place this folder in:
@@ -28,3 +36,15 @@ FoundryVTT/Data/modules/holysheet-gm-stories
 ```
 
 Then enable **HolySheet GM Stories** in the world module settings.
+
+## Bugs
+
+Please report issues on GitHub:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
+```
+
+## License
+
+MIT.

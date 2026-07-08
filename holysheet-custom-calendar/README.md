@@ -16,9 +16,25 @@ Module Foundry VTT v14+ system-agnostic pour gérer des calendriers personnalisa
 - Import/export JSON complet.
 - Interface française.
 
+## Installation
+
+Install from the Foundry setup screen using this manifest URL:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-custom-calendar-module.json
+```
+
 ## Installation locale
 
 Copier ce dossier dans le dossier `Data/modules` de Foundry VTT, puis activer le module dans le monde.
+
+## Bugs
+
+Please report issues on GitHub:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
+```
 
 ## Licence
 

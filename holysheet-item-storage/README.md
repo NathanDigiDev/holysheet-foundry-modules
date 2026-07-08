@@ -13,3 +13,25 @@ Foundry VTT v14 module for shared item containers.
 - GM can right-click a marker to lock or unlock it.
 
 The module stores data in `flags.holysheet-item-storage` so it can stay portable across systems. When the HolySheet system is active, new containers are created as `equipment` Items with the `Contenant` category.
+
+## Installation
+
+Install from the Foundry setup screen using this manifest URL:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-item-storage-module.json
+```
+
+Then enable **HolySheet Item Storage** in your world module settings.
+
+## Bugs
+
+Please report issues on GitHub:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
+```
+
+## License
+
+MIT.

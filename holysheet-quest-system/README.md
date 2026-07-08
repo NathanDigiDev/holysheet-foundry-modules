@@ -63,6 +63,16 @@ QuestSystem.openLog();             // open the Quest Log
 QuestSystem.openEditor(quest.id);  // open the editor
 ```
 
+## Installation
+
+Install from the Foundry setup screen using this manifest URL:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/releases/latest/download/holysheet-quest-system-module.json
+```
+
+Then enable **Quest System** in your world module settings.
+
 ## Installation (development)
 
 Symlink or copy this folder into `Data/modules/holysheet-quest-system` of your
@@ -76,6 +86,14 @@ Foundry user data (the folder name **must** match the manifest `id`), then enabl
   them).
 - Kill objective matching is name-based (case-insensitive substring) to remain
   system-agnostic.
+
+## Bugs
+
+Please report issues on GitHub:
+
+```text
+https://github.com/NathanDigiDev/holysheet-foundry-modules/issues
+```
 
 ## License
 
