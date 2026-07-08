@@ -3,7 +3,7 @@
   "type": "module",
   "title": "Holysheet Interactive Zones",
   "description": "Create scene-stored interactive zones that can highlight, vote, open content, play sounds, run macros, chat, and change scenes.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "compatibility": {
     "minimum": "14",
     "verified": "14.364",
